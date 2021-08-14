@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rental/presentation/core/customTheme/appTheme.dart';
+import 'package:rental/presentation/core/route.dart';
+import 'package:rental/presentation/screen/property_detail_screen.dart';
 import 'package:rental/presentation/screen/splash_screen.dart';
 
 void main() {
@@ -10,11 +13,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: RouteGenerator.splashScreen,
+      onGenerateRoute: RouteGenerator.generateRoute,
       title: 'House Rent',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: SplashScreen(),
+      theme: CustomTheme.lightTheme,
+      darkTheme: CustomTheme.darkTHeme,
+      themeMode: ThemeMode.light,
+      home: PropertyDetail(),
     );
   }
 }
