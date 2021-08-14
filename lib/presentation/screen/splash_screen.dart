@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:rental/presentation/screen/home_screen.dart';
+import 'package:rental/presentation/screen/property_detail_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -14,12 +14,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _onIntroEnd(context) {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => HomePage()),
+      MaterialPageRoute(builder: (_) => PropertyDetail()),
     );
   }
 
   Widget _buildImage(String assetName, [double width = 350]) {
-    return Image.asset('assets/images/splash/time.png', width: width);
+    return Image.asset('assets/images/splash/$assetName', width: width);
   }
 
   @override
