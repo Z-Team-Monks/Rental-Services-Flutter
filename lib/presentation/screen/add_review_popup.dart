@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
-import 'custom_rect_tween.dart';
 import 'package:rental/presentation/core/customTheme/appTheme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'hero_dialogue_route.dart';
+import '../animation/hero_dialogue_route.dart';
 
-/// {@template add_todo_button}
-/// Button to add a new [Todo].
-///
-/// Opens a [HeroDialogRoute] of [_AddReviewPopup].
-///
-/// Uses a [Hero] with tag [_heroAddTodo].
-/// {@endtemplate}
-class AddTodoButton extends StatelessWidget {
-  /// {@macro add_todo_button}
+// This is a sample button for add review popup route
+class AddReviewButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -26,10 +18,7 @@ class AddTodoButton extends StatelessWidget {
           );
         },
         child: Hero(
-          tag: _heroAddTodo,
-          // createRectTween: (begin, end) {
-          // return CustomRectTween(begin: begin, end: end);
-          // },
+          tag: _heroAddReview,
           child: Material(
             color: CustomTheme.lightTheme.cardColor,
             elevation: 2,
@@ -38,7 +27,6 @@ class AddTodoButton extends StatelessWidget {
             child: const Icon(
               Icons.add_rounded,
               size: 56,
-              color: Colors.black,
             ),
           ),
         ),
@@ -47,15 +35,7 @@ class AddTodoButton extends StatelessWidget {
   }
 }
 
-/// Tag-value used for the add todo popup button.
-const String _heroAddTodo = 'add-todo-hero';
-
-/// {@template add_todo_popup_card}
-/// Popup card to add a new [Todo]. Should be used in conjuction with
-/// [HeroDialogRoute] to achieve the popup effect.
-///
-/// Uses a [Hero] with tag [_heroAddTodo].
-/// {@endtemplate}
+const String _heroAddReview = 'add-review-hero';
 
 class AddReviewPopup extends StatefulWidget {
   AddReviewPopup({Key? key}) : super(key: key);
@@ -71,7 +51,7 @@ class _AddReviewPopupState extends State<AddReviewPopup> {
       child: Padding(
         padding: const EdgeInsets.all(32.0),
         child: Hero(
-          tag: _heroAddTodo,
+          tag: _heroAddReview,
           child: Material(
             color: CustomTheme.lightTheme.cardColor,
             elevation: 2,
@@ -128,7 +108,7 @@ class _AddReviewPopupState extends State<AddReviewPopup> {
                         ),
                       ),
                       cursorColor: Colors.black,
-                      maxLines: 7,
+                      maxLines: 6,
                     ),
                     const SizedBox(height: 14),
                     SizedBox(
