@@ -38,6 +38,7 @@ dependencies:
 
   introduction_screen: ^2.1.0
   flutter_rating_bar: ^4.0.0
+  solid_bottom_sheet: ^0.1.10
 
 dev_dependencies:
   flutter_test:
