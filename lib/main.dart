@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rental/core/presentation/customTheme/appTheme.dart';
+import 'package:rental/features/property/screens/add_property/add_property_screen.dart';
 import 'package:rental/features/property/screens/review_property/add_review_popup.dart';
 import 'package:rental/route.dart';
 import 'package:rental/features/property/screens/property_detail/property_detail_screen.dart';
