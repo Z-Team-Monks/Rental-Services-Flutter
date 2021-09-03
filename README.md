@@ -1,16 +1,10 @@
-# rental
+### Rental Services
+Rental services is a mobile app that connects property owners with users that want to rent.
 
-A new Flutter project.
+## Group Memebers
+1. Kidus Yoseph           ATR/3164/11
+2. Lingerew Getie        ETR/3676/11 
+3. Nabek Abebe           ATR/8754/11
+4. Natnael Abay           ATR/8016/11
+5. Surafel Kassahun     ATR/8659/11
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
