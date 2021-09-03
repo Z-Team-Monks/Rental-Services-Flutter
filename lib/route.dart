@@ -5,37 +5,34 @@ import 'package:rental/features/property/screens/property_feed/feed.dart';
 import 'package:rental/features/property/screens/review_property/add_review_popup.dart';
 
 class RouteGenerator {
-  static Route<dynamic>? generateRoute(RouteSettings settings) {
+  static Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case SplashScreen.pageRoute:
-        MaterialPageRoute(
-          builder: (BuildContext context) => SplashScreen(),
-        );
-        break;
-      case "loginScreen":
-        throw Exception("screen not implemented yet!");
-        break;
-      case "registerScreen":
-        throw Exception("screen not implemented yet!");
-        break;
-      case HomeFeed.pageRoute:
-        MaterialPageRoute(builder: (context) {
-          return HomeFeed();
-        });
-        break;
-      case "postScreen":
-        throw Exception("screen not implemented yet!");
-        break;
-      case PropertyDetail.pageRoute:
-        MaterialPageRoute(builder: (context) {
-          return PropertyDetail();
-        });
-        break;
-      case AddReviewPopup.pageRoute:
-        MaterialPageRoute(builder: (context) {
+      case "/":
+        return MaterialPageRoute(builder: (context) {
           return AddReviewPopup();
         });
-        break;
+      case SplashScreen.pageRoute:
+        return MaterialPageRoute(
+          builder: (BuildContext context) => SplashScreen(),
+        );
+      case "loginScreen":
+        throw Exception("screen not implemented yet!");
+      case "registerScreen":
+        throw Exception("screen not implemented yet!");
+      case HomeFeed.pageRoute:
+        return MaterialPageRoute(builder: (context) {
+          return HomeFeed();
+        });
+      case "postScreen":
+        throw Exception("screen not implemented yet!");
+      case PropertyDetail.pageRoute:
+        return MaterialPageRoute(builder: (context) {
+          return PropertyDetail();
+        });
+      case AddReviewPopup.pageRoute:
+        return MaterialPageRoute(builder: (context) {
+          return AddReviewPopup();
+        });
       default:
         throw Exception("invalid screen render!");
     }
