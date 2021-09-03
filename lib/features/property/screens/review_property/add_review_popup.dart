@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rental/presentation/core/customTheme/appTheme.dart';
+import 'package:rental/core/presentation/customTheme/appTheme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import '../animation/hero_dialogue_route.dart';
+import './animation/hero_dialogue_route.dart';
 
 // This is a sample button for add review popup route
 class AddReviewButton extends StatelessWidget {
@@ -38,6 +38,7 @@ class AddReviewButton extends StatelessWidget {
 const String _heroAddReview = 'add-review-hero';
 
 class AddReviewPopup extends StatefulWidget {
+  static const pageRoute = "/add_review";
   AddReviewPopup({Key? key}) : super(key: key);
 
   @override

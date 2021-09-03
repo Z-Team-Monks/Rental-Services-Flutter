@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rental/presentation/core/customTheme/theme_constants.dart';
+import './theme_constants.dart';
 
 class CustomTheme {
   // base themes
