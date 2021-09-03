@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rental/presentation/core/txt_field.dart';
+import 'package:rental/core/presentation/txt_field.dart';
 
 class UpdateProfile extends StatelessWidget {
   const UpdateProfile({Key? key}) : super(key: key);

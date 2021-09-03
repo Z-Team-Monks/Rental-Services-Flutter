@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:math' as math;
 
-import 'package:rental/presentation/screen/components/feed_card.dart';
-import 'package:rental/presentation/screen/components/recomeded.dart';
+import './components/feed_card.dart';
+import './components/recomeded.dart';
 
 class HomeFeed extends StatefulWidget {
+  static const pageRoute = "/feed";
   const HomeFeed({Key? key}) : super(key: key);
 
   @override
@@ -154,23 +155,20 @@ class CollapsingList extends StatelessWidget {
                           price: 0,
                           callback: () {},
                         ),
-                    
-                     RecomedationCard(
+                        RecomedationCard(
                           date: "",
                           imgUrl: "assets/images/content/car-1.jpg",
                           name: "",
                           price: 0,
                           callback: () {},
                         ),
-                    
-                     RecomedationCard(
+                        RecomedationCard(
                           date: "",
                           imgUrl: "assets/images/content/car-1.jpg",
                           name: "",
                           price: 0,
                           callback: () {},
                         ),
-                    
                       ],
                     ),
                   ],

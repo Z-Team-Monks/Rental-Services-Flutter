@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:rental/presentation/screen/property_detail_screen.dart';
+import 'package:rental/features/property/screens/property_detail/property_detail_screen.dart';
 
 class SplashScreen extends StatefulWidget {
+  static const pageRoute = "/splash_screen";
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
