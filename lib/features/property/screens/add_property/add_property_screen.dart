@@ -26,7 +26,7 @@ class AddProperty extends StatelessWidget {
                 vertical: height * 0.008,
               ),
               child: Text(
-                "Add Post",
+                "ADD POST",
                 style: TextStyle(
                     fontSize: 35.0,
                     fontWeight: FontWeight.bold,
