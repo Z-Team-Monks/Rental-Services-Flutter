@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:rental/presentation/screen/components/contact_icon_button.dart';
+import './contact_icon_button.dart';
 
-
-
-/// Property feed card to list avialable properties for rent 
-/// in the home page [StatefulWidget] 
+/// Property feed card to list avialable properties for rent
+/// in the home page [StatefulWidget]
 class FeedPropertyCard extends StatefulWidget {
   /// FeedCard Image url [String]
   final String imgUrl;
+
   /// FeedCard rating count [String]
   final String ratingCount;
+
   /// FeedCard name of the Property [String]
   final String name;
+
   /// FeedCard call Button onTap handler [Function]
   final Function phoneCallback;
+
   /// FeedCard message Button onTap handler [Function]
   final Function messageCallback;
 
@@ -60,7 +62,7 @@ class _FeedPropertyCardState extends State<FeedPropertyCard> {
                 color: Colors.pinkAccent,
               ),
               Text(
-               widget.ratingCount + "4.68(38)",
+                widget.ratingCount + "4.68(38)",
                 style: TextStyle(
                     fontWeight: FontWeight.w300, fontFamily: "Poppins"),
               ),
@@ -75,7 +77,7 @@ class _FeedPropertyCardState extends State<FeedPropertyCard> {
               Column(
                 children: [
                   Text(
-                   widget.name +  "Entire Cabin • Norway",
+                    widget.name + "Entire Cabin • Norway",
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontSize: 20,

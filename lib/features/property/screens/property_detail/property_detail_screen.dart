@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:rental/presentation/constants.dart';
-import 'package:rental/presentation/core/customTheme/appTheme.dart';
+import 'package:rental/core/presentation/constants.dart';
+import 'package:rental/core/presentation/customTheme/appTheme.dart';
 
 class PropertyDetail extends StatefulWidget {
+  static const pageRoute = "/property_detail";
   const PropertyDetail({Key? key}) : super(key: key);
 
   @override
