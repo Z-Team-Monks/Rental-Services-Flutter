@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
 
-class _AddProprty extends StatelessWidget {
-  const _AddProprty({Key? key}) : super(key: key);
+class AddProperty extends StatelessWidget {
+  static const pageRoute = "/add_property";
+  const AddProperty({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-        padding: const EdgeInsets.only(
-            top: 60.0, left: 10.0, right: 10.0, bottom: 10.0),
+        padding: EdgeInsets.only(
+            top: height * 0.06,
+            left: width * 0.01,
+            right: width * 0.01,
+            bottom: height * 0.01),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.symmetric(
+                horizontal: width * 0.008,
+                vertical: height * 0.008,
+              ),
               child: Text(
                 "Add Post",
                 style: TextStyle(
@@ -26,17 +35,23 @@ class _AddProprty extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.symmetric(
+                horizontal: width * 0.008,
+                vertical: height * 0.008,
+              ),
               child: Text(
                 "Share a property you want to share or rent",
                 style: TextStyle(fontSize: 20, color: Colors.grey[600]),
               ),
             ),
             SizedBox(
-              height: 10.0,
+              height: MediaQuery.of(context).size.height * 0.019,
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+              padding: EdgeInsets.symmetric(
+                horizontal: width * 0.008,
+                // vertical: height * 0.008,
+              ),
               child: Text(
                 "TITLE",
                 style: TextStyle(
@@ -44,7 +59,10 @@ class _AddProprty extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.symmetric(
+                horizontal: width * 0.008,
+                vertical: height * 0.008,
+              ),
               child: TextField(
                 autocorrect: true,
                 decoration: InputDecoration(
@@ -64,10 +82,13 @@ class _AddProprty extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 5,
+              height: MediaQuery.of(context).size.height * 0.019,
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+              padding: EdgeInsets.symmetric(
+                horizontal: width * 0.008,
+                // vertical: height * 0.008,
+              ),
               child: Text(
                 "DESCRIPTION",
                 style: TextStyle(
@@ -75,7 +96,10 @@ class _AddProprty extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.symmetric(
+                horizontal: width * 0.008,
+                vertical: height * 0.008,
+              ),
               child: TextField(
                 autocorrect: true,
                 maxLines: 5,
@@ -96,10 +120,13 @@ class _AddProprty extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 5,
+              height: MediaQuery.of(context).size.height * 0.019,
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.symmetric(
+                horizontal: width * 0.008,
+                vertical: height * 0.008,
+              ),
               child: Row(
                 children: [
                   Expanded(
@@ -115,7 +142,7 @@ class _AddProprty extends StatelessWidget {
                             letterSpacing: 1),
                       ),
                       SizedBox(
-                        height: 8,
+                        height: MediaQuery.of(context).size.height * 0.01,
                       ),
                       TextField(
                         autocorrect: true,
@@ -137,7 +164,7 @@ class _AddProprty extends StatelessWidget {
                     ],
                   )),
                   SizedBox(
-                    width: 5,
+                    width: MediaQuery.of(context).size.height * 0.01,
                   ),
                   Expanded(
                       child: Column(
@@ -152,7 +179,7 @@ class _AddProprty extends StatelessWidget {
                             letterSpacing: 1),
                       ),
                       SizedBox(
-                        height: 8,
+                        height: MediaQuery.of(context).size.height * 0.019,
                       ),
                       TextField(
                         autocorrect: true,
@@ -178,10 +205,13 @@ class _AddProprty extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 5,
+              height: MediaQuery.of(context).size.height * 0.019,
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+              padding: EdgeInsets.symmetric(
+                horizontal: width * 0.008,
+                // vertical: height * 0.008,
+              ),
               child: Text(
                 "UPLOAD IMAGE",
                 style: TextStyle(
@@ -189,31 +219,28 @@ class _AddProprty extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                autocorrect: true,
-                decoration: InputDecoration(
-                  hintText: 'IMAGE1',
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.image),
-                    onPressed: () {},
-                  ),
-                  hintStyle: TextStyle(color: Colors.black54, letterSpacing: 1),
-                  filled: true,
-                  fillColor: Colors.grey[300],
-                  enabledBorder: OutlineInputBorder(
-                    // borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                    borderSide: BorderSide(color: Colors.transparent),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      // borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      // borderSide: BorderSide(color: Colors.blue),
-                      ),
+                padding: EdgeInsets.symmetric(
+                  horizontal: width * 0.008,
+                  vertical: height * 0.008,
                 ),
-              ),
-            ),
+                child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.088,
+                    width: MediaQuery.of(context).size.width * 1,
+                    child: Card(
+                        color: Colors.grey[300],
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Center(
+                              child: Text(
+                            "UPLAD IMAGE",
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 15,
+                            ),
+                          )),
+                        )))),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.09,
+              height: MediaQuery.of(context).size.height * 0.07,
             ),
             Center(
               child: Padding(
