@@ -1,4 +1,4 @@
-# Rental Services
+# Rental Services - Flutter
 ## Brief Description
 Rental services is a mobile app that connects property owners with users that want to rent.
 
