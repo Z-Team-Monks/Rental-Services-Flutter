@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:rental/core/exceptions/auth_exception.dart';
 import 'package:rental/core/models/user.dart';
 
 class UserRemoteDataProvider {
-
   final String baseUrl = "http://10.6.193.148:5000/api";
 
   /// Given a [User] it will create or register
@@ -59,8 +57,6 @@ class UserRemoteDataProvider {
 
     if (response.statusCode == 200) {
       return (response.body);
-    } else if (response.statusCode == 403) {
-      throw InvalidEmailAddressException();
     } else if (response.statusCode == 400) {
       throw Exception("Failed to login");
     } else {
@@ -114,8 +110,6 @@ class UserRemoteDataProvider {
 
     if (response.statusCode == 200) {
       return User.fromJson(jsonDecode(response.body));
-    } else if (response.statusCode == 409) {
-      throw EmailAlreadyExistsException();
     } else {
       throw Exception("Failed to Get User!");
     }
