@@ -1,8 +1,7 @@
-
 import 'package:rental/core/models/entity.dart';
 import 'package:rental/core/models/user.dart';
 
-class Property  extends EntityModel{
+class Property extends EntityModel {
   final String? id;
   final String? ownerid;
   final String? createdAt;
@@ -60,7 +59,7 @@ class Property  extends EntityModel{
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       "status": this.status,
       "rating": this.rating,
