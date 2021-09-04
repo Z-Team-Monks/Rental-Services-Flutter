@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental/core/presentation/customTheme/appTheme.dart';
+import 'package:rental/features/property/screens/add_review/add_review_popup.dart';
 import 'package:rental/features/property/screens/add_property/add_property_screen.dart';
-import 'package:rental/features/property/screens/review_property/add_review_popup.dart';
+// import 'package:rental/features/property/screens/review_property/add_review_popup.dart';
 import 'package:rental/features/user/bloc/profile_bloc/profile_bloc.dart';
 import 'package:rental/features/user/data_providers/user_local_data_provider.dart';
 import 'package:rental/features/user/data_providers/user_remote_data_provider.dart';

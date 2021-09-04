@@ -53,7 +53,7 @@ class User extends EntityModel {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       "profileImage": this.profileImage,
       "id": this.id,
