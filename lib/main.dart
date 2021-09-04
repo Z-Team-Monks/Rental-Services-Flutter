@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: AddReviewPopup.pageRoute,
+        // initialRoute: AddReviewPopup.pageRoute,
         onGenerateRoute: RouteGenerator.generateRoute,
         title: 'House Rent',
         theme: CustomTheme.lightTheme,

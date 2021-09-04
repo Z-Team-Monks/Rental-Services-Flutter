@@ -9,6 +9,7 @@ class AddProperty extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(
           "Add post",
@@ -193,16 +194,6 @@ class AddProperty extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Text(
-                          //   "Billing period",
-                          //   style: TextStyle(
-                          //       fontSize: 20,
-                          //       color: Colors.grey[600],
-                          //       letterSpacing: 1),
-                          // ),
-                          // SizedBox(
-                          //   height: MediaQuery.of(context).size.height * 0.019,
-                          // ),
                           TextFormField(
                             autocorrect: true,
                             decoration: InputDecoration(
