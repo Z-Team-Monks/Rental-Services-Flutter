@@ -3,7 +3,7 @@ import 'package:rental/features/property/screens/add_property/add_property_scree
 import 'package:rental/features/property/screens/property_detail/property_detail_screen.dart';
 import 'package:rental/features/onBoard/screens/splash_screen.dart';
 import 'package:rental/features/property/screens/property_feed/feed.dart';
-import 'package:rental/features/property/screens/review_property/add_review_popup.dart';
+import 'package:rental/features/property/screens/add_review/add_review_popup.dart';
 
 class RouteGenerator {
   static Route? generateRoute(RouteSettings settings) {
@@ -38,7 +38,6 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) {
           return AddProperty();
         });
-        break;
       default:
         throw Exception("invalid screen render!");
     }

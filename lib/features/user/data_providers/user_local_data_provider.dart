@@ -5,7 +5,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
 
 class UserLocalDataProvider {
-  
   final Database dBInstance = getIt<AppDB>().dBInstance;
 
   // UserLocalDataProvider({
@@ -22,7 +21,7 @@ class UserLocalDataProvider {
   Future<void> storeUser({
     required User user,
   }) async {
-    var map = user.toMap();
+    var map = user.toJson();
     await dBInstance.insert(
       "users",
       map,

@@ -16,7 +16,7 @@ class PropertyLocalDataProvider {
   Future<void> storeProperty({
     required Property property,
   }) async {
-    var map = property.toMap();
+    var map = property.toJson();
     await dBInstance.insert(
       "users",
       map,
@@ -94,5 +94,4 @@ class PropertyLocalDataProvider {
     }
     return properties;
   }
-
 }
