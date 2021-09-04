@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental/core/presentation/customTheme/appTheme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:rental/features/property/bloc/add_review/add_review_bloc.dart';
+import 'package:rental/features/property/bloc/add_review/add_review_event.dart';
+import 'package:rental/features/property/bloc/add_review/add_review_state.dart';
 import './animation/hero_dialogue_route.dart';
 
 // This is a sample button for add review popup route
@@ -37,17 +41,21 @@ class AddReviewButton extends StatelessWidget {
 
 const String _heroAddReview = 'add-review-hero';
 
-class AddReviewPopup extends StatefulWidget {
+class AddReviewPopup extends StatelessWidget {
   static const pageRoute = "/add_review";
+  late final FocusNode messageFocusNode;
   AddReviewPopup({Key? key}) : super(key: key);
 
   @override
-  _AddReviewPopupState createState() => _AddReviewPopupState();
-}
-
-class _AddReviewPopupState extends State<AddReviewPopup> {
-  @override
   Widget build(BuildContext context) {
+    final addReviewFormBloc = BlocProvider.of<AddReviewFormBloc>(context);
+    this.messageFocusNode = FocusNode();
+    this.messageFocusNode
+      ..addListener(() {
+        if (!this.messageFocusNode.hasFocus) {
+          context.read<AddReviewFormBloc>().add(MessageUnfocused());
+        }
+      });
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -80,42 +88,84 @@ class _AddReviewPopupState extends State<AddReviewPopup> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    RatingBar.builder(
-                      initialRating: 3,
-                      minRating: 1,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      // itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      onRatingUpdate: (rating) {
-                        print("rating");
-                      },
-                    ),
+                    BlocBuilder<AddReviewFormBloc, AddReviewFormState>(
+                        builder: (context, state) {
+                      return RatingBar.builder(
+                        initialRating: state.rating,
+                        minRating: 1,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        // itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        onRatingUpdate: (rating) {
+                          context
+                              .read<AddReviewFormBloc>()
+                              .add(RatingChanged(rating: rating));
+                        },
+                      );
+                    }),
                     const SizedBox(height: 16),
-                    TextField(
-                      keyboardType: TextInputType.multiline,
-                      decoration: InputDecoration(
-                        hintText: 'Write your reviews here',
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 1, color: Colors.grey),
-                          borderRadius: BorderRadius.circular(12),
+                    BlocBuilder<AddReviewFormBloc, AddReviewFormState>(
+                        builder: (context, state) {
+                      return TextFormField(
+                        initialValue: state.message.value,
+                        focusNode: messageFocusNode,
+                        keyboardType: TextInputType.multiline,
+                        decoration: InputDecoration(
+                          alignLabelWithHint: true,
+                          hintText: 'Write your reviews here',
+                          labelText: 'Review*',
+                          helperText: 'Not empty',
+                          errorText: state.message.invalid
+                              ? 'Please ensure review is not empty'
+                              : null,
+                          errorBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 1, color: Colors.grey),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 1, color: Colors.grey),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 1, color: Colors.grey),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(width: 1, color: Colors.grey),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(width: 1, color: Colors.grey),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      cursorColor: Colors.black,
-                      maxLines: 6,
-                    ),
+                        // decoration: InputDecoration(
+
+                        // ),
+                        cursorColor: Colors.black,
+                        maxLines: 6,
+                        textInputAction: TextInputAction.done,
+                        onChanged: (value) {
+                          context
+                              .read<AddReviewFormBloc>()
+                              .add(MessageChanged(message: value));
+                        },
+                      );
+                    }),
                     const SizedBox(height: 14),
                     SizedBox(
                       width: double.infinity,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          messageFocusNode.unfocus();
+                          context
+                              .read<AddReviewFormBloc>()
+                              .add(FormSubmitted());
+                        },
                         child: const Text(
                           'Submit',
                         ),
