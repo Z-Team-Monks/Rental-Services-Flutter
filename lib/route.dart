@@ -13,7 +13,7 @@ class RouteGenerator {
     switch (settings.name) {
       case "/":
         return MaterialPageRoute(builder: (context) {
-          return ProfilePage(); //AddReviewPopup();
+          return AddProperty(); //ProfilePage(); //AddReviewPopup();
         });
       case SplashScreen.pageRoute:
         return MaterialPageRoute(
