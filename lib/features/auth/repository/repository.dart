@@ -5,10 +5,10 @@ class AuthRepository {
   final AuthRemoteDataProvider _authRemoteDataProvider;
   final AuthLocalDataProvider _authLocalDataProvider;
 
-  AuthRepository(
-    this._authRemoteDataProvider,
-    this._authLocalDataProvider,
-  );
+  AuthRepository(AuthLocalDataProvider authLocalDataProvider,
+      AuthRemoteDataProvider authRemoteDataProvider)
+      : _authLocalDataProvider = AuthLocalDataProvider(),
+        _authRemoteDataProvider = AuthRemoteDataProvider();
 
   // call the dataproviders using the data access strategey
   AuthLocalDataProvider get getLocalProvider => _authLocalDataProvider;

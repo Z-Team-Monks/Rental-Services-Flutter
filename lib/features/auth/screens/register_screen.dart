@@ -1,19 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rental/features/auth/bloc/signup/signup_form_bloc.dart';
+import 'package:rental/features/auth/screens/widgets/form_field.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
-class LoginPage extends StatefulWidget {
+class SignUpPage extends StatefulWidget {
   final SolidController controller;
-  const LoginPage({Key? key, required this.controller}) : super(key: key);
+  static const pageRoute = "/registerScreen";
+  const SignUpPage({Key? key, required this.controller}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
+  late final FocusNode username;
+  late final FocusNode emailNode;
+  late final FocusNode passwordNode;
+
+  @override
+  void initState() {
+    this.username = FocusNode();
+    this.emailNode = FocusNode();
+    this.passwordNode = FocusNode();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final signUpFormBloc = BlocProvider.of<SignUpFormBloc>(context);
+    this.username
+      ..addListener(() {
+        if (!this.username.hasFocus) {
+          context.read<SignUpFormBloc>().add(UsernameUnfocused());
+        }
+      });
+    this.emailNode
+      ..addListener(() {
+        if (!this.emailNode.hasFocus) {
+          context.read<SignUpFormBloc>().add(EmailUnfocused());
+        }
+      });
+    this.passwordNode
+      ..addListener(() {
+        if (!this.passwordNode.hasFocus) {
+          context.read<SignUpFormBloc>().add(EmailUnfocused());
+        }
+      });
     return SolidBottomSheet(
-      controller: widget.controller,
+      controller: SolidController(),
       maxHeight: 360,
       draggableBody: true,
       headerBar: Wrap(
@@ -82,22 +118,42 @@ class _LoginPageState extends State<LoginPage> {
                         height: 25,
                       ),
                       Text(
+                        "YOUR USERNAME",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      BlocBuilder<SignUpFormBloc, SignUpFormState>(
+                        builder: (context, state) {
+                          return CustomFormField(
+                              errorMessage: state.email.invalid
+                                  ? 'Please ensure username is not empty'
+                                  : '',
+                              label: 'Enter your username',
+                              onValueChange: (value) {
+                                signUpFormBloc
+                                    .add(UsernameChanged(username: value));
+                              });
+                        },
+                      ),
+                      Text(
                         "YOUR EMAIL",
                         style: TextStyle(
                           fontFamily: "Poppins",
                           fontSize: 20,
                         ),
                       ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          border: UnderlineInputBorder(),
-                          labelText: 'example@niko.com',
-                          hintStyle: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                      BlocBuilder<SignUpFormBloc, SignUpFormState>(
+                        builder: (context, state) {
+                          return CustomFormField(
+                              errorMessage: state.email.invalid
+                                  ? 'Please ensure email is not empty'
+                                  : '',
+                              label: 'Enter your email',
+                              onValueChange: (value) {
+                                signUpFormBloc.add(EmailChanged(email: value));
+                              });
+                        },
                       ),
                       SizedBox(
                         height: 25,
@@ -108,17 +164,18 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 20,
                         ),
                       ),
-                      TextFormField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          border: UnderlineInputBorder(),
-                          labelText: 'Enter your username',
-                          hintStyle: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                      BlocBuilder<SignUpFormBloc, SignUpFormState>(
+                        builder: (context, state) {
+                          return CustomFormField(
+                              errorMessage: state.email.invalid
+                                  ? 'Please ensure password is not empty'
+                                  : '',
+                              label: 'Enter your password',
+                              onValueChange: (value) {
+                                signUpFormBloc
+                                    .add(PasswordChanged(password: value));
+                              });
+                        },
                       ),
                       SizedBox(
                         height: 10,
@@ -140,7 +197,11 @@ class _LoginPageState extends State<LoginPage> {
                             style: TextButton.styleFrom(
                               backgroundColor: Colors.white,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              passwordNode.unfocus();
+                              emailNode.unfocus();
+                              signUpFormBloc.add(FormSubmitted());
+                            },
                             child: Text(
                               "Login",
                               style: TextStyle(
@@ -164,4 +225,8 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  // void registerTextFieldNodeListener() {
+
+  // }
 }

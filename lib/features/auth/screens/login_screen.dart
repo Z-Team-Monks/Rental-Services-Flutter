@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rental/features/auth/bloc/signin/signin_form_bloc.dart';
+import 'package:rental/features/auth/models/exports.dart';
+import 'package:rental/features/auth/screens/widgets/form_field.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
 class LoginPage extends StatefulWidget {
   final SolidController controller;
+  static const pageRoute = "/loginScreen";
   const LoginPage({Key? key, required this.controller}) : super(key: key);
 
   @override
@@ -10,10 +15,34 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late final FocusNode emailNode;
+  late final FocusNode passwordNode;
+
+  @override
+  void initState() {
+    this.emailNode = FocusNode();
+    this.passwordNode = FocusNode();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final signInFormBloc = BlocProvider.of<SignInFormBloc>(context);
+    this.emailNode
+      ..addListener(() {
+        if (!this.emailNode.hasFocus) {
+          context.read<SignInFormBloc>().add(EmailUnfocused());
+        }
+      });
+    this.passwordNode
+      ..addListener(() {
+        if (!this.passwordNode.hasFocus) {
+          context.read<SignInFormBloc>().add(EmailUnfocused());
+        }
+      });
     return SolidBottomSheet(
-      controller: widget.controller,
+      controller: SolidController(),
       maxHeight: 360,
       draggableBody: true,
       headerBar: Wrap(
@@ -88,16 +117,17 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 20,
                         ),
                       ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          border: UnderlineInputBorder(),
-                          labelText: 'example@niko.com',
-                          hintStyle: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                      BlocBuilder<SignInFormBloc, SignInFormState>(
+                        builder: (context, state) {
+                          return CustomFormField(
+                              errorMessage: state.email.invalid
+                                  ? 'Please ensure email is not empty'
+                                  : '',
+                              label: 'example@niko.com',
+                              onValueChange: (value) {
+                                signInFormBloc.add(EmailChanged(email: value));
+                              });
+                        },
                       ),
                       SizedBox(
                         height: 25,
@@ -108,17 +138,18 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 20,
                         ),
                       ),
-                      TextFormField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          border: UnderlineInputBorder(),
-                          labelText: 'Enter your username',
-                          hintStyle: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                      BlocBuilder<SignInFormBloc, SignInFormState>(
+                        builder: (context, state) {
+                          return CustomFormField(
+                              errorMessage: state.email.invalid
+                                  ? 'Please ensure password is not empty'
+                                  : '',
+                              label: 'Enter your password',
+                              onValueChange: (value) {
+                                signInFormBloc
+                                    .add(PasswordChanged(password: value));
+                              });
+                        },
                       ),
                       SizedBox(
                         height: 10,
@@ -140,7 +171,11 @@ class _LoginPageState extends State<LoginPage> {
                             style: TextButton.styleFrom(
                               backgroundColor: Colors.white,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              passwordNode.unfocus();
+                              emailNode.unfocus();
+                              signInFormBloc.add(FormSubmitted());
+                            },
                             child: Text(
                               "Login",
                               style: TextStyle(
@@ -164,4 +199,8 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  // void registerTextFieldNodeListener() {
+
+  // }
 }

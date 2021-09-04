@@ -1,6 +1,6 @@
 import 'package:formz/formz.dart';
 
-enum EmailValidationError { invalid }
+enum EmailValidationError { invalid, emailAlreadyInUse }
 
 class Email extends FormzInput<String, EmailValidationError> {
   const Email.pure([String value = '']) : super.pure(value);

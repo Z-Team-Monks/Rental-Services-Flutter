@@ -16,6 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$AuthFaiulreTearOff {
   const _$AuthFaiulreTearOff();
 
+  ServerAuthError serverAuthError() {
+    return const ServerAuthError();
+  }
+
   InvalidEmailOrPasssword invalidEmailOrPasssword() {
     return const InvalidEmailOrPasssword();
   }
@@ -32,12 +36,14 @@ const $AuthFaiulre = _$AuthFaiulreTearOff();
 mixin _$AuthFaiulre {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() serverAuthError,
     required TResult Function() invalidEmailOrPasssword,
     required TResult Function() emailAlreadyInUse,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? serverAuthError,
     TResult Function()? invalidEmailOrPasssword,
     TResult Function()? emailAlreadyInUse,
     required TResult orElse(),
@@ -45,6 +51,7 @@ mixin _$AuthFaiulre {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(ServerAuthError value) serverAuthError,
     required TResult Function(InvalidEmailOrPasssword value)
         invalidEmailOrPasssword,
     required TResult Function(EmailAlreadyInUse value) emailAlreadyInUse,
@@ -52,6 +59,7 @@ mixin _$AuthFaiulre {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(ServerAuthError value)? serverAuthError,
     TResult Function(InvalidEmailOrPasssword value)? invalidEmailOrPasssword,
     TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
     required TResult orElse(),
@@ -73,6 +81,97 @@ class _$AuthFaiulreCopyWithImpl<$Res> implements $AuthFaiulreCopyWith<$Res> {
   final AuthFaiulre _value;
   // ignore: unused_field
   final $Res Function(AuthFaiulre) _then;
+}
+
+/// @nodoc
+abstract class $ServerAuthErrorCopyWith<$Res> {
+  factory $ServerAuthErrorCopyWith(
+          ServerAuthError value, $Res Function(ServerAuthError) then) =
+      _$ServerAuthErrorCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$ServerAuthErrorCopyWithImpl<$Res>
+    extends _$AuthFaiulreCopyWithImpl<$Res>
+    implements $ServerAuthErrorCopyWith<$Res> {
+  _$ServerAuthErrorCopyWithImpl(
+      ServerAuthError _value, $Res Function(ServerAuthError) _then)
+      : super(_value, (v) => _then(v as ServerAuthError));
+
+  @override
+  ServerAuthError get _value => super._value as ServerAuthError;
+}
+
+/// @nodoc
+
+class _$ServerAuthError implements ServerAuthError {
+  const _$ServerAuthError();
+
+  @override
+  String toString() {
+    return 'AuthFaiulre.serverAuthError()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is ServerAuthError);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() serverAuthError,
+    required TResult Function() invalidEmailOrPasssword,
+    required TResult Function() emailAlreadyInUse,
+  }) {
+    return serverAuthError();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? serverAuthError,
+    TResult Function()? invalidEmailOrPasssword,
+    TResult Function()? emailAlreadyInUse,
+    required TResult orElse(),
+  }) {
+    if (serverAuthError != null) {
+      return serverAuthError();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ServerAuthError value) serverAuthError,
+    required TResult Function(InvalidEmailOrPasssword value)
+        invalidEmailOrPasssword,
+    required TResult Function(EmailAlreadyInUse value) emailAlreadyInUse,
+  }) {
+    return serverAuthError(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ServerAuthError value)? serverAuthError,
+    TResult Function(InvalidEmailOrPasssword value)? invalidEmailOrPasssword,
+    TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
+    required TResult orElse(),
+  }) {
+    if (serverAuthError != null) {
+      return serverAuthError(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ServerAuthError implements AuthFaiulre {
+  const factory ServerAuthError() = _$ServerAuthError;
 }
 
 /// @nodoc
@@ -115,6 +214,7 @@ class _$InvalidEmailOrPasssword implements InvalidEmailOrPasssword {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() serverAuthError,
     required TResult Function() invalidEmailOrPasssword,
     required TResult Function() emailAlreadyInUse,
   }) {
@@ -124,6 +224,7 @@ class _$InvalidEmailOrPasssword implements InvalidEmailOrPasssword {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? serverAuthError,
     TResult Function()? invalidEmailOrPasssword,
     TResult Function()? emailAlreadyInUse,
     required TResult orElse(),
@@ -137,6 +238,7 @@ class _$InvalidEmailOrPasssword implements InvalidEmailOrPasssword {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(ServerAuthError value) serverAuthError,
     required TResult Function(InvalidEmailOrPasssword value)
         invalidEmailOrPasssword,
     required TResult Function(EmailAlreadyInUse value) emailAlreadyInUse,
@@ -147,6 +249,7 @@ class _$InvalidEmailOrPasssword implements InvalidEmailOrPasssword {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(ServerAuthError value)? serverAuthError,
     TResult Function(InvalidEmailOrPasssword value)? invalidEmailOrPasssword,
     TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
     required TResult orElse(),
@@ -202,6 +305,7 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
+    required TResult Function() serverAuthError,
     required TResult Function() invalidEmailOrPasssword,
     required TResult Function() emailAlreadyInUse,
   }) {
@@ -211,6 +315,7 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? serverAuthError,
     TResult Function()? invalidEmailOrPasssword,
     TResult Function()? emailAlreadyInUse,
     required TResult orElse(),
@@ -224,6 +329,7 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(ServerAuthError value) serverAuthError,
     required TResult Function(InvalidEmailOrPasssword value)
         invalidEmailOrPasssword,
     required TResult Function(EmailAlreadyInUse value) emailAlreadyInUse,
@@ -234,6 +340,7 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(ServerAuthError value)? serverAuthError,
     TResult Function(InvalidEmailOrPasssword value)? invalidEmailOrPasssword,
     TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
     required TResult orElse(),
