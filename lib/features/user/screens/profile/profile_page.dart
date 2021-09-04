@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_skeleton/loader_skeleton.dart';
@@ -9,7 +11,7 @@ class ProfilePage extends StatelessWidget {
   // const ProfilePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // final size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     final profileBloc = BlocProvider.of<ProfileBloc>(context);
 
     return Scaffold(
@@ -99,9 +101,12 @@ class ProfilePage extends StatelessWidget {
                                 tabs: [
                                   Tab(text: 'Properties'),
                                   Tab(text: 'Liked'),
-                                  Tab(text: 'Favourites'),
+                                  Tab(text: 'Wishlist'),
                                 ],
                               ),
+                            ),
+                            SizedBox(
+                              height: 10,
                             ),
                             Container(
                                 height: 400, //height of TabBarView
@@ -113,17 +118,17 @@ class ProfilePage extends StatelessWidget {
                                   GridView.count(
                                       crossAxisCount: 2,
                                       children: List.generate(4, (index) {
-                                        return PropertyCard();
+                                        return PropertyCard(size);
                                       })),
                                   GridView.count(
                                       crossAxisCount: 2,
                                       children: List.generate(4, (index) {
-                                        return PropertyCard();
+                                        return PropertyCard(size);
                                       })),
                                   GridView.count(
                                       crossAxisCount: 2,
                                       children: List.generate(4, (index) {
-                                        return PropertyCard();
+                                        return PropertyCard(size);
                                       })),
                                 ]))
                           ]),
@@ -143,23 +148,38 @@ Widget infoTexts(String txt) {
 }
 
 // ignore: non_constant_identifier_names
-Widget PropertyCard() {
+Widget PropertyCard(Size size) {
   int likes = 1123;
   int comments = 200;
 
   return Container(
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.black26)),
-      ),
       margin: EdgeInsets.symmetric(horizontal: 2.0),
       child: Column(
         children: [
-          Expanded(
-            child: Image.network(
-                "https://images.unsplash.com/photo-1599809275671-b5942cabc7a2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmVhbCUyMGVzdGF0ZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80"),
-          ),
           Container(
-            margin: EdgeInsets.only(top: 3),
+            width: size.width * 0.55,
+            height: size.width * 0.4,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(
+                    "https://images.unsplash.com/photo-1599809275671-b5942cabc7a2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmVhbCUyMGVzdGF0ZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80"),
+              ),
+            ),
+          ),
+          // SizedBox(
+          //   width: 200,
+          //   height: 100,
+          //   child: FittedBox(
+          //     fit: BoxFit.cover,
+          //     child: Image.network(
+          //         "https://images.unsplash.com/photo-1599809275671-b5942cabc7a2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmVhbCUyMGVzdGF0ZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80"),
+          //   ),
+          // ),
+          Container(
+            margin: EdgeInsets.only(left: 7, top: 7),
+            // color: Colors.green,
             child: Row(
               children: [
                 Icon(
@@ -167,7 +187,7 @@ Widget PropertyCard() {
                 ),
                 SizedBox(width: 2),
                 Text(likes.toString()),
-                SizedBox(width: 8),
+                SizedBox(width: 14),
                 Icon(
                   Icons.comment,
                   color: Colors.black,

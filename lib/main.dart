@@ -8,11 +8,13 @@ import 'package:rental/features/user/bloc/profile_bloc/profile_bloc.dart';
 import 'package:rental/features/user/data_providers/user_local_data_provider.dart';
 import 'package:rental/features/user/data_providers/user_remote_data_provider.dart';
 import 'package:rental/features/user/repository/user_repository.dart';
+import 'package:rental/locator.dart';
 import 'package:rental/route.dart';
 import 'package:rental/features/property/screens/property_detail/property_detail_screen.dart';
 import 'package:rental/features/onBoard/screens/splash_screen.dart';
 
 void main() {
+  setUp();
   runApp(MyApp());
 }
 
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => ProfileBloc(
                   userRepository: UserRepository(
                     UserRemoteDataProvider(),
-                    UserLocalDataProvider(),
+                    // UserLocalDataProvider(),
                   ),
                 )..add(ProfileLoad())),
       ],

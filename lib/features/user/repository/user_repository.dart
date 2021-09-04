@@ -6,11 +6,11 @@ import 'package:rental/features/user/data_providers/user_remote_data_provider.da
 
 class UserRepository {
   final UserRemoteDataProvider _userRemoteDataProvider;
-  final UserLocalDataProvider _userLocalDataProvider;
+  // final UserLocalDataProvider _userLocalDataProvider;
 
   UserRepository(
     this._userRemoteDataProvider,
-    this._userLocalDataProvider,
+    // this._userLocalDataProvider,
   );
 
   // call the dataproviders using the data access strategey

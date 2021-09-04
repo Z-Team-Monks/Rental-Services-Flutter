@@ -13,13 +13,20 @@ import 'package:rental/features/user/bloc/profile_bloc/profile_bloc.dart';
 class UpdateProfile extends StatefulWidget with InputValidationMixin {
   // const UpdateProfile({Key? key}) : super(key: key);
   // final User user;
-  @override
-  final User user = new User(
-      name: "Kidus",
-      email: "se.kidus.yoseph@gmail.com",
-      phoneNumber: "0972476097",
-      profileImage:
-          "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80");
+  // late final nameTextController;
+  // late final emailTextController;
+  // late final phoneTextController;
+  late User user;
+
+  UpdateProfile() {
+    user = new User(
+        name: "Kidus",
+        email: "se.kidus.yoseph@gmail.com",
+        phoneNumber: "0972476097",
+        profileImage:
+            "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80");
+  }
+
   State<UpdateProfile> createState() => _UpdateProfileState(user);
 }
 
@@ -31,6 +38,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   final ImagePicker _picker = ImagePicker();
 
   late User user;
+
   late final nameTextController;
   late final emailTextController;
   late final phoneTextController;
@@ -69,6 +77,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       }
 
                       if (state is ProfileUpdateSuccesful) {
+                        user = state.user;
+                        this.nameTextController.text = user.name;
+                        this.emailTextController.text = user.email;
+                        this.phoneTextController.text = user.phoneNumber!;
+
                         final lunchBar = LunchBars(
                             lunchBarText: "Profile Updated succesfully",
                             event: LunchBarEvents.LunchBarSuccess);
@@ -78,9 +91,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     builder: (_, state) {
                       if (state is ProfileLoaded) {
                         user = state.user;
-                        nameTextController.text = user.name;
-                        emailTextController.text = user.email;
-                        phoneTextController.text = user.phoneNumber;
 
                         return Form(
                           key: _formKey,
@@ -135,7 +145,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                               TxtField(
                                 label: "Email",
                                 // initialValue: user.email,
-                                controller: emailTextController,
+                                controller: this.emailTextController,
                                 validator: (email) {
                                   if (widget.isEmailValid(email!)) {
                                     return null;
@@ -146,7 +156,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                               TxtField(
                                 label: "Phone",
                                 // initialValue: user.phoneNumber,
-                                controller: phoneTextController,
+                                controller: this.phoneTextController,
                                 validator: (phoneNumber) {
                                   if (widget
                                       .isPhoneNumberValid(phoneNumber ?? "")) {
@@ -163,12 +173,18 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                   child: TextButton(
                                     onPressed: () {
                                       if (_formKey.currentState!.validate()) {
+                                        print("valid");
                                         profileBloc.add(ProfileUpdate(
                                             user: user.copyWith(
-                                                name: nameTextController.text,
-                                                email: emailTextController.text,
-                                                phoneNumber:
-                                                    phoneTextController.text)));
+                                                name: this
+                                                    .nameTextController
+                                                    .text,
+                                                email: this
+                                                    .emailTextController
+                                                    .text,
+                                                phoneNumber: this
+                                                    .phoneTextController
+                                                    .text)));
                                       }
                                     },
                                     child: const Text(
