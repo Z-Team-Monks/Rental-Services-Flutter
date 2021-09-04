@@ -31,7 +31,7 @@ dependencies:
   freezed_annotation: ^0.14.2
   flutter_bloc: ^7.1.0
   get_it: ^7.2.0
-  injectable: ^1.4.1
+  # injectable: ^1.4.1
   google_fonts: ^2.1.0
   lottie: ^1.1.0
   http: ^0.13.3
@@ -40,16 +40,18 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   solid_bottom_sheet: ^0.1.10
   sqflite: ^2.0.0+4
-  equatable: ^2.0.0
+  floor: ^1.1.0
+  equatable: ^2.0.3
   formz: ^0.4.0
   mockito: ^5.0.15
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^2.0.6
   freezed: ^0.14.2
-  injectable_generator: ^1.4.1
+  floor_generator: ^1.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
