@@ -29,6 +29,10 @@ class ProfilePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(height: 20.0),
+                CardSkeleton(
+                  isCircularImage: true,
+                  isBottomLinesActive: true,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
