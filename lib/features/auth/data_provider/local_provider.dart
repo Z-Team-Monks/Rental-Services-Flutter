@@ -4,10 +4,10 @@ import 'package:rental/locator.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
 
-class UserLocalDataProvider {
+class AuthLocalDataProvider {
   final Database dBInstance = getIt<AppDB>().dBInstance;
 
-  // UserLocalDataProvider({
+  // AuthLocalDataProvider({
   // required this.dBInstance,
   // required int version,
   // }) {

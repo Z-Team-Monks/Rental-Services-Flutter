@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rental/core/models/user.dart';
 
-class UserRemoteDataProvider {
+class AuthRemoteDataProvider {
   final String baseUrl = "http://10.6.193.148:5000/api";
 
   /// Given a [User] it will create or register

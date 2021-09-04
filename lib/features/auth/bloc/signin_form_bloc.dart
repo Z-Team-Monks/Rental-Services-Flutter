@@ -3,21 +3,24 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:rental/features/auth/models/exports.dart';
+import 'package:rental/features/auth/repository/repository.dart';
 
 part 'signin_form_event.dart';
 part 'signin_form_state.dart';
 
-class MyFormBloc extends Bloc<MyFormEvent, MyFormState> {
-  MyFormBloc() : super(const MyFormState());
+class SignInFormBloc extends Bloc<SignInFormEvent, SignInFormState> {
+  final AuthRepository _authRepository;
+
+  SignInFormBloc(this._authRepository) : super(const SignInFormState());
 
   @override
-  void onTransition(Transition<MyFormEvent, MyFormState> transition) {
+  void onTransition(Transition<SignInFormEvent, SignInFormState> transition) {
     print(transition);
     super.onTransition(transition);
   }
 
   @override
-  Stream<MyFormState> mapEventToState(MyFormEvent event) async* {
+  Stream<SignInFormState> mapEventToState(SignInFormEvent event) async* {
     if (event is EmailChanged) {
       final email = Email.dirty(event.email);
       yield state.copyWith(

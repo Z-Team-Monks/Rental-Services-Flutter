@@ -1,13 +1,13 @@
 part of 'signin_form_bloc.dart';
 
-abstract class MyFormEvent extends Equatable {
-  const MyFormEvent();
+abstract class SignInFormEvent extends Equatable {
+  const SignInFormEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class EmailChanged extends MyFormEvent {
+class EmailChanged extends SignInFormEvent {
   const EmailChanged({required this.email});
 
   final String email;
@@ -16,9 +16,9 @@ class EmailChanged extends MyFormEvent {
   List<Object> get props => [email];
 }
 
-class EmailUnfocused extends MyFormEvent {}
+class EmailUnfocused extends SignInFormEvent {}
 
-class PasswordChanged extends MyFormEvent {
+class PasswordChanged extends SignInFormEvent {
   const PasswordChanged({required this.password});
 
   final String password;
@@ -27,6 +27,6 @@ class PasswordChanged extends MyFormEvent {
   List<Object> get props => [password];
 }
 
-class PasswordUnfocused extends MyFormEvent {}
+class PasswordUnfocused extends SignInFormEvent {}
 
-class FormSubmitted extends MyFormEvent {}
+class FormSubmitted extends SignInFormEvent {}
