@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:rental/core/models/user.dart';
 import 'package:rental/features/user/repository/user_repository.dart';
-import 'package:rental/features/user/screens/update_profile/update_profile_screen.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
@@ -27,7 +26,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (event is ProfileUpdate) {
       yield ProfileUpdateLoading();
       try {
-        final user = await userRepository.updateUser(event.user);
+        final user = await userRepository.updateUser(user: event.user);
         print("updated user ${user.email}");
         yield ProfileUpdateSuccesful(user: user);
       } catch (e) {

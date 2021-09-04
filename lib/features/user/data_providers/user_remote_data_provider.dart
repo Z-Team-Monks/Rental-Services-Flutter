@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:rental/core/exceptions/auth_exception.dart';
 import 'package:rental/core/models/user.dart';
@@ -120,8 +122,17 @@ class UserRemoteDataProvider {
     }
   }
 
-  Future<void> uploadProfileImage() async {
-    // TODO: upload profile image
+  Future<void> uploadProfileImage(String path) async {
+    String url = "";
+    var dio = Dio();
+    try {
+      var formData =
+          FormData.fromMap({'file': await MultipartFile.fromFile(path)});
+      var response = await dio.post(url, data: formData);
+      return response.data;
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<User> updateUser(User user) async {
