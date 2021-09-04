@@ -2,8 +2,17 @@ import 'package:flutter/material.dart';
 
 class TxtField extends StatelessWidget {
   final String label;
+  final String? initialValue;
+  final String? Function(String?)? validator;
+  final TextEditingController? controller;
 
-  const TxtField({Key? key, required this.label}) : super(key: key);
+  TxtField(
+      {Key? key,
+      required this.label,
+      this.initialValue,
+      this.validator,
+      this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +29,9 @@ class TxtField extends StatelessWidget {
           ),
           TextFieldBox(
             typr: TextInputType.text,
+            initVal: initialValue,
+            validator: validator,
+            controller: controller,
           ),
         ],
       ),
@@ -32,7 +44,16 @@ class TextFieldBox extends StatelessWidget {
   final TextInputType? typr;
   final Icon? icons;
   final TextEditingController? controller;
-  TextFieldBox({this.hnt, @required this.typr, this.icons, this.controller});
+  final String? initVal;
+  final String? Function(String?)? validator;
+
+  TextFieldBox(
+      {this.hnt,
+      @required this.typr,
+      this.icons,
+      this.controller,
+      this.validator,
+      this.initVal});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,29 +61,27 @@ class TextFieldBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
       ),
       // color: grey,
-      child: TextField(
+      child: TextFormField(
+        initialValue: initVal,
         autofocus: false,
+        validator: validator,
         keyboardType: typr,
         controller: controller,
         textCapitalization: TextCapitalization.sentences,
         decoration: InputDecoration(
           prefixIcon: icons,
-          // focusedBorder: OutlineInputBorder(
-          //   borderSide: BorderSide(color: Colors.black, width: 2.0),
-          // ),
-          // enabledBorder: InputBorder.none,
-          // errorBorder: InputBorder.none,
-          // disabledBorder: InputBorder.none,
-          // border: OutlineInputBorder(
-          //   borderSide: BorderSide(color: Colors.black54, width: 2.0),
-          // ),
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.black87, width: 2.0),
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.black38, width: 2.0),
           ),
-          errorBorder: InputBorder.none,
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.redAccent, width: 2.0),
+          ),
+          border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black38, width: 2.0),
+          ),
           contentPadding:
               EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
           hintText: hnt,

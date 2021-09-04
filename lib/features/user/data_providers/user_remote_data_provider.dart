@@ -4,7 +4,6 @@ import 'package:rental/core/exceptions/auth_exception.dart';
 import 'package:rental/core/models/user.dart';
 
 class UserRemoteDataProvider {
-
   final String baseUrl = "http://10.6.193.148:5000/api";
 
   /// Given a [User] it will create or register
@@ -123,5 +122,10 @@ class UserRemoteDataProvider {
 
   Future<void> uploadProfileImage() async {
     // TODO: upload profile image
+  }
+
+  Future<User> updateUser(User user) async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    return user.copyWith(email: "updated_email@gmil.com");
   }
 }

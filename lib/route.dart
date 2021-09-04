@@ -4,13 +4,14 @@ import 'package:rental/features/property/screens/property_detail/property_detail
 import 'package:rental/features/onBoard/screens/splash_screen.dart';
 import 'package:rental/features/property/screens/property_feed/feed.dart';
 import 'package:rental/features/property/screens/review_property/add_review_popup.dart';
+import 'package:rental/features/user/screens/update_profile/update_profile_screen.dart';
 
 class RouteGenerator {
   static Route? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case "/":
         return MaterialPageRoute(builder: (context) {
-          return AddReviewPopup();
+          return UpdateProfile(); //AddReviewPopup();
         });
       case SplashScreen.pageRoute:
         return MaterialPageRoute(
