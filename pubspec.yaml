@@ -43,6 +43,8 @@ dependencies:
   floor: ^1.1.0
   equatable: ^2.0.3
   formz: ^0.4.0
+  mockito: ^5.0.15
+
 
 dev_dependencies:
   flutter_test:
