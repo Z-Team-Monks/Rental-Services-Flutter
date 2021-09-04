@@ -21,4 +21,8 @@ class UserRepository {
     var updatedUser = await _userRemoteDataProvider.updateUser(user);
     return updatedUser;
   }
+
+  Future<User> getCurrentUser(String token) {
+    return _userRemoteDataProvider.currentUser(token: "");
+  }
 }

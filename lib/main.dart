@@ -23,13 +23,12 @@ class MyApp extends StatelessWidget {
       //https://pub.dev/documentation/flutter_bloc/latest/flutter_bloc/MultiBlocProvider-class.html
       providers: [
         BlocProvider<ProfileBloc>(
-          create: (BuildContext context) => ProfileBloc(
-            userRepository: UserRepository(
-              UserRemoteDataProvider(),
-              UserLocalDataProvider(),
-            ),
-          ),
-        ),
+            create: (BuildContext context) => ProfileBloc(
+                  userRepository: UserRepository(
+                    UserRemoteDataProvider(),
+                    UserLocalDataProvider(),
+                  ),
+                )..add(ProfileLoad())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

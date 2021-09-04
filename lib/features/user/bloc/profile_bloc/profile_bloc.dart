@@ -23,11 +23,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Stream<ProfileState> mapEventToState(
     ProfileEvent event,
   ) async* {
+    if (event is ProfileLoad) {
+      yield ProfileLoading();
+      print("user loading");
+      final user = await userRepository.getCurrentUser("");
+      print("user foround");
+      yield ProfileLoaded(user: user);
+    }
+
     if (event is ProfileUpdate) {
       yield ProfileUpdateLoading();
       try {
         final user = await userRepository.updateUser(user: event.user);
         print("updated user ${user.email}");
+        yield ProfileLoaded(user: user);
         yield ProfileUpdateSuccesful(user: user);
       } catch (e) {
         yield ProfileUpdateFailure();

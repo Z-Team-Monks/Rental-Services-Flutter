@@ -76,7 +76,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       }
                     },
                     builder: (_, state) {
-                      if (state is ProfileUpdateSuccesful) {
+                      if (state is ProfileLoaded) {
                         user = state.user;
                         nameTextController.text = user.name;
                         emailTextController.text = user.email;
