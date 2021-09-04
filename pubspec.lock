@@ -197,6 +197,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  equatable:
+    dependency: "direct main"
+    description:
+      name: equatable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -225,6 +232,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  floor:
+    dependency: "direct main"
+    description:
+      name: floor
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
+  floor_annotation:
+    dependency: transitive
+    description:
+      name: floor_annotation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
+  floor_generator:
+    dependency: "direct dev"
+    description:
+      name: floor_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -249,6 +277,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  formz:
+    dependency: "direct main"
+    description:
+      name: formz
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   freezed:
     dependency: "direct dev"
     description:
@@ -319,20 +354,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
-  injectable:
-    dependency: "direct main"
-    description:
-      name: injectable
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.4.1"
-  injectable_generator:
-    dependency: "direct dev"
-    description:
-      name: injectable_generator
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.4.1"
   introduction_screen:
     dependency: "direct main"
     description:
@@ -562,6 +583,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  sqflite_common_ffi:
+    dependency: transitive
+    description:
+      name: sqflite_common_ffi
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0+3"
+  sqlite3:
+    dependency: transitive
+    description:
+      name: sqlite3
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.2"
   stack_trace:
     dependency: transitive
     description:
