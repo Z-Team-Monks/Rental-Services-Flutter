@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -13,6 +14,7 @@ class PropertyAddBloc extends Bloc<PropertyAddEvent, PropertyAddState> {
       : super(PropertyAddWidgetState(
             propertyState: new AddPropertyFormState(
                 dropdownValue: 'PER MONTH',
+                category: 'House',
                 images: [],
                 isLoading: false,
                 submitSuccess: false,
@@ -22,18 +24,36 @@ class PropertyAddBloc extends Bloc<PropertyAddEvent, PropertyAddState> {
   Stream<PropertyAddState> mapEventToState(
     PropertyAddEvent event,
   ) async* {
-    if (event is PropertyAddChangeDropDown) {
+    if (event is PropertyAddChangePerDropDown) {
       yield PropertyAddWidgetState(
           propertyState: state.propertyState.copyWith(
-              dropdownValue: event.dropdownValue,
+              category: event.properyEventValue.category,
+              dropdownValue: event.properyEventValue.dropdownValue,
               isLoading: false,
               submitFailure: false,
               submitSuccess: false));
     }
+
+    // if (event is PropertyAddChangeCategoryDropDown) {
+    //   // print(event.properyEventValue.category);
+    //   // yield PropertyAddWidgetState(
+    //   //     propertyState: state.propertyState.copyWith(
+    //   //         isLoading: false, submitSuccess: true, submitFailure: false));
+
+    //   print(event.properyEventValue.category);
+    //   yield PropertyAddWidgetState(
+    //       propertyState: state.propertyState.copyWith(
+    //           category: state.propertyState.category,
+    //           dropdownValue: event.properyEventValue.dropdownValue,
+    //           isLoading: false,
+    //           submitFailure: false,
+    //           submitSuccess: false));
+    // }
+
     if (event is PropertyAddImages) {
       yield PropertyAddWidgetState(
           propertyState: state.propertyState.copyWith(
-              images: event.images,
+              images: event.properyEventValue.images,
               isLoading: false,
               submitFailure: false,
               submitSuccess: false));
@@ -44,6 +64,7 @@ class PropertyAddBloc extends Bloc<PropertyAddEvent, PropertyAddState> {
           propertyState: state.propertyState.copyWith(
               isLoading: true, submitSuccess: false, submitFailure: false));
 
+      print(event.property.category);
       await Future.delayed(Duration(seconds: 1));
       //do repository call here
       yield PropertyAddWidgetState(

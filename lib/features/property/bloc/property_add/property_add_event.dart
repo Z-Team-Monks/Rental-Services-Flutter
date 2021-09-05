@@ -1,37 +1,49 @@
 part of 'property_add_bloc.dart';
 
-// class AddPropertyFormEventValue {
-//   final String dropdownValue;
-//   final List<XFile> images;
-//   final String
-// }
-
-abstract class PropertyAddEvent extends Equatable {
+class AddPropertyFormEventValue {
   final String dropdownValue;
   final List<XFile> images;
-  // final String dropdownValue;
-  PropertyAddEvent({required this.dropdownValue, required this.images});
-  @override
-  List<Object> get props => [];
+  final String category;
+
+  AddPropertyFormEventValue(
+      {required this.dropdownValue,
+      required this.images,
+      required this.category});
+
+  List<Object> get props => [dropdownValue, images, category];
 }
 
-class PropertyAddChangeDropDown extends PropertyAddEvent {
-  PropertyAddChangeDropDown(
-      {required String dropdownValue, required List<XFile> images})
-      : super(dropdownValue: dropdownValue, images: images);
+abstract class PropertyAddEvent extends Equatable {
+  final AddPropertyFormEventValue properyEventValue;
+  PropertyAddEvent({required this.properyEventValue});
+
+  @override
+  List<Object> get props => [properyEventValue];
+}
+
+class PropertyAddChangePerDropDown extends PropertyAddEvent {
+  PropertyAddChangePerDropDown(
+      {required AddPropertyFormEventValue properyEventValue})
+      : super(properyEventValue: properyEventValue);
+}
+
+class PropertyAddChangeCategoryDropDown extends PropertyAddEvent {
+  PropertyAddChangeCategoryDropDown(
+      {required AddPropertyFormEventValue properyEventValue})
+      : super(properyEventValue: properyEventValue);
 }
 
 class PropertyAddImages extends PropertyAddEvent {
-  PropertyAddImages(
-      {required String dropdownValue, required List<XFile> images})
-      : super(dropdownValue: dropdownValue, images: images);
+  PropertyAddImages({required AddPropertyFormEventValue properyEventValue})
+      : super(properyEventValue: properyEventValue);
 }
 
 class PropertyAddRemote extends PropertyAddEvent {
   final Property property;
+  List<XFile> images;
   PropertyAddRemote(
       {required this.property,
-      required String dropdownValue,
-      required List<XFile> images})
-      : super(dropdownValue: dropdownValue, images: images);
+      required this.images,
+      required AddPropertyFormEventValue properyEventValue})
+      : super(properyEventValue: properyEventValue);
 }

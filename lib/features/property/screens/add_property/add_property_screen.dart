@@ -62,6 +62,8 @@ class AddProperty extends StatelessWidget with InputValidationMixin {
                 }
               },
               builder: (context, state) {
+                print("Rebuilding");
+                print(state.propertyState.category);
                 return Form(
                   key: _formKey,
                   child: Column(
@@ -127,20 +129,28 @@ class AddProperty extends StatelessWidget with InputValidationMixin {
                                 vertical: height * 0.008,
                               ),
                               child: DropdownButton<String>(
-                                value: "House", //"state.dropdownValue",
+                                value: state.propertyState
+                                    .category, //"state.dropdownValue",
                                 icon: const Icon(Icons.arrow_drop_down),
                                 iconSize: 24,
                                 elevation: 16,
                                 style: const TextStyle(color: Colors.black54),
                                 onChanged: (String? newValue) {
-                                  // propertyAddBloc.add(PropertyAddChangeDropDown(
-                                  //     dropdownValue: newValue!,
-                                  //     images: state.propertyState.images));
+                                  print(newValue);
+                                  propertyAddBloc
+                                      .add(PropertyAddChangePerDropDown(
+                                    properyEventValue:
+                                        new AddPropertyFormEventValue(
+                                            dropdownValue: state
+                                                .propertyState.dropdownValue,
+                                            images: state.propertyState.images,
+                                            category: newValue!),
+                                  ));
                                 },
                                 items: <String>[
                                   'House',
                                   'Car',
-                                  'Other',
+                                  'Other'
                                 ].map<DropdownMenuItem<String>>((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
@@ -254,11 +264,16 @@ class AddProperty extends StatelessWidget with InputValidationMixin {
                                   elevation: 16,
                                   style: const TextStyle(color: Colors.black54),
                                   onChanged: (String? newValue) {
-                                    propertyAddBloc.add(
-                                        PropertyAddChangeDropDown(
-                                            dropdownValue: newValue!,
-                                            images:
-                                                state.propertyState.images));
+                                    propertyAddBloc
+                                        .add(PropertyAddChangePerDropDown(
+                                      properyEventValue:
+                                          new AddPropertyFormEventValue(
+                                              dropdownValue: newValue!,
+                                              images:
+                                                  state.propertyState.images,
+                                              category:
+                                                  state.propertyState.category),
+                                    ));
                                   },
                                   items: <String>[
                                     'PER MONTH',
@@ -296,9 +311,14 @@ class AddProperty extends StatelessWidget with InputValidationMixin {
                                   images = await _picker.pickMultiImage();
                                   if (images != null) {
                                     propertyAddBloc.add(PropertyAddImages(
-                                        dropdownValue:
-                                            state.propertyState.dropdownValue,
-                                        images: images!));
+                                      properyEventValue:
+                                          new AddPropertyFormEventValue(
+                                              dropdownValue: state
+                                                  .propertyState.dropdownValue,
+                                              images: images!,
+                                              category:
+                                                  state.propertyState.category),
+                                    ));
                                   }
                                 },
                                 child: Card(
@@ -374,10 +394,18 @@ class AddProperty extends StatelessWidget with InputValidationMixin {
                                               state.propertyState.dropdownValue,
                                           images: []);
                                       propertyAddBloc.add(PropertyAddRemote(
-                                          property: property,
-                                          dropdownValue:
-                                              state.propertyState.dropdownValue,
-                                          images: state.propertyState.images));
+                                        images: state.propertyState.images,
+                                        properyEventValue:
+                                            new AddPropertyFormEventValue(
+                                                dropdownValue: state
+                                                    .propertyState
+                                                    .dropdownValue,
+                                                images:
+                                                    state.propertyState.images,
+                                                category: state
+                                                    .propertyState.category),
+                                        property: property,
+                                      ));
                                     }
                                   },
                                   child: const Text(
