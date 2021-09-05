@@ -5,7 +5,6 @@ import 'package:rental/features/property/data_provider/add_review/review_remote_
 import 'package:rental/features/property/repository/add_review/add_review_repository.dart';
 import 'package:rental/locator.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'add_review_event.dart';
 import 'add_review_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

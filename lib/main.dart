@@ -17,6 +17,8 @@ import 'package:rental/locator.dart';
 import 'package:rental/features/user/data_providers/user_local_data_provider.dart';
 import 'package:rental/features/user/data_providers/user_remote_data_provider.dart';
 import 'package:rental/features/user/repository/user_repository.dart';
+import 'package:rental/features/property/screens/property_feed/feed.dart';
+import 'package:rental/locator.dart';
 import 'package:rental/route.dart';
 import 'package:rental/features/property/screens/property_detail/property_detail_screen.dart';
 import 'package:rental/features/onBoard/screens/splash_screen.dart';

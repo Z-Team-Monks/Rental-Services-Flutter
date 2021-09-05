@@ -1,16 +1,23 @@
 import 'package:floor/floor.dart';
-import 'package:rental/core/data_provider/floor/dao/user_dao.dart';
-import 'package:rental/core/data_provider/floor/entiites/user.dart';
+import 'package:rental/core/data_provider/floor/dao/daos.dart';
+import 'package:rental/core/data_provider/floor/entiites/entities.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 import 'dart:async';
 
 part 'appdatabase.g.dart';
 
-@Database(version: 1, entities: [
-  Person
-  // Register your entities in here,
-])
+@Database(
+  version: 5,
+  entities: [
+    UserEntity,
+    ImageEntity,
+    PropertyEntity
+    // Register your entities in here,
+  ],
+)
 abstract class AppDatabase extends FloorDatabase {
   // register your daos in here;
-  PersonDao get personDao;
+  UserEntityDao get userDao;
+  ImageEntityDao get imageEntityDao;
+  PropertyEntityDao get propertyEntityDao;
 }
