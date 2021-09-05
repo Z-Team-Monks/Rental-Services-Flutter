@@ -40,10 +40,11 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   solid_bottom_sheet: ^0.1.10
   sqflite: ^2.0.0+4
-  floor: ^1.1.0
+  floor: ^1.1.0 
   equatable: ^2.0.3
   formz: ^0.4.0
   mockito: ^5.0.15
+  shimmer: ^2.0.0
 
 
 dev_dependencies:

@@ -81,7 +81,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Person` (`id` INTEGER NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `Person` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -98,8 +98,12 @@ class _$AppDatabase extends AppDatabase {
 class _$PersonDao extends PersonDao {
   _$PersonDao(this.database, this.changeListener)
       : _queryAdapter = QueryAdapter(database, changeListener),
-        _personInsertionAdapter = InsertionAdapter(database, 'Person',
-            (Person item) => <String, Object?>{'id': item.id}, changeListener);
+        _personInsertionAdapter = InsertionAdapter(
+            database,
+            'Person',
+            (Person item) =>
+                <String, Object?>{'id': item.id, 'name': item.name},
+            changeListener);
 
   final sqflite.DatabaseExecutor database;
 
@@ -112,13 +116,15 @@ class _$PersonDao extends PersonDao {
   @override
   Future<List<Person>> findAllPersons() async {
     return _queryAdapter.queryList('SELECT * FROM Person',
-        mapper: (Map<String, Object?> row) => Person(row['id'] as int));
+        mapper: (Map<String, Object?> row) =>
+            Person(row['id'] as int, row['name'] as String));
   }
 
   @override
   Stream<Person?> findPersonById(int id) {
     return _queryAdapter.queryStream('SELECT * FROM Person WHERE id = ?1',
-        mapper: (Map<String, Object?> row) => Person(row['id'] as int),
+        mapper: (Map<String, Object?> row) =>
+            Person(row['id'] as int, row['name'] as String),
         arguments: [id],
         queryableName: 'Person',
         isView: false);

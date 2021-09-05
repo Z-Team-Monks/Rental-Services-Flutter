@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:rental/core/presentation/customTheme/appTheme.dart';
-import 'package:rental/features/property/screens/add_review/add_review_popup.dart';
-import 'package:rental/features/property/screens/add_property/add_property_screen.dart';
+import 'package:rental/features/property/screens/property_feed/feed.dart';
+import 'package:rental/locator.dart';
 import 'package:rental/route.dart';
-import 'package:rental/features/property/screens/property_detail/property_detail_screen.dart';
-import 'package:rental/features/onBoard/screens/splash_screen.dart';
 
 void main() {
+  setUp();
   runApp(MyApp());
 }
 
@@ -16,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: SplashScreen.pageRoute,
+      initialRoute: HomeFeed.pageRoute,
       onGenerateRoute: RouteGenerator.generateRoute,
       title: 'House Rent',
       theme: CustomTheme.lightTheme,

@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
 import 'package:rental/core/data_provider/db.dart';
 import 'package:rental/core/data_provider/floor/appdatabase.dart';
 import 'package:rental/features/property/data_provider/property_local_data_provider.dart';
@@ -14,7 +13,6 @@ void setUp() async {
         PropertyLocalDataProvider(),
         PropertyRemoteDataProvider(),
       ));
-
   getIt.registerLazySingleton<Future<AppDatabase>>(
       () async => await $FloorAppDatabase.databaseBuilder("app.db").build());
 }
