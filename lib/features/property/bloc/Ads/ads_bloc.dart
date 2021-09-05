@@ -14,19 +14,29 @@ class AdsBloc extends Bloc<AdsEvent, AdsState> {
     if (event is RequestAd) {
       yield AdOperationLoading();
       try {
-        await this.adsRepository.store(event.ad);
+        await Future.delayed(Duration(seconds: 5));
+        // await this.adsRepository.store(event.ad);
         yield AdOperationSuccess();
       } catch (e) {
         yield AdOperationFailure();
       }
     } else if (event is LoadAds) {
+      print("--------------Load Ads----------------");
       yield AdOperationLoading();
       try {
-        var data = await this.adsRepository.loadAds();
-        yield AdFetchOperationSuccess(data);
+        await Future.delayed(Duration(seconds: 5));
+
+        // var data = await this.adsRepository.loadAds();
+        print("--------------Load Ads Success----------------");
+
+        yield AdFetchOperationSuccess(
+          [],
+        );
       } catch (e) {
         yield AdOperationFailure();
       }
+      
+      print("--------------Load Ads End----------------");
     } else {}
   }
 }
