@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -62,7 +63,7 @@ class RecomedationCard extends StatelessWidget {
                           topRight: Radius.circular(20)),
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: AssetImage(imgUrl),
+                        image: CachedNetworkImageProvider(imgUrl),
                       ),
                     ),
                   ),
