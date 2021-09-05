@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final GetIt getIt = GetIt.instance;
 
-void setUp() async {
+Future<void> setUp() async {
   getIt.registerLazySingleton<AppDB>(() => AppDB(1));
   getIt.registerLazySingleton<PropertyRepository>(() => PropertyRepository(
         PropertyLocalDataProvider(),
