@@ -16,6 +16,68 @@ class PropertyRepository {
       this._propertyLocalDataProvider;
 
   PropertyRemoteDataProvider get propertyRemoteDataProvider =>
-      this._propertyRemoteDataProvider;  
+      this._propertyRemoteDataProvider;
+
+
+
+
+  Future<List<Property>?> getPropertiesFromLocalOrRemote() =>
+      performRemoteOrLocalFetchOperation<List<Property>>(apiCall: () async {
+        return await propertyRemoteDataProvider.getProperties();
+      }, dbCall: () async {
+        return await propertyLocalDataProvide.getProperties();
+      });
+
+  Future<List<Property>?> getPropertiesFromRemote() =>
+      propertyRemoteDataProvider.getProperties();
+
+  Future<List<Property>?> getPropertiesFromLocal() =>
+      propertyLocalDataProvide.getProperties();
+
+  Future<Property?> getPropertyFromLocalOrRemote(String id) =>
+      performRemoteOrLocalFetchOperation<Property>(
+        apiCall: () async {
+          return await propertyRemoteDataProvider.getProperty(id);
+        },
+        dbCall: () async {
+          return await propertyLocalDataProvide.getProperty(
+            propertyId: id,
+          );
+        },
+      );
+
+  Future<Property> getPropertyFromRemote(String id) =>
+      propertyRemoteDataProvider.getProperty(id);
+
+  Future<Property?> getPropertyFromLocal(String id) =>
+      propertyLocalDataProvide.getProperty(
+        propertyId: id,
+      );
+
+  Future<Property?> createAndStoreProperty(Property property) {
+    return performRemoteAndLocalSaveOperation<Property>(
+      apiCall: () async {
+        return await propertyRemoteDataProvider.createProperty(
+          property: property,
+          token: "the_token_from_logedin_user!",
+        );
+      },
+      dbCall: (Property? data) async {
+        await propertyLocalDataProvide.storeProperty(property: data!);
+      },
+    );
+  }
+
+  Future<Property> createRemoteProperty(Property property) =>
+      propertyRemoteDataProvider.createProperty(
+        property: property,
+        token: "the_token_of_the_logedin_user!",
+      );
+
+  Future<Property> createLocalProperty(Property property) =>
+      propertyLocalDataProvide.storeProperty(
+        property: property,
+      );
+
 
 }
