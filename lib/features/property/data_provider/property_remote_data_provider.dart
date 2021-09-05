@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:rental/core/models/property.dart';
 
 class PropertyRemoteDataProvider {
-
   final String baseUrl = "http://10.6.193.148:5000/api";
 
   /// It will return list of [Property] Objects fetched from remote server / API
@@ -97,5 +96,19 @@ class PropertyRemoteDataProvider {
       throw Exception("Unable to update Property");
     }
   }
-  
+
+  Future<Property> getProperty(String id) async {
+    final http.Response response = await http.get(
+      Uri.parse("$baseUrl/property/$id"),
+      headers: <String, String>{"Content-Type": "application/json"},
+    );
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      return Property.fromJson(data);
+    } else {
+      throw Exception("Unable to fetch proerty With ID --- $id");
+    }
+  }
 }

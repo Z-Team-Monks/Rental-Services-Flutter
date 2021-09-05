@@ -45,6 +45,7 @@ dependencies:
   formz: ^0.4.0
   mockito: ^5.0.15
   shimmer: ^2.0.0
+  connectivity: ^3.0.6
 
 
 dev_dependencies:
