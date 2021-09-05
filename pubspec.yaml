@@ -46,7 +46,7 @@ dependencies:
   floor: ^1.1.0
   equatable: ^2.0.3
   formz: ^0.4.0
-  shared_preferences: ^2.0.7
+  shared_preferences: ^2.0.7 
   shimmer: ^2.0.0
   telephony: ^0.1.4
   connectivity: ^3.0.6

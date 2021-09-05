@@ -34,7 +34,7 @@ class HomeFeed extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: SafeArea(
-          child: CollapsingList(),
+          child: Feed(),
         ),
       ),
     );
@@ -42,290 +42,148 @@ class HomeFeed extends StatelessWidget {
   }
 }
 
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate({
-    required this.minHeight,
-    required this.maxHeight,
-    required this.child,
-  });
-  final double minHeight;
-  final double maxHeight;
-  final Widget child;
+class Feed extends StatelessWidget {
   @override
-  double get minExtent => minHeight;
-  @override
-  double get maxExtent => math.max(maxHeight, minHeight);
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new SizedBox.expand(child: child);
-  }
-
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return maxHeight != oldDelegate.maxHeight ||
-        minHeight != oldDelegate.minHeight ||
-        child != oldDelegate.child;
-  }
-}
-
-class CollapsingList extends StatefulWidget {
-  @override
-  _CollapsingListState createState() => _CollapsingListState();
-}
-
-class _CollapsingListState extends State<CollapsingList> {
-  var _controller = ScrollController();
-
-  ScrollPhysics _physics = BouncingScrollPhysics();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  SliverPersistentHeader makeHeader(String headerText) {
-    return SliverPersistentHeader(
-      pinned: true,
-      delegate: _SliverAppBarDelegate(
-        minHeight: 70.0,
-        maxHeight: 70.0,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.black54,
-                  blurRadius: 1.0,
-                  offset: Offset(0.0, 0.5))
-            ],
-          ),
-          padding: EdgeInsets.only(left: 15),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      alignLabelWithHint: true,
-                      contentPadding: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 5.0),
-                      hintText: "Search here"),
-                ),
-                flex: 6,
-              ),
-              Expanded(
-                child: Material(
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.tune_outlined,
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        body: DefaultTabController(
+          length: 4,
+          child: NestedScrollView(
+            physics: NeverScrollableScrollPhysics(),
+            headerSliverBuilder: (context, isScolled) {
+              return [
+                SliverAppBar(
+                  automaticallyImplyLeading: false,
+                  backgroundColor: Colors.white,
+                  pinned: false,
+                  floating: false,
+                  title: Text(
+                    "Rent  ",
+                    style: TextStyle(
                       color: Colors.black,
+                      fontFamily: "Poppins",
                     ),
                   ),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: CircleAvatar(
+                        radius: 23.0,
+                        backgroundImage: AssetImage(
+                          "assets/images/content/car-1.jpg",
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              ),
-            ],
+                SliverAppBar(
+                  backgroundColor: Colors.white,
+                  collapsedHeight: 250,
+                  expandedHeight: 250,
+                  flexibleSpace: ProfileView(),
+                ),
+                SliverPersistentHeader(
+                  delegate: MyDelegate(TabBar(
+                    tabs: [
+                      Tab(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "All",
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Tab(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Cars",
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Tab(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "House",
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Tab(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Others",
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                    indicatorColor: Colors.blue,
+                    unselectedLabelColor: Colors.grey,
+                    labelColor: Colors.black,
+                  )),
+                  floating: true,
+                  pinned: true,
+                )
+              ];
+            },
+            body: TabBarView(
+              children: [
+                Container(
+                  child: RefreshIndicator(
+                    child: fetchFeed(context),
+                    onRefresh: () async {
+                      BlocProvider.of<PropertyBloc>(context)
+                          .add(PropertiesLoad());
+                    },
+                  ),
+                ),
+                Container(
+                  child: RefreshIndicator(
+                    child: fetchFeed(context),
+                    onRefresh: () async {
+                      BlocProvider.of<PropertyBloc>(context)
+                          .add(PropertiesLoad());
+                    },
+                  ),
+                ),
+                Container(
+                  child: RefreshIndicator(
+                    child: fetchFeed(context),
+                    onRefresh: () async {
+                      BlocProvider.of<PropertyBloc>(context)
+                          .add(PropertiesLoad());
+                    },
+                  ),
+                ),
+                Container(
+                  child: RefreshIndicator(
+                    child: fetchFeed(context),
+                    onRefresh: () async {
+                      BlocProvider.of<PropertyBloc>(context)
+                          .add(PropertiesLoad());
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // const controller = DefaultTabController(length: 2, child: Text("natnael"));
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverAppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.white,
-          pinned: false,
-          floating: false,
-          title: Text(
-            "Rent  ",
-            style: TextStyle(
-              color: Colors.black,
-              fontFamily: "Poppins",
-            ),
-          ),
-          actions: [
-            CircleAvatar(
-              radius: 23.0,
-              backgroundImage: AssetImage(
-                "assets/images/content/car-1.jpg",
-              ),
-            )
-          ],
-          expandedHeight: 10.0,
-        ),
-        makeHeader(''),
-        SliverToBoxAdapter(
-          child: Container(
-            height: 220,
-            child: fetchAds(context),
-          ),
-        ),
-        SliverFillRemaining(
-          child: DefaultTabController(
-            length: 4,
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              appBar: AppBar(
-                backgroundColor: Colors.white,
-                toolbarHeight: 50,
-                elevation: 0,
-                bottom: TabBar(
-                  labelColor: Colors.black,
-                  unselectedLabelColor: Colors.black26,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  indicatorPadding: EdgeInsets.only(left: 10, right: 10),
-                  indicatorColor: Colors.black,
-                  tabs: [
-                    Tab(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "All",
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Tab(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Cars",
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Tab(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "House",
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Tab(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Others",
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              body: TabBarView(
-                children: [
-                  RefreshIndicator(
-                    child: fetchFeed(context),
-                    onRefresh: () async {
-                      BlocProvider.of<PropertyBloc>(context).add(
-                        PropertiesLoad(),
-                      );
-                    },
-                  ),
-                  RefreshIndicator(
-                    child: fetchFeed(context),
-                    onRefresh: () async {
-                      BlocProvider.of<PropertyBloc>(context).add(
-                        PropertiesLoad(),
-                      );
-                    },
-                  ),
-                  RefreshIndicator(
-                    child: fetchFeed(context),
-                    onRefresh: () async {
-                      BlocProvider.of<PropertyBloc>(context).add(
-                        PropertiesLoad(),
-                      );
-                    },
-                  ),
-                  RefreshIndicator(
-                    child: fetchFeed(context),
-                    onRefresh: () async {
-                      BlocProvider.of<PropertyBloc>(context).add(
-                        PropertiesLoad(),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget fetchAds(BuildContext context) {
-    return BlocBuilder<AdsBloc, AdsState>(builder: (context, state) {
-      if (state is AdOperationLoading) {
-        return ListView.builder(
-          controller: _controller,
-          scrollDirection: Axis.horizontal,
-          itemCount: 2,
-          itemBuilder: (ctx, index) {
-            return Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 10,
-              ),
-              child: RecommendationCardShimmer(),
-            );
-          },
-        );
-      } else if (state is AdFetchOperationSuccess) {
-        return ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: 3,
-          itemBuilder: (ctx, index) {
-            return Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 10,
-              ),
-              child: RecomedationCard(
-                date: "",
-                imgUrl: "assets/images/content/car-1.jpg",
-                name: "",
-                price: "0",
-                callback: () {},
-              ),
-              // child: RecomedationCard(
-              //   date: (state.properties.elementAt(index)).createdAt!,
-              //   imgUrl: "assets/images/content/car-1.jpg",
-              //   name: (state.properties.elementAt(index)).title,
-              //   price: (state.properties.elementAt(index)).per,
-              //   callback: () {},
-              // ),
-            );
-          },
-        );
-      } else if (state is PropertyOperationFailure) {
-        return Center(
-          child: Text("Network Failure"),
-        );
-      } else {
-        return Container(
-          height: 100,
-          width: 100,
-        );
-      }
-    });
   }
 
   Widget fetchFeed(BuildContext context) {
@@ -396,5 +254,147 @@ class _CollapsingListState extends State<CollapsingList> {
         }
       },
     );
+  }
+}
+
+class MyDelegate extends SliverPersistentHeaderDelegate {
+  MyDelegate(this.tabBar);
+  final TabBar tabBar;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 5),
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+            padding: EdgeInsets.only(left: 15),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        alignLabelWithHint: true,
+                        contentPadding:
+                            EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 5.0),
+                        hintText: "Search here"),
+                  ),
+                  flex: 6,
+                ),
+                Expanded(
+                  child: Material(
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.tune_outlined,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          tabBar,
+        ],
+      ),
+    );
+  }
+
+  @override
+  double get maxExtent => tabBar.preferredSize.height + 60;
+
+  @override
+  double get minExtent => tabBar.preferredSize.height + 60;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
+  }
+}
+
+class ProfileView extends StatelessWidget {
+  // final Function f;
+  // ProfileView( );
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          height: 240,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              // horizontal: 10,
+              // vertical: 5,
+            ),
+            child: fetchAds(context),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget fetchAds(BuildContext context) {
+    return BlocBuilder<AdsBloc, AdsState>(builder: (context, state) {
+      if (state is AdOperationLoading) {
+        return ListView.builder(
+          // controller: _controller,
+          scrollDirection: Axis.horizontal,
+          itemCount: 2,
+          itemBuilder: (ctx, index) {
+            return Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 10,
+              ),
+              child: RecommendationCardShimmer(),
+            );
+          },
+        );
+      } else if (state is AdFetchOperationSuccess) {
+        return ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 3,
+          itemBuilder: (ctx, index) {
+            return Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 10,
+              ),
+              child: RecomedationCard(
+                date: "",
+                imgUrl: "assets/images/content/car-1.jpg",
+                name: "",
+                price: "0",
+                callback: () {},
+              ),
+              // child: RecomedationCard(
+              //   date: (state.properties.elementAt(index)).createdAt!,
+              //   imgUrl: "assets/images/content/car-1.jpg",
+              //   name: (state.properties.elementAt(index)).title,
+              //   price: (state.properties.elementAt(index)).per,
+              //   callback: () {},
+              // ),
+            );
+          },
+        );
+      } else if (state is PropertyOperationFailure) {
+        return Center(
+          child: Text("Network Failure"),
+        );
+      } else {
+        return Container(
+          height: 100,
+          width: 100,
+        );
+      }
+    });
   }
 }
