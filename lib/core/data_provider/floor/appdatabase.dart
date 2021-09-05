@@ -6,17 +6,18 @@ import 'dart:async';
 
 part 'appdatabase.g.dart';
 
-@Database(version: 4, entities: [
-  UserEntity,
-  ImageEntity,
-  PropertyEntity
-  // Register your entities in here,
-])
+@Database(
+  version: 5,
+  entities: [
+    UserEntity,
+    ImageEntity,
+    PropertyEntity
+    // Register your entities in here,
+  ],
+)
 abstract class AppDatabase extends FloorDatabase {
-
   // register your daos in here;
   UserEntityDao get userDao;
   ImageEntityDao get imageEntityDao;
   PropertyEntityDao get propertyEntityDao;
-
 }

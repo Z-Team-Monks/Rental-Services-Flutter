@@ -9,7 +9,7 @@ abstract class UserEntityDao {
   Future<List<UserEntity>> findAllUsers();
 
   @Query('SELECT * FROM users WHERE id = :id')
-  Stream<List<UserEntity>> findUser(
+  Stream<UserEntity?> findUser(
     String id,
   );
 
@@ -23,7 +23,7 @@ abstract class PropertyEntityDao {
   Future<List<PropertyEntity>> fetchAllProperties();
 
   @Query('SELECT * FROM properties WHERE id = :id')
-  Future<List<PropertyEntity>> findProperty(
+  Future<PropertyEntity?> findProperty(
     String id,
   );
 

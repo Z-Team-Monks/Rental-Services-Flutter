@@ -69,7 +69,7 @@ class _$AppDatabase extends AppDatabase {
   Future<sqflite.Database> open(String path, List<Migration> migrations,
       [Callback? callback]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
-      version: 4,
+      version: 5,
       onConfigure: (database) async {
         await database.execute('PRAGMA foreign_keys = ON');
         await callback?.onConfigure?.call(database);
@@ -150,8 +150,8 @@ class _$UserEntityDao extends UserEntityDao {
   }
 
   @override
-  Stream<List<UserEntity>> findUser(String id) {
-    return _queryAdapter.queryListStream('SELECT * FROM users WHERE id = ?1',
+  Stream<UserEntity?> findUser(String id) {
+    return _queryAdapter.queryStream('SELECT * FROM users WHERE id = ?1',
         mapper: (Map<String, Object?> row) => UserEntity(
             id: row['id'] as String,
             email: row['email'] as String,
@@ -261,8 +261,8 @@ class _$PropertyEntityDao extends PropertyEntityDao {
   }
 
   @override
-  Future<List<PropertyEntity>> findProperty(String id) async {
-    return _queryAdapter.queryList('SELECT * FROM properties WHERE id = ?1',
+  Future<PropertyEntity?> findProperty(String id) async {
+    return _queryAdapter.query('SELECT * FROM properties WHERE id = ?1',
         mapper: (Map<String, Object?> row) => PropertyEntity(
             id: row['id'] as String,
             ownerid: row['ownerid'] as String,
