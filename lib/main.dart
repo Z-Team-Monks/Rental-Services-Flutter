@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental/core/presentation/customTheme/appTheme.dart';
 import 'package:rental/features/property/bloc/add_review/add_review_bloc.dart';
+import 'package:rental/features/property/bloc/property_add/property_add_bloc.dart';
 import 'package:rental/features/property/data_provider/add_review/review_remote_data_provider.dart';
 import 'package:rental/features/property/repository/add_review/add_review_repository.dart';
 import 'package:rental/features/property/screens/add_review/add_review_popup.dart';
@@ -52,6 +53,9 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => AddReviewFormBloc(
                   reviewRepository: ReviewRemoteDataProvider(),
                 )),
+        BlocProvider<PropertyAddBloc>(
+          create: (BuildContext context) => PropertyAddBloc(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
