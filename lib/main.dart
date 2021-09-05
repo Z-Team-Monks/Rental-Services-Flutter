@@ -7,6 +7,7 @@ import 'package:rental/features/property/data_provider/add_review/review_remote_
 import 'package:rental/features/property/repository/add_review/add_review_repository.dart';
 import 'package:rental/features/property/screens/add_review/add_review_popup.dart';
 import 'package:rental/features/property/screens/add_property/add_property_screen.dart';
+import 'package:rental/features/property/screens/property_feed/feed.dart';
 // import 'package:rental/features/property/screens/review_property/add_review_popup.dart';
 import 'package:rental/features/user/bloc/profile_bloc/profile_bloc.dart';
 import 'package:rental/features/user/data_providers/user_local_data_provider.dart';
@@ -19,10 +20,19 @@ import 'package:rental/features/user/repository/user_repository.dart';
 import 'package:rental/route.dart';
 import 'package:rental/features/property/screens/property_detail/property_detail_screen.dart';
 import 'package:rental/features/onBoard/screens/splash_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  setUp();
+bool? isViewed;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setUp();
+  await _retriveOnboardInfo();
   runApp(MyApp());
+}
+
+_retriveOnboardInfo() async {
+  SharedPreferences prefs = getIt<SharedPreferences>();
+  isViewed = prefs.getBool('isViewed');
 }
 
 class MyApp extends StatelessWidget {
@@ -41,9 +51,7 @@ class MyApp extends StatelessWidget {
                 )..add(ProfileLoad())),
         BlocProvider<AddReviewFormBloc>(
             create: (BuildContext context) => AddReviewFormBloc(
-                  reviewRepository: ReviewRepository(
-                    ReviewRemoteDataProvider(),
-                  ),
+                  reviewRepository: ReviewRemoteDataProvider(),
                 )),
         BlocProvider<PropertyAddBloc>(
           create: (BuildContext context) => PropertyAddBloc(),
@@ -51,7 +59,8 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        // initialRoute: AddReviewPopup.pageRoute,
+        initialRoute:
+            (isViewed ?? false) ? HomeFeed.pageRoute : SplashScreen.pageRoute,
         onGenerateRoute: RouteGenerator.generateRoute,
         title: 'House Rent',
         theme: CustomTheme.lightTheme,

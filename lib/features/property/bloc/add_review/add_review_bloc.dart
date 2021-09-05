@@ -12,15 +12,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
 class AddReviewFormBloc extends Bloc<AddReviewFormEvent, AddReviewFormState> {
-  final ReviewRepository reviewRepository;
+  final ReviewRemoteDataProvider reviewRepository;
   final userId;
   final propertyId;
   final token;
   AddReviewFormBloc({required this.reviewRepository})
-      : userId = 'getIt.get<SharedPreferences>().getString("userId") ?? ""',
-        propertyId =
-            'getIt.get<SharedPreferences>().getString("propertyId") ?? ""',
-        token = 'getIt.get<SharedPreferences>().getString("token") ?? ""',
+      // : userId = 'getIt.get<SharedPreferences>().getString("userId") ?? ""',
+      : userId = "userId",
+        propertyId = "propertyId",
+        // 'getIt.get<SharedPreferences>().getString("propertyId") ?? ""',
+        // token = 'getIt.get<SharedPreferences>().getString("token") ?? ""',
+        token = "token",
         super(const AddReviewFormState());
 
   @override
@@ -52,19 +54,25 @@ class AddReviewFormBloc extends Bloc<AddReviewFormEvent, AddReviewFormState> {
 
       if (state.status.isValidated) {
         yield state.copyWith(status: FormzStatus.submissionInProgress);
-        final review = Review(
-          userId: state.userId,
-          message: state.message.value,
-          rating: state.rating,
-        );
-        await reviewRepository.reviewRemoteDataProvider.createReview(
-          http.Client(),
-          review: review,
-          propertyId: propertyId,
-          token: token,
-        );
-        print(review);
-        yield state.copyWith(status: FormzStatus.submissionSuccess);
+        // final review = Review(
+        // userId: state.userId,
+        // message: state.message.value,
+        // rating: state.rating,
+        // );
+
+        final review = Review(userId: 'userId', message: "message");
+        try {
+          await reviewRepository.createReview(
+            http.Client(),
+            review: review,
+            propertyId: propertyId,
+            token: token,
+          );
+          yield state.copyWith(status: FormzStatus.submissionSuccess);
+        } catch (e) {
+          print(e.toString());
+          yield state.copyWith(status: FormzStatus.submissionFailure);
+        }
       }
     }
   }

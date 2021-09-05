@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:rental/features/property/screens/property_detail/property_detail_screen.dart';
+import 'package:rental/locator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   static const pageRoute = "/splash_screen";
@@ -13,7 +15,8 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
-  void _onIntroEnd(context) {
+  void _onIntroEnd(context) async {
+    await _storeOnboardInfo();
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => PropertyDetail()),
     );
@@ -21,6 +24,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Widget _buildImage(String assetName, [double width = 350]) {
     return Image.asset('assets/images/splash/$assetName', width: width);
+  }
+
+  _storeOnboardInfo() async {
+    SharedPreferences prefs = getIt<SharedPreferences>();
+    await prefs.setBool('isViewed', true);
   }
 
   @override
