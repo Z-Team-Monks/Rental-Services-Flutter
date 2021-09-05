@@ -46,7 +46,6 @@ dependencies:
   floor: ^1.1.0
   equatable: ^2.0.3
   formz: ^0.4.0
-  mockito: ^5.0.15
   shared_preferences: ^2.0.7
 
 dev_dependencies:
@@ -56,6 +55,8 @@ dev_dependencies:
   injectable_generator: ^1.4.1
   freezed: ^0.14.2
   floor_generator: ^1.1.0
+  mockito: ^5.0.15
+  bloc_test: ^8.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
