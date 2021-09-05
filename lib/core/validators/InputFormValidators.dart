@@ -7,12 +7,20 @@ mixin InputValidationMixin {
         .hasMatch(email);
   }
 
-  bool isNameValid(String name) {
+  bool isTextValid(String name) {
     return name.length > 0;
   }
 
   bool isPhoneNumberValid(String phoneNumber) {
     return phoneNumber.length == 0 ||
         RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)').hasMatch(phoneNumber);
+  }
+
+  bool isPriceValid(String? price) {
+    return price != null && _isNumeric(price);
+  }
+
+  bool _isNumeric(String str) {
+    return double.tryParse(str) != null;
   }
 }

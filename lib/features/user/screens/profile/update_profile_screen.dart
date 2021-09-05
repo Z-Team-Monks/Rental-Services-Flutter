@@ -129,7 +129,7 @@ class UpdateProfile extends StatelessWidget with InputValidationMixin {
                             // initialValue: user.name,
                             controller: nameTextController,
                             validator: (name) {
-                              if (this.isNameValid(name!)) {
+                              if (this.isTextValid(name!)) {
                                 return null;
                               }
                               return "Name can't be empty";
