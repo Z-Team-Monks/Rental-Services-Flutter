@@ -5,7 +5,7 @@ import 'package:rental/features/property/data_provider/add_review/review_remote_
 
 class ReviewRepository {
   // final PropertyLocalDataProvider _propertyLocalDataProvider;
-  final ReviewRemoteDataProvider _reviewRemoteDataProvider;
+  ReviewRemoteDataProvider _reviewRemoteDataProvider;
 
   ReviewRepository(
     // this._propertyLocalDataProvider,
@@ -17,4 +17,8 @@ class ReviewRepository {
 
   ReviewRemoteDataProvider get reviewRemoteDataProvider =>
       this._reviewRemoteDataProvider;
+
+  void set reviewRemoteDataProvider(ReviewRemoteDataProvider dp) {
+    _reviewRemoteDataProvider = dp;
+  }
 }

@@ -6,6 +6,7 @@ class User extends EntityModel {
   final List<String>? likedProperties;
   final String name;
   final String email;
+  final String? phoneNumber;
   final String? password;
   final bool? isAdmin;
   final int? v;
@@ -19,7 +20,28 @@ class User extends EntityModel {
     this.profileImage,
     this.likedProperties,
     this.v,
+    this.phoneNumber,
   });
+
+  User copyWith({
+    String? id,
+    String? profileImage,
+    List<String>? likedProperties,
+    String? name,
+    String? email,
+    String? phoneNumber,
+    String? password,
+    bool? isAdmin,
+    int? v,
+  }) {
+    return User(
+      name: name ?? this.name,
+      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      password: password ?? this.password,
+      profileImage: profileImage ?? this.profileImage,
+    );
+  }
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(

@@ -1,9 +1,17 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:rental/core/models/user.dart';
 
 class AuthRemoteDataProvider {
   final String baseUrl = "http://10.6.193.148:5000/api";
+  final User user = new User(
+      name: "Kidus Yoseph",
+      email: "se.kidus.yoseph@gmail.com",
+      phoneNumber: "0972476097",
+      profileImage:
+          "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80");
 
   /// Given a [User] it will create or register
   ///
@@ -100,6 +108,9 @@ class AuthRemoteDataProvider {
   Future<User> currentUser({
     required String token,
   }) async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    return user;
+
     final http.Response response = await http.get(
       Uri.parse("$baseUrl/users/me"),
       headers: <String, String>{
@@ -115,7 +126,21 @@ class AuthRemoteDataProvider {
     }
   }
 
-  Future<void> uploadProfileImage() async {
-    // TODO: upload profile image
+  Future<void> uploadProfileImage(String path) async {
+    String url = "";
+    var dio = Dio();
+    try {
+      var formData =
+          FormData.fromMap({'file': await MultipartFile.fromFile(path)});
+      var response = await dio.post(url, data: formData);
+      return response.data;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<User> updateUser(User user) async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    return user.copyWith(email: "updated_email@gmil.com");
   }
 }
