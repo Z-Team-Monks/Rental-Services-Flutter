@@ -10,15 +10,22 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
   final PropertyRepository _propertyRepository;
   PropertyBloc(
     this._propertyRepository,
-  ) : super(PropertyInitial());
+  ) : super(PropertyLoading());
 
   @override
   Stream<PropertyState> mapEventToState(PropertyEvent event) async* {
     if (event is PropertiesLoad) {
+      print("----------------PRoperties Load---------------");
       yield PropertyLoading();
       try {
-        var data = await _propertyRepository.propertyRemoteDataProvider
-            .getProperties();
+        await Future.delayed(
+          Duration(seconds: 3),
+        );
+        List<Property> data = [];
+        print("----------------PRoperties Load---------------");
+
+        // var data = await _propertyRepository.propertyRemoteDataProvider
+        //     .getProperties();
         yield PropertyOperationSuccess(data);
       } catch (e) {
         yield PropertyOperationFailure();
@@ -42,8 +49,6 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
       } catch (e) {
         yield PropertyOperationFailure();
       }
-    } else {
-      
-    }
+    } else {}
   }
 }
