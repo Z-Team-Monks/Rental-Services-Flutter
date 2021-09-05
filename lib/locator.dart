@@ -5,10 +5,11 @@ import 'package:rental/features/property/data_provider/property_local_data_provi
 import 'package:rental/features/property/data_provider/property_remote_data_provider.dart';
 import 'package:rental/features/property/repository/property_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:telephony/telephony.dart';
 
 final GetIt getIt = GetIt.instance;
 
-void setUp() async {
+Future<void> setUp() async {
   getIt.registerLazySingleton<AppDB>(() => AppDB(1));
   getIt.registerLazySingleton<PropertyRepository>(() => PropertyRepository(
         PropertyLocalDataProvider(),
@@ -19,4 +20,6 @@ void setUp() async {
 
   getIt.registerSingleton<SharedPreferences>(
       await SharedPreferences.getInstance());
+
+  getIt.registerSingletonAsync<Telephony>(() async => Telephony.instance);
 }

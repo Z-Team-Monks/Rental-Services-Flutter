@@ -19,7 +19,8 @@ import 'package:rental/features/property/screens/property_feed/feed.dart';
 import 'package:rental/locator.dart';
 import 'package:rental/route.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   setUp();
   runApp(MyApp());
 }
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: AddReviewPopup.pageRoute,
+        initialRoute: HomeFeed.pageRoute,
         onGenerateRoute: RouteGenerator.generateRoute,
         title: 'House Rent',
         theme: CustomTheme.lightTheme,

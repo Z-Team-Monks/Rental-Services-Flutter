@@ -6,6 +6,7 @@ import 'package:rental/features/property/bloc/Ads/ads_bloc.dart';
 import 'package:rental/features/property/bloc/property_bloc.dart';
 import 'package:rental/features/property/repository/property_repository.dart';
 import 'package:rental/locator.dart';
+import 'package:telephony/telephony.dart';
 import 'dart:math' as math;
 
 import './components/feed_card.dart';
@@ -362,8 +363,13 @@ class _CollapsingListState extends State<CollapsingList> {
                   imgUrl: "assets/images/content/car-1.jpg",
                   ratingCount: 4,
                   name: "Mailibu Beach House",
-                  phoneCallback: () {},
-                  messageCallback: () {},
+                  phoneCallback: () async {
+                    await getIt<Telephony>().openDialer("0949024607");
+                  },
+                  messageCallback: () async {
+                    await getIt<Telephony>().sendSmsByDefaultApp(
+                        to: "1234567890", message: "Mailibu Beach House:");
+                  },
                 ),
               ),
             );
