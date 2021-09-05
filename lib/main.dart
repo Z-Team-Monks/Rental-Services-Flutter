@@ -8,12 +8,8 @@ import 'package:rental/features/property/screens/add_review/add_review_popup.dar
 import 'package:rental/features/property/screens/add_property/add_property_screen.dart';
 // import 'package:rental/features/property/screens/review_property/add_review_popup.dart';
 import 'package:rental/features/user/bloc/profile_bloc/profile_bloc.dart';
-import 'package:rental/features/user/data_providers/user_local_data_provider.dart';
-import 'package:rental/features/user/data_providers/user_remote_data_provider.dart';
 import 'package:rental/features/user/repository/user_repository.dart';
 import 'package:rental/locator.dart';
-import 'package:rental/features/user/data_providers/user_local_data_provider.dart';
-import 'package:rental/features/user/data_providers/user_remote_data_provider.dart';
 import 'package:rental/features/user/repository/user_repository.dart';
 import 'package:rental/route.dart';
 import 'package:rental/features/property/screens/property_detail/property_detail_screen.dart';
@@ -31,17 +27,17 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       //https://pub.dev/documentation/flutter_bloc/latest/flutter_bloc/MultiBlocProvider-class.html
       providers: [
-        BlocProvider<ProfileBloc>(
-            create: (BuildContext context) => ProfileBloc(
-                  userRepository: UserRepository(
-                    UserRemoteDataProvider(),
-                    // UserLocalDataProvider(),
-                  ),
-                )..add(ProfileLoad())),
-        BlocProvider<AddReviewFormBloc>(
-            create: (BuildContext context) => AddReviewFormBloc(
-                  reviewRepository: ReviewRemoteDataProvider(),
-                )),
+        // BlocProvider<ProfileBloc>(
+        //     create: (BuildContext context) => ProfileBloc(
+        //           userRepository: UserRepository(
+        //             UserRemoteDataProvider(),
+        //             // UserLocalDataProvider(),
+        //           ),
+        //         )..add(ProfileLoad())),
+        // BlocProvider<AddReviewFormBloc>(
+        //     create: (BuildContext context) => AddReviewFormBloc(
+        //           reviewRepository: ReviewRemoteDataProvider(),
+        //         )),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
