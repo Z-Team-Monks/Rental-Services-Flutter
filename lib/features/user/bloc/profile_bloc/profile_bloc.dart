@@ -25,16 +25,23 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async* {
     if (event is ProfileLoad) {
       yield ProfileLoading();
-      print("user loading");
+      // print("user loading");
       final user = await userRepository.getCurrentUser("");
-      print("user foround");
+      // print("user foround");
       yield ProfileLoaded(user: user);
+    }
+
+    if (event is ProfilePictureChange) {
+      print("profile changed");
+      yield ProfileLoaded(
+          user: event.user, changedProfilePath: event.changedProfilePath);
     }
 
     if (event is ProfileUpdate) {
       yield ProfileUpdateLoading();
       try {
-        final user = await userRepository.updateUser(user: event.user);
+        final user = await userRepository.updateUser(
+            user: event.user, newProfilePath: event.changedProfilePath);
         print("updated user ${user.email}");
         yield ProfileUpdateSuccesful(user: user);
         yield ProfileLoaded(user: user);

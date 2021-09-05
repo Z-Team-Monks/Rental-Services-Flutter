@@ -23,6 +23,7 @@ class ProfileUpdateLoading extends ProfileState {}
 
 class ProfileLoaded extends ProfileState {
   final User user;
+  String? changedProfilePath;
 
-  ProfileLoaded({required this.user});
+  ProfileLoaded({required this.user, this.changedProfilePath});
 }

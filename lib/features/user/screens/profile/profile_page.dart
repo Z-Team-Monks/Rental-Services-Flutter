@@ -66,7 +66,7 @@ class ProfilePage extends StatelessWidget {
                                       context,
                                       MaterialPageRoute<void>(
                                         builder: (BuildContext context) =>
-                                            UpdateProfile(),
+                                            UpdateProfile(state.user),
                                       ),
                                     );
                                   },
