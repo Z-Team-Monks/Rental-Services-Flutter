@@ -18,16 +18,18 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
       print("----------------PRoperties Load---------------");
       yield PropertyLoading();
       try {
-        await Future.delayed(
-          Duration(seconds: 3),
-        );
-        List<Property> data = [];
+        var data = await _propertyRepository.getPropertiesFromRemote();
+
+        // List<Property> data = [];
         print("----------------PRoperties Load---------------");
 
+        print(data);
         // var data = await _propertyRepository.propertyRemoteDataProvider
         //     .getProperties();
-        yield PropertyOperationSuccess(data);
+        yield PropertyOperationSuccess(data!);
       } catch (e) {
+        print(e);
+        print("----------------abover error--------------");
         yield PropertyOperationFailure();
       }
     } else if (event is PropertyFilter) {

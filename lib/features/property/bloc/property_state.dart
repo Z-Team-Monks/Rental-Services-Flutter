@@ -4,7 +4,7 @@ abstract class PropertyState extends Equatable {
   const PropertyState();
 
   @override
-  List<Object> get props => [];
+  List<Property> get props => [];
 }
 
 class PropertyInitial extends PropertyState {}
@@ -17,7 +17,7 @@ class PropertyOperationSuccess extends PropertyState {
   PropertyOperationSuccess([this.properties = const []]);
 
   @override
-  List<Object> get props => [properties];
+  List<Property> get props => properties as List<Property>;
 }
 
 class PropertyOperationFailure extends PropertyState {}

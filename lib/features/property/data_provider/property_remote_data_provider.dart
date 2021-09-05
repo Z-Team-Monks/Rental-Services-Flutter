@@ -4,7 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:rental/core/models/property.dart';
 
 class PropertyRemoteDataProvider {
-  final String baseUrl = "http://10.6.193.148:5000/api";
+
+  final String baseUrl = "http://192.168.43.27:5000/api";
 
   /// It will return list of [Property] Objects fetched from remote server / API
   ///
@@ -16,14 +17,19 @@ class PropertyRemoteDataProvider {
       headers: <String, String>{"Content-Type": "application/json"},
     );
 
+    print("------------q----------property---------------------");
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
+      print(data);
       List<Property> properties = [];
-      for (var i = 0; i < data.size; i++) {
+      for (var i = 0; i < data.length; i++) {
         properties.add(Property.fromJson(data[i]));
       }
-      return data;
+      print("----------------------property Success---------------------");
+      return properties;
     } else {
+      print("----------------------property Failure---------------------");
+
       throw Exception("Unable to fetch properties");
     }
   }

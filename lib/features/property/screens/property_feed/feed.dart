@@ -1,13 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rental/core/models/property.dart';
+// import 'package:rental/core/models/property.dart';
 import 'package:rental/features/property/bloc/Ads/ads_bloc.dart';
 import 'package:rental/features/property/bloc/property_bloc.dart';
 import 'package:rental/features/property/repository/property_repository.dart';
 import 'package:rental/locator.dart';
 import 'package:telephony/telephony.dart';
-import 'dart:math' as math;
+// import 'dart:math' as math;
 
 import './components/feed_card.dart';
 import './components/recomeded.dart';
@@ -70,8 +71,8 @@ class Feed extends StatelessWidget {
                       padding: const EdgeInsets.all(4.0),
                       child: CircleAvatar(
                         radius: 23.0,
-                        backgroundImage: AssetImage(
-                          "assets/images/content/car-1.jpg",
+                        backgroundImage: CachedNetworkImageProvider(
+                          "https://images.unsplash.com/photo-1623330188314-8f4645626731?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=659&q=80",
                         ),
                       ),
                     )
@@ -209,36 +210,32 @@ class Feed extends StatelessWidget {
             ),
           );
         } else if (state is PropertyOperationSuccess) {
-          List<Widget> widgets = [];
-          for (var i = 0; i < 5; i++) {
-            widgets.add(
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 10,
-                ),
-                child: FeedPropertyCard(
-                  imgUrl: "assets/images/content/car-1.jpg",
-                  ratingCount: 4,
-                  name: "Mailibu Beach House",
-                  phoneCallback: () async {
-                    await getIt<Telephony>().openDialer("0949024607");
-                  },
-                  messageCallback: () async {
-                    await getIt<Telephony>().sendSmsByDefaultApp(
-                        to: "1234567890", message: "Mailibu Beach House:");
-                  },
-                ),
-              ),
-            );
-          }
-
+   
           return SizedBox(
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: widgets.length,
+              itemCount: state.props.length,
               itemBuilder: (ctx, index) {
-                return widgets[index];
+                // return widgets[index];
+                return Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 10,
+                  ),
+                  child: FeedPropertyCard(
+                    imgUrl:
+                        "https://images.unsplash.com/photo-1611839699701-5cd5f18c25a4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80",
+                    ratingCount: 4,
+                    name: "Mailibu Beach House",
+                    phoneCallback: () async {
+                      await getIt<Telephony>().openDialer("0949024607");
+                    },
+                    messageCallback: () async {
+                      await getIt<Telephony>().sendSmsByDefaultApp(
+                          to: "1234567890", message: "Mailibu Beach House:");
+                    },
+                  ),
+                );
               },
             ),
           );
@@ -331,9 +328,9 @@ class ProfileView extends StatelessWidget {
           height: 240,
           child: Padding(
             padding: EdgeInsets.symmetric(
-              // horizontal: 10,
-              // vertical: 5,
-            ),
+                // horizontal: 10,
+                // vertical: 5,
+                ),
             child: fetchAds(context),
           ),
         )
@@ -361,7 +358,7 @@ class ProfileView extends StatelessWidget {
       } else if (state is AdFetchOperationSuccess) {
         return ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: 3,
+          itemCount: state.props.length,
           itemBuilder: (ctx, index) {
             return Padding(
               padding: EdgeInsets.symmetric(
@@ -370,7 +367,8 @@ class ProfileView extends StatelessWidget {
               ),
               child: RecomedationCard(
                 date: "",
-                imgUrl: "assets/images/content/car-1.jpg",
+                imgUrl:
+                    "https://images.unsplash.com/photo-1611839699701-5cd5f18c25a4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80",
                 name: "",
                 price: "0",
                 callback: () {},
