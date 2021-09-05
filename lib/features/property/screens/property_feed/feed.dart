@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -151,8 +152,8 @@ class _CollapsingListState extends State<CollapsingList> {
           actions: [
             CircleAvatar(
               radius: 23.0,
-              backgroundImage: AssetImage(
-                "assets/images/content/car-1.jpg",
+              backgroundImage: CachedNetworkImageProvider(
+                "https://i.ytimg.com/vi/k6g_Ylr_Oao/maxresdefault.jpg",
               ),
             )
           ],
@@ -300,7 +301,7 @@ class _CollapsingListState extends State<CollapsingList> {
               ),
               child: RecomedationCard(
                 date: "",
-                imgUrl: "assets/images/content/car-1.jpg",
+                imgUrl: "https://i.ytimg.com/vi/k6g_Ylr_Oao/maxresdefault.jpg",
                 name: "",
                 price: "0",
                 callback: () {},
@@ -360,7 +361,8 @@ class _CollapsingListState extends State<CollapsingList> {
                   vertical: 10,
                 ),
                 child: FeedPropertyCard(
-                  imgUrl: "assets/images/content/car-1.jpg",
+                  imgUrl:
+                      "https://i.ytimg.com/vi/k6g_Ylr_Oao/maxresdefault.jpg",
                   ratingCount: 4,
                   name: "Mailibu Beach House",
                   phoneCallback: () async {

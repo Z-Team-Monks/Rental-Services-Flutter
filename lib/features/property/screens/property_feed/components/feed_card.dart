@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import './contact_icon_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 /// Property feed card to list avialable properties for rent
 /// in the home page [StatefulWidget]
@@ -47,7 +48,7 @@ class _FeedPropertyCardState extends State<FeedPropertyCard> {
                     borderRadius: BorderRadius.circular(22),
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: AssetImage(widget.imgUrl),
+                      image: CachedNetworkImageProvider(widget.imgUrl),
                     )),
                 width: double.infinity,
                 height: 200,
@@ -104,7 +105,7 @@ class _FeedPropertyCardState extends State<FeedPropertyCard> {
               Column(
                 children: [
                   Text(
-                     "Entire Cabin Norway",
+                    "Entire Cabin Norway",
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontSize: 20,
