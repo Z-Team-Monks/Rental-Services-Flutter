@@ -1,23 +1,27 @@
-part of 'signin_form_bloc.dart';
+part of 'auth_form_bloc.dart';
 
-class SignInFormState extends Equatable {
+class AuthFormState extends Equatable {
   final Email email;
   final Password password;
+  final Username username;
   final FormzStatus status;
   final String? message;
 
-  const SignInFormState(
-      {this.email = const Email.pure(),
+  const AuthFormState(
+      {this.username = const Username.pure(),
+      this.email = const Email.pure(),
       this.password = const Password.pure(),
       this.status = FormzStatus.pure,
       this.message});
 
-  SignInFormState copyWith(
-      {Email? email,
+  AuthFormState copyWith(
+      {Username? username,
+      Email? email,
       Password? password,
       FormzStatus? status,
       String? message}) {
-    return SignInFormState(
+    return AuthFormState(
+        username: username ?? this.username,
         email: email ?? this.email,
         password: password ?? this.password,
         status: status ?? this.status,
@@ -25,5 +29,5 @@ class SignInFormState extends Equatable {
   }
 
   @override
-  List<Object> get props => [email, password, status];
+  List<Object> get props => [username, email, password, status];
 }

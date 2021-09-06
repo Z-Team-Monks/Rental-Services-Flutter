@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rental/features/auth/bloc/signup/signup_form_bloc.dart';
+import 'package:rental/features/auth/bloc/auth_form_bloc.dart';
+import 'package:rental/features/auth/bloc/auth_form_bloc.dart';
 import 'package:rental/features/auth/screens/widgets/form_field.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
@@ -29,23 +30,23 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    final signUpFormBloc = BlocProvider.of<SignUpFormBloc>(context);
+    final authFormBloc = BlocProvider.of<AuthFormBloc>(context);
     this.username
       ..addListener(() {
         if (!this.username.hasFocus) {
-          context.read<SignUpFormBloc>().add(UsernameUnfocused());
+          context.read<AuthFormBloc>().add(UsernameUnfocused());
         }
       });
     this.emailNode
       ..addListener(() {
         if (!this.emailNode.hasFocus) {
-          context.read<SignUpFormBloc>().add(EmailUnfocused());
+          context.read<AuthFormBloc>().add(EmailUnfocused());
         }
       });
     this.passwordNode
       ..addListener(() {
         if (!this.passwordNode.hasFocus) {
-          context.read<SignUpFormBloc>().add(EmailUnfocused());
+          context.read<AuthFormBloc>().add(EmailUnfocused());
         }
       });
     return SolidBottomSheet(
@@ -123,7 +124,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           fontSize: 20,
                         ),
                       ),
-                      BlocBuilder<SignUpFormBloc, SignUpFormState>(
+                      BlocBuilder<AuthFormBloc, AuthFormState>(
                         builder: (context, state) {
                           return CustomFormField(
                               errorMessage: state.email.invalid
@@ -131,7 +132,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   : '',
                               label: 'Enter your username',
                               onValueChange: (value) {
-                                signUpFormBloc
+                                authFormBloc
                                     .add(UsernameChanged(username: value));
                               });
                         },
@@ -143,7 +144,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           fontSize: 20,
                         ),
                       ),
-                      BlocBuilder<SignUpFormBloc, SignUpFormState>(
+                      BlocBuilder<AuthFormBloc, AuthFormState>(
                         builder: (context, state) {
                           return CustomFormField(
                               errorMessage: state.email.invalid
@@ -151,7 +152,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   : '',
                               label: 'Enter your email',
                               onValueChange: (value) {
-                                signUpFormBloc.add(EmailChanged(email: value));
+                                authFormBloc.add(EmailChanged(email: value));
                               });
                         },
                       ),
@@ -164,7 +165,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           fontSize: 20,
                         ),
                       ),
-                      BlocBuilder<SignUpFormBloc, SignUpFormState>(
+                      BlocBuilder<AuthFormBloc, AuthFormState>(
                         builder: (context, state) {
                           return CustomFormField(
                               errorMessage: state.email.invalid
@@ -172,7 +173,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   : '',
                               label: 'Enter your password',
                               onValueChange: (value) {
-                                signUpFormBloc
+                                authFormBloc
                                     .add(PasswordChanged(password: value));
                               });
                         },
@@ -200,7 +201,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             onPressed: () {
                               passwordNode.unfocus();
                               emailNode.unfocus();
-                              signUpFormBloc.add(FormSubmitted());
+                              authFormBloc.add(SignUpFormSubmitted());
                             },
                             child: Text(
                               "Login",

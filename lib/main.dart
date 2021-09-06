@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental/core/presentation/customTheme/appTheme.dart';
-import 'package:rental/features/auth/bloc/signin/signin_form_bloc.dart';
-import 'package:rental/features/auth/bloc/signup/signup_form_bloc.dart';
+import 'package:rental/features/auth/bloc/auth_form_bloc.dart';
 import 'package:rental/features/auth/repository/repository.dart';
 import 'package:rental/features/auth/screens/login_screen.dart';
 import 'package:rental/features/property/screens/add_review/add_review_popup.dart';
@@ -33,10 +32,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<SignInFormBloc>(
-            create: (BuildContext context) => SignInFormBloc(_authRepository)),
-        BlocProvider<SignUpFormBloc>(
-            create: (BuildContext context) => SignUpFormBloc(_authRepository)),
+        BlocProvider<AuthFormBloc>(
+            create: (BuildContext context) =>
+                AuthFormBloc(authRepository: _authRepository)),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

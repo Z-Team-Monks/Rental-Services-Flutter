@@ -1,31 +1,19 @@
-import 'dart:async';
-import 'package:bloc/bloc.dart';
-import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:rental/features/auth/failures/auth_failure.dart';
+import 'package:rental/features/auth/repository/repository.dart';
 import 'package:rental/features/auth/models/exports.dart';
 import 'package:rental/features/auth/models/params/auth_signin_param.dart';
-import 'package:rental/features/auth/models/username.dart';
-import 'package:rental/features/auth/repository/repository.dart';
-import 'package:http/http.dart' as http;
+import 'package:equatable/equatable.dart';
 
-part 'signup_form_event.dart';
-part 'signup_form_state.dart';
+part 'auth_form_event.dart';
+part 'auth_form_state.dart';
 
-class SignUpFormBloc extends Bloc<SignUpFormEvent, SignUpFormState> {
-  final AuthRepository _authRepository;
-
-  SignUpFormBloc(this._authRepository) : super(SignUpFormState());
+class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
+  final AuthRepository authRepository;
+  AuthFormBloc({required this.authRepository}) : super(AuthFormState());
 
   @override
-  void onTransition(Transition<SignUpFormEvent, SignUpFormState> transition) {
-    print(transition);
-    super.onTransition(transition);
-  }
-
-  @override
-  Stream<SignUpFormState> mapEventToState(SignUpFormEvent event) async* {
+  Stream<AuthFormState> mapEventToState(AuthFormEvent event) async* {
     if (event is UsernameChanged) {
       final username = Username.dirty(event.username);
       yield state.copyWith(
@@ -68,7 +56,51 @@ class SignUpFormBloc extends Bloc<SignUpFormEvent, SignUpFormState> {
         password: password,
         status: Formz.validate([password]),
       );
-    } else if (event is FormSubmitted) {
+    } else if (event is LoginFormSubmitted) {
+      final email = Email.dirty(state.email.value);
+      final password = Password.dirty(state.password.value);
+
+      yield state.copyWith(
+        email: email,
+        password: password,
+        // username: state.username,
+        message: null,
+        status: Formz.validate([email, password]),
+      );
+
+      if (state.status.isValidated) {
+        yield state.copyWith(status: FormzStatus.submissionInProgress);
+
+        final AuthSignInParam param =
+            AuthSignInParam(email: email.value, password: password.value);
+
+        final failureOrSuccess = await authRepository.signInUser(param);
+
+        if (failureOrSuccess.isLeft()) {
+          yield state.copyWith(
+              message: failureOrSuccess.fold(
+                  (l) => l.maybeMap(
+                        serverAuthError: (serverAuthError) => "serverAuthError",
+                        emailAlreadyInUse: (emailAlreadyInUse) =>
+                            "This email is already in use",
+                        orElse: () => "Unexpected error",
+                      ),
+                  (r) => null),
+              status: FormzStatus.submissionFailure);
+        } else {
+          yield state.copyWith(
+            message: null,
+            status: FormzStatus.submissionSuccess,
+          );
+          //Navigate to home
+
+        }
+      } else {
+        yield state.copyWith(
+          status: FormzStatus.invalid,
+        );
+      }
+    } else if (event is SignUpFormSubmitted) {
       final username = Username.dirty(state.username.value);
       final email = Email.dirty(state.email.value);
       final password = Password.dirty(state.password.value);
@@ -77,7 +109,6 @@ class SignUpFormBloc extends Bloc<SignUpFormEvent, SignUpFormState> {
         email: email,
         password: password,
         username: username,
-        message: null,
         status: Formz.validate([username, email, password]),
       );
 
@@ -89,8 +120,7 @@ class SignUpFormBloc extends Bloc<SignUpFormEvent, SignUpFormState> {
             email: state.email.value,
             password: state.password.value);
 
-        final failureOrSuccess = await _authRepository.getRemoteProvider
-            .createUser(client: http.Client(), authSignUpParam: param);
+        final failureOrSuccess = await authRepository.createRemoteUser(param);
 
         if (failureOrSuccess.isLeft()) {
           yield state.copyWith(

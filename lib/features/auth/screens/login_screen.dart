@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rental/features/auth/bloc/signin/signin_form_bloc.dart';
-import 'package:rental/features/auth/models/exports.dart';
+import 'package:rental/features/auth/bloc/auth_form_bloc.dart';
 import 'package:rental/features/auth/screens/widgets/form_field.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
@@ -28,17 +27,17 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final signInFormBloc = BlocProvider.of<SignInFormBloc>(context);
+    final authFormBloc = BlocProvider.of<AuthFormBloc>(context);
     this.emailNode
       ..addListener(() {
         if (!this.emailNode.hasFocus) {
-          context.read<SignInFormBloc>().add(EmailUnfocused());
+          context.read<AuthFormBloc>().add(EmailUnfocused());
         }
       });
     this.passwordNode
       ..addListener(() {
         if (!this.passwordNode.hasFocus) {
-          context.read<SignInFormBloc>().add(EmailUnfocused());
+          context.read<AuthFormBloc>().add(EmailUnfocused());
         }
       });
     return SolidBottomSheet(
@@ -117,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 20,
                         ),
                       ),
-                      BlocBuilder<SignInFormBloc, SignInFormState>(
+                      BlocBuilder<AuthFormBloc, AuthFormState>(
                         builder: (context, state) {
                           return CustomFormField(
                               errorMessage: state.email.invalid
@@ -125,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                                   : '',
                               label: 'example@niko.com',
                               onValueChange: (value) {
-                                signInFormBloc.add(EmailChanged(email: value));
+                                authFormBloc.add(EmailChanged(email: value));
                               });
                         },
                       ),
@@ -138,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 20,
                         ),
                       ),
-                      BlocBuilder<SignInFormBloc, SignInFormState>(
+                      BlocBuilder<AuthFormBloc, AuthFormState>(
                         builder: (context, state) {
                           return CustomFormField(
                               errorMessage: state.email.invalid
@@ -146,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                                   : '',
                               label: 'Enter your password',
                               onValueChange: (value) {
-                                signInFormBloc
+                                authFormBloc
                                     .add(PasswordChanged(password: value));
                               });
                         },
@@ -174,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                             onPressed: () {
                               passwordNode.unfocus();
                               emailNode.unfocus();
-                              signInFormBloc.add(FormSubmitted());
+                              authFormBloc.add(LoginFormSubmitted());
                             },
                             child: Text(
                               "Login",
