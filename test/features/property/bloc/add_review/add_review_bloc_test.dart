@@ -11,18 +11,20 @@ import 'package:rental/features/property/bloc/add_review/add_review_state.dart';
 import 'package:rental/features/property/bloc/add_review/value_objects/message.dart';
 import 'package:rental/features/property/data_provider/add_review/review_remote_data_provider.dart';
 import 'package:rental/features/property/repository/add_review/add_review_repository.dart';
+import 'package:rental/locator.dart';
 import 'add_review_bloc_test.mocks.dart';
 
-@GenerateMocks([ReviewRemoteDataProvider])
+@GenerateMocks([ReviewRepository])
 void main() {
-  AddReviewFormBloc bloc;
-  MockReviewRemoteDataProvider mockReviewRemoteDataProvider;
-  // setUp(() {
-  mockReviewRemoteDataProvider = MockReviewRemoteDataProvider();
+  late AddReviewFormBloc bloc;
+  MockReviewRepository mockReviewRepository = MockReviewRepository();
 
-  bloc = AddReviewFormBloc(reviewRepository: mockReviewRemoteDataProvider);
+  void setUp() {
+    bloc = AddReviewFormBloc(reviewRepository: mockReviewRepository);
+  }
 
   test('initial state should be empty', () {
+    setUp();
     expect(bloc.state, equals(AddReviewFormState()));
   });
 
@@ -31,6 +33,7 @@ void main() {
     blocTest(
       'emits [AddReviewFormState (valid)] when a valid message is entered',
       build: () {
+        setUp();
         return bloc;
       },
       act: (AddReviewFormBloc bloc) =>
@@ -49,8 +52,8 @@ void main() {
     blocTest(
       'emits [AddReviewFormState (invalid)] when invalid message - empty string',
       build: () {
-        return AddReviewFormBloc(
-            reviewRepository: mockReviewRemoteDataProvider);
+        setUp();
+        return bloc;
       },
       act: (AddReviewFormBloc bloc) => bloc.add(MessageChanged(message: "")),
       expect: () {
@@ -67,16 +70,15 @@ void main() {
     blocTest(
       'emits [AddReviewFormState (Valid), AddReviewFormState (InProgress), AddReviewFormState (Success)] when is FormSubmitted Succesfully',
       build: () {
+        setUp();
         when(
-          mockReviewRemoteDataProvider.createReview(
-            any,
+          mockReviewRepository.createRemoteReview(
             review: anyNamed("review"),
             propertyId: anyNamed("propertyId"),
             token: anyNamed("token"),
           ),
         ).thenAnswer((_) => Future.value(review));
-        return AddReviewFormBloc(
-            reviewRepository: mockReviewRemoteDataProvider);
+        return bloc;
       },
       act: (AddReviewFormBloc bloc) {
         bloc.add(MessageChanged(message: "message"));
