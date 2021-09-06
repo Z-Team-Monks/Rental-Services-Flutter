@@ -9,6 +9,7 @@ class CustomTheme {
   static ThemeData get lightTheme {
     final LightThemeConstants lightThemeConstants = new LightThemeConstants();
     return ThemeData(
+        visualDensity: VisualDensity.adaptivePlatformDensity,
         fontFamily: CustomThemeConstants.fontFamilyPrimary,
         primaryColor: CustomColors.purple,
         scaffoldBackgroundColor: Colors.white,

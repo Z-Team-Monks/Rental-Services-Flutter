@@ -18,29 +18,36 @@
 //                 profileImage:
 //                     "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80")));
 
-//   final UserRepository userRepository;
-//   @override
-//   Stream<ProfileState> mapEventToState(
-//     ProfileEvent event,
-//   ) async* {
-//     if (event is ProfileLoad) {
-//       yield ProfileLoading();
-//       print("user loading");
-//       final user = await userRepository.getCurrentUser("");
-//       print("user foround");
-//       yield ProfileLoaded(user: user);
-//     }
+  final UserRepository userRepository;
+  @override
+  Stream<ProfileState> mapEventToState(
+    ProfileEvent event,
+  ) async* {
+    if (event is ProfileLoad) {
+      yield ProfileLoading();
+      // print("user loading");
+      final user = await userRepository.getCurrentUser("");
+      // print("user foround");
+      yield ProfileLoaded(user: user);
+    }
 
-//     if (event is ProfileUpdate) {
-//       yield ProfileUpdateLoading();
-//       try {
-//         final user = await userRepository.updateUser(user: event.user);
-//         print("updated user ${user.email}");
-//         yield ProfileUpdateSuccesful(user: user);
-//         yield ProfileLoaded(user: user);
-//       } catch (e) {
-//         yield ProfileUpdateFailure();
-//       }
-//     }
-//   }
-// }
+    if (event is ProfilePictureChange) {
+      print("profile changed");
+      yield ProfileLoaded(
+          user: event.user, changedProfilePath: event.changedProfilePath);
+    }
+
+    if (event is ProfileUpdate) {
+      yield ProfileUpdateLoading();
+      try {
+        final user = await userRepository.updateUser(
+            user: event.user, newProfilePath: event.changedProfilePath);
+        print("updated user ${user.email}");
+        yield ProfileUpdateSuccesful(user: user);
+        yield ProfileLoaded(user: user);
+      } catch (e) {
+        yield ProfileUpdateFailure();
+      }
+    }
+  }
+}

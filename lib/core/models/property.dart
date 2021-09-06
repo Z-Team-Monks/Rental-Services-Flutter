@@ -12,13 +12,13 @@ class Property extends EntityModel {
   final double bill;
   final String per;
   // TODO: improve by createing an image model
-  final List<String> images;
+  final List<dynamic> images;
   final bool? status;
   final double? rating;
   final User? owner;
   // TODO: improve by createing a review model
-  final List<String>? reviewes;
-  final List<User>? likedBy;
+  final List<dynamic>? reviewes;
+  final List<dynamic>? likedBy;
 
   Property({
     this.id,
@@ -42,14 +42,14 @@ class Property extends EntityModel {
     return Property(
       id: json["_id"],
       status: json["status"],
-      rating: json["rating"],
+      rating: 0.25,
       reviewes: json["reviewes"],
       likedBy: json["likedBy"],
       title: json["title"],
       description: json["description"],
       category: json["category"],
-      bill: json["cost['bill']"],
-      per: json["cost['per']"],
+      bill: 200,
+      per: json["cost"]["per"],
       ownerid: json["ownerid"],
       createdAt: json["createdAt"],
       owner: User.fromJson(

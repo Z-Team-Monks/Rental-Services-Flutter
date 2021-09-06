@@ -1,21 +1,30 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
-class RecomedationCard extends StatefulWidget {
+// class RecomedationCard extends StatefulWidget {
+
+//   @override
+//   _RecomedationCardState createState() => _RecomedationCardState();
+// }
+
+class RecomedationCard extends StatelessWidget {
   /// [String] image Url of recommeded [Property]
   final String imgUrl;
 
   /// [String] name of recommeded [Property]
   final String name;
 
-  /// [String] price of recommeded [Property]
-  final double price;
+  /// [double] price of recommeded [Property]
+  final String price;
 
   /// [String] date of post of the [Property]
   final String date;
 
   /// [Function] onTap handler for the whole card
   final Function callback;
-  const RecomedationCard({
+
+  RecomedationCard({
     Key? key,
     required this.imgUrl,
     required this.name,
@@ -25,20 +34,131 @@ class RecomedationCard extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _RecomedationCardState createState() => _RecomedationCardState();
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(20),
+          onTap: () {
+            callback();
+          },
+          child: Container(
+            height: 200,
+            width: 215,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20)),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: CachedNetworkImageProvider(imgUrl),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.only(
+                        left: 10, right: 15, top: 10, bottom: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            name + "Nikos Auditorium",
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.attach_money,
+                                color: Colors.black,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                "${this.price} 45,000 ETB",
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.date_range_outlined,
+                                color: Colors.black,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                date + "Thu, Jan 10th, 4:00 am",
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-class _RecomedationCardState extends State<RecomedationCard> {
+class RecommendationCardShimmer extends StatelessWidget {
+  const RecommendationCardShimmer({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        widget.callback();
-      },
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
         child: Container(
           height: 200,
           width: 215,
@@ -54,10 +174,7 @@ class _RecomedationCardState extends State<RecomedationCard> {
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20)),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(widget.imgUrl),
-                    ),
+                    color: Colors.grey[300],
                   ),
                 ),
               ),
@@ -71,13 +188,10 @@ class _RecomedationCardState extends State<RecomedationCard> {
                     children: [
                       Expanded(
                         flex: 1,
-                        child: Text(
-                          widget.name + "Nikos Auditorium",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: Container(
+                          height: 20,
+                          width: 180,
+                          color: Colors.grey[300],
                         ),
                       ),
                       SizedBox(
@@ -89,19 +203,11 @@ class _RecomedationCardState extends State<RecomedationCard> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.attach_money,
-                              color: Colors.black,
+                            Container(
+                              height: 20,
+                              width: 180,
+                              color: Colors.grey[300],
                             ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              "${widget.price} 45,000 ETB",
-                              style: TextStyle(
-                                color: Colors.black54,
-                              ),
-                            )
                           ],
                         ),
                       ),
@@ -111,19 +217,11 @@ class _RecomedationCardState extends State<RecomedationCard> {
                       Expanded(
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.date_range_outlined,
-                              color: Colors.black,
+                            Container(
+                              height: 20,
+                              width: 180,
+                              color: Colors.grey[300],
                             ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              widget.date + "Thu, Jan 10th, 4:00 am",
-                              style: TextStyle(
-                                color: Colors.black54,
-                              ),
-                            )
                           ],
                         ),
                       ),

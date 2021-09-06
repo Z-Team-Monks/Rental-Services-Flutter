@@ -8,12 +8,19 @@
 // @immutable
 // abstract class ProfileEvent {}
 
-// class ProfileLoad extends ProfileEvent {}
+class ProfilePictureChange extends ProfileEvent {
+  String? changedProfilePath;
+  final User user;
+  ProfilePictureChange({required this.user, this.changedProfilePath});
+}
 
-// class ProfileUpdate extends ProfileEvent {
-//   final User user;
+class ProfileLoad extends ProfileEvent {}
 
-//   ProfileUpdate({required this.user});
-// }
+class ProfileUpdate extends ProfileEvent {
+  final User user;
+  String? changedProfilePath;
+
+  ProfileUpdate({required this.user, this.changedProfilePath});
+}
 
 // class ProfileDelete extends ProfileEvent {}

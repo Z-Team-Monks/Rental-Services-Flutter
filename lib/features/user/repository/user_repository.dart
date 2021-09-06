@@ -13,14 +13,15 @@
 //     // this._userLocalDataProvider,
 //   );
 
-//   // call the dataproviders using the data access strategey
-//   Future<User> updateUser({required User user, String? newProfilePath}) async {
-//     if (newProfilePath != null) {
-//       // await _userRemoteDataProvider.uploadProfileImage(newProfilePath);
-//     }
-//     var updatedUser = await _userRemoteDataProvider.updateUser(user);
-//     return updatedUser;
-//   }
+// call the dataproviders using the data access strategey
+Future<User> updateUser({required User user, String? newProfilePath}) async {
+  if (newProfilePath != null) {
+    print("updated profilepath");
+    // await _userRemoteDataProvider.uploadProfileImage(newProfilePath);
+  }
+  var updatedUser = await _userRemoteDataProvider.updateUser(user);
+  return updatedUser;
+}
 
 //   Future<User> getCurrentUser(String token) {
 //     return _userRemoteDataProvider.currentUser(token: "");

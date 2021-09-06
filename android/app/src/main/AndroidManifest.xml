@@ -30,6 +30,12 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+                 <!-- If your app makes calls -->
+                <action android:name="android.intent.action.DIAL" />
+                <data android:scheme="tel" />
+              <!-- If your app emails -->
+                <action android:name="android.intent.action.SEND" />
+                <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

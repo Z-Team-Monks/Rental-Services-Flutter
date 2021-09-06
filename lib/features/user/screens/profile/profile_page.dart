@@ -14,131 +14,131 @@
 //     final size = MediaQuery.of(context).size;
 //     final profileBloc = BlocProvider.of<ProfileBloc>(context);
 
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Profile'),
-//       ),
-//       body: SingleChildScrollView(
-//         child: Container(
-//           child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.center,
-//               children: <Widget>[
-//                 SizedBox(height: 20.0),
-//                 BlocConsumer<ProfileBloc, ProfileState>(
-//                   listener: (_, state) {},
-//                   builder: (_, state) {
-//                     if (state is ProfileLoaded) {
-//                       return Row(
-//                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                         children: [
-//                           Container(
-//                             height: 120,
-//                             width: 120,
-//                             decoration: BoxDecoration(
-//                               shape: BoxShape.circle,
-//                               image: DecorationImage(
-//                                 fit: BoxFit.cover,
-//                                 image: NetworkImage(
-//                                     "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80"),
-//                               ),
-//                             ),
-//                           ),
-//                           Column(
-//                             mainAxisAlignment: MainAxisAlignment.center,
-//                             crossAxisAlignment: CrossAxisAlignment.start,
-//                             children: [
-//                               Text(
-//                                 state.user.name,
-//                                 style: TextStyle(
-//                                     fontSize: 20, fontWeight: FontWeight.bold),
-//                               ),
-//                               infoTexts(state.user.email),
-//                               infoTexts(state.user.phoneNumber!),
-//                               Container(
-//                                 width: 120,
-//                                 height: 32,
-//                                 decoration: BoxDecoration(
-//                                   borderRadius: BorderRadius.circular(50),
-//                                 ),
-//                                 child: TextButton(
-//                                   onPressed: () {
-//                                     Navigator.push<void>(
-//                                       context,
-//                                       MaterialPageRoute<void>(
-//                                         builder: (BuildContext context) =>
-//                                             UpdateProfile(),
-//                                       ),
-//                                     );
-//                                   },
-//                                   child: Text("Edit my profile"),
-//                                 ),
-//                               ),
-//                               SizedBox(
-//                                 height: 30,
-//                               ),
-//                             ],
-//                           )
-//                         ],
-//                       );
-//                     }
-//                     return CardSkeleton(
-//                       isCircularImage: true,
-//                       isBottomLinesActive: true,
-//                     );
-//                   },
-//                 ),
-//                 DefaultTabController(
-//                     length: 3, // length of tabs
-//                     initialIndex: 0,
-//                     child: SingleChildScrollView(
-//                       child: Column(
-//                           crossAxisAlignment: CrossAxisAlignment.stretch,
-//                           children: <Widget>[
-//                             Container(
-//                               child: TabBar(
-//                                 labelColor: Colors.green,
-//                                 unselectedLabelColor: Colors.black,
-//                                 tabs: [
-//                                   Tab(text: 'Properties'),
-//                                   Tab(text: 'Liked'),
-//                                   Tab(text: 'Wishlist'),
-//                                 ],
-//                               ),
-//                             ),
-//                             SizedBox(
-//                               height: 10,
-//                             ),
-//                             Container(
-//                                 height: 400, //height of TabBarView
-//                                 decoration: BoxDecoration(
-//                                     border: Border(
-//                                         top: BorderSide(
-//                                             color: Colors.grey, width: 0.5))),
-//                                 child: TabBarView(children: <Widget>[
-//                                   GridView.count(
-//                                       crossAxisCount: 2,
-//                                       children: List.generate(4, (index) {
-//                                         return PropertyCard(size);
-//                                       })),
-//                                   GridView.count(
-//                                       crossAxisCount: 2,
-//                                       children: List.generate(4, (index) {
-//                                         return PropertyCard(size);
-//                                       })),
-//                                   GridView.count(
-//                                       crossAxisCount: 2,
-//                                       children: List.generate(4, (index) {
-//                                         return PropertyCard(size);
-//                                       })),
-//                                 ]))
-//                           ]),
-//                     )),
-//               ]),
-//         ),
-//       ),
-//     );
-//   }
-// }
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile'),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 20.0),
+                BlocConsumer<ProfileBloc, ProfileState>(
+                  listener: (_, state) {},
+                  builder: (_, state) {
+                    if (state is ProfileLoaded) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                            height: 120,
+                            width: 120,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                    "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80"),
+                              ),
+                            ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                state.user.name,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              infoTexts(state.user.email),
+                              infoTexts(state.user.phoneNumber!),
+                              Container(
+                                width: 120,
+                                height: 32,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.push<void>(
+                                      context,
+                                      MaterialPageRoute<void>(
+                                        builder: (BuildContext context) =>
+                                            UpdateProfile(state.user),
+                                      ),
+                                    );
+                                  },
+                                  child: Text("Edit my profile"),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                            ],
+                          )
+                        ],
+                      );
+                    }
+                    return CardSkeleton(
+                      isCircularImage: true,
+                      isBottomLinesActive: true,
+                    );
+                  },
+                ),
+                DefaultTabController(
+                    length: 3, // length of tabs
+                    initialIndex: 0,
+                    child: SingleChildScrollView(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Container(
+                              child: TabBar(
+                                labelColor: Colors.green,
+                                unselectedLabelColor: Colors.black,
+                                tabs: [
+                                  Tab(text: 'Properties'),
+                                  Tab(text: 'Liked'),
+                                  Tab(text: 'Wishlist'),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                                height: 400, //height of TabBarView
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        top: BorderSide(
+                                            color: Colors.grey, width: 0.5))),
+                                child: TabBarView(children: <Widget>[
+                                  GridView.count(
+                                      crossAxisCount: 2,
+                                      children: List.generate(4, (index) {
+                                        return PropertyCard(size);
+                                      })),
+                                  GridView.count(
+                                      crossAxisCount: 2,
+                                      children: List.generate(4, (index) {
+                                        return PropertyCard(size);
+                                      })),
+                                  GridView.count(
+                                      crossAxisCount: 2,
+                                      children: List.generate(4, (index) {
+                                        return PropertyCard(size);
+                                      })),
+                                ]))
+                          ]),
+                    )),
+              ]),
+        ),
+      ),
+    );
+  }
+}
 
 // Widget infoTexts(String txt) {
 //   return Padding(
