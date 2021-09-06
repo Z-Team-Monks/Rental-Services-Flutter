@@ -8,6 +8,7 @@ import 'package:rental/features/auth/models/exports.dart';
 import 'package:rental/features/auth/models/params/auth_signin_param.dart';
 import 'package:rental/features/auth/models/username.dart';
 import 'package:rental/features/auth/repository/repository.dart';
+import 'package:http/http.dart' as http;
 
 part 'signup_form_event.dart';
 part 'signup_form_state.dart';
@@ -28,38 +29,44 @@ class SignUpFormBloc extends Bloc<SignUpFormEvent, SignUpFormState> {
     if (event is UsernameChanged) {
       final username = Username.dirty(event.username);
       yield state.copyWith(
+        message: null,
         username: username.valid ? username : Username.pure(event.username),
-        status: Formz.validate([username, state.email, state.password]),
+        status: Formz.validate([username]),
       );
     } else if (event is EmailChanged) {
       final email = Email.dirty(event.email);
       yield state.copyWith(
+        message: null,
         email: email.valid ? email : Email.pure(event.email),
-        status: Formz.validate([state.username, email, state.password]),
+        status: Formz.validate([email]),
       );
     } else if (event is PasswordChanged) {
       final password = Password.dirty(event.password);
       yield state.copyWith(
+        message: null,
         password: password.valid ? password : Password.pure(event.password),
-        status: Formz.validate([state.username, state.email, password]),
+        status: Formz.validate([password]),
       );
     } else if (event is UsernameUnfocused) {
       final username = Username.dirty(state.username.value);
       yield state.copyWith(
+        message: null,
         username: username,
-        status: Formz.validate([username, state.email, state.password]),
+        status: Formz.validate([username]),
       );
     } else if (event is EmailUnfocused) {
       final email = Email.dirty(state.email.value);
       yield state.copyWith(
+        message: null,
         email: email,
-        status: Formz.validate([state.username, email, state.password]),
+        status: Formz.validate([email]),
       );
     } else if (event is PasswordUnfocused) {
       final password = Password.dirty(state.password.value);
       yield state.copyWith(
+        message: null,
         password: password,
-        status: Formz.validate([state.username, state.email, password]),
+        status: Formz.validate([password]),
       );
     } else if (event is FormSubmitted) {
       final username = Username.dirty(state.username.value);
@@ -70,6 +77,7 @@ class SignUpFormBloc extends Bloc<SignUpFormEvent, SignUpFormState> {
         email: email,
         password: password,
         username: username,
+        message: null,
         status: Formz.validate([username, email, password]),
       );
 
@@ -82,12 +90,22 @@ class SignUpFormBloc extends Bloc<SignUpFormEvent, SignUpFormState> {
             password: state.password.value);
 
         final failureOrSuccess = await _authRepository.getRemoteProvider
-            .createUser(authSignUpParam: param);
+            .createUser(client: http.Client(), authSignUpParam: param);
 
         if (failureOrSuccess.isLeft()) {
-          yield state.copyWith(status: FormzStatus.submissionFailure);
+          yield state.copyWith(
+              message: failureOrSuccess.fold(
+                  (l) => l.maybeMap(
+                        serverAuthError: (serverAuthError) => "serverAuthError",
+                        emailAlreadyInUse: (emailAlreadyInUse) =>
+                            "This email is already in use",
+                        orElse: () => "Unexpected error",
+                      ),
+                  (r) => null),
+              status: FormzStatus.submissionFailure);
         } else {
           yield state.copyWith(
+            message: null,
             status: FormzStatus.submissionSuccess,
           );
           //Navigate to home

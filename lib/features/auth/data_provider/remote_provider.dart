@@ -22,9 +22,10 @@ class AuthRemoteDataProvider {
   ///
   /// or throws an exception if an error occured
   Future<Either<AuthFaiulre, User>> createUser({
+    required http.Client client,
     required AuthSignUpParam authSignUpParam,
   }) async {
-    final http.Response response = await http.post(
+    final http.Response response = await client.post(
       Uri.parse("$baseUrl/users"),
       headers: <String, String>{"Content-Type": "application/json"},
       body: jsonEncode(
@@ -50,9 +51,10 @@ class AuthRemoteDataProvider {
   /// error occured
   ///
   Future<Either<AuthFaiulre, String>> attemptLogin({
+    required http.Client client,
     required AuthSignInParam userParams,
   }) async {
-    final http.Response response = await http.post(
+    final http.Response response = await client.post(
       Uri.parse("$baseUrl/auth"),
       headers: <String, String>{
         "Content-Type": "application/json",
