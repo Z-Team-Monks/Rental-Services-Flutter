@@ -53,7 +53,9 @@ class MyApp extends StatelessWidget {
                 )..add(ProfileLoad())),
         BlocProvider<AddReviewFormBloc>(
             create: (BuildContext context) => AddReviewFormBloc(
-                  reviewRepository: ReviewRemoteDataProvider(),
+                  reviewRepository: ReviewRepository(
+                    ReviewRemoteDataProvider(),
+                  ),
                 )),
         BlocProvider<PropertyAddBloc>(
           create: (BuildContext context) => PropertyAddBloc(),

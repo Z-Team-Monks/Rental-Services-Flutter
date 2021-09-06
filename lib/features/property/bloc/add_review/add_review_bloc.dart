@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
 class AddReviewFormBloc extends Bloc<AddReviewFormEvent, AddReviewFormState> {
-  final ReviewRemoteDataProvider reviewRepository;
+  final ReviewRepository reviewRepository;
   final userId;
   final propertyId;
   final token;
@@ -53,16 +53,14 @@ class AddReviewFormBloc extends Bloc<AddReviewFormEvent, AddReviewFormState> {
 
       if (state.status.isValidated) {
         yield state.copyWith(status: FormzStatus.submissionInProgress);
-        // final review = Review(
-        // userId: state.userId,
-        // message: state.message.value,
-        // rating: state.rating,
-        // );
+        final review = Review(
+          userId: state.userId,
+          message: state.message.value,
+          rating: state.rating,
+        );
 
-        final review = Review(userId: 'userId', message: "message");
         try {
-          await reviewRepository.createReview(
-            http.Client(),
+          await reviewRepository.createRemoteReview(
             review: review,
             propertyId: propertyId,
             token: token,

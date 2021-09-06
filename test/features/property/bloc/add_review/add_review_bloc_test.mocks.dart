@@ -3,13 +3,12 @@
 // Do not manually edit this file.
 
 import 'dart:async' as _i5;
-import 'dart:convert' as _i6;
-import 'dart:typed_data' as _i7;
 
-import 'package:http/http.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:rental/core/models/review.dart' as _i2;
+import 'package:rental/core/models/review.dart' as _i3;
 import 'package:rental/features/property/data_provider/add_review/review_remote_data_provider.dart'
+    as _i2;
+import 'package:rental/features/property/repository/add_review/add_review_repository.dart'
     as _i4;
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -20,121 +19,37 @@ import 'package:rental/features/property/data_provider/add_review/review_remote_
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: unnecessary_parenthesis
 
-class _FakeReview_0 extends _i1.Fake implements _i2.Review {}
+class _FakeReviewRemoteDataProvider_0 extends _i1.Fake
+    implements _i2.ReviewRemoteDataProvider {}
 
-class _FakeResponse_1 extends _i1.Fake implements _i3.Response {}
+class _FakeReview_1 extends _i1.Fake implements _i3.Review {}
 
-class _FakeStreamedResponse_2 extends _i1.Fake implements _i3.StreamedResponse {
-}
-
-/// A class which mocks [ReviewRemoteDataProvider].
+/// A class which mocks [ReviewRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockReviewRemoteDataProvider extends _i1.Mock
-    implements _i4.ReviewRemoteDataProvider {
-  MockReviewRemoteDataProvider() {
+class MockReviewRepository extends _i1.Mock implements _i4.ReviewRepository {
+  MockReviewRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  String get baseUrl =>
-      (super.noSuchMethod(Invocation.getter(#baseUrl), returnValue: '')
-          as String);
+  _i2.ReviewRemoteDataProvider get reviewRemoteDataProvider =>
+      (super.noSuchMethod(Invocation.getter(#reviewRemoteDataProvider),
+              returnValue: _FakeReviewRemoteDataProvider_0())
+          as _i2.ReviewRemoteDataProvider);
   @override
-  _i5.Future<List<_i2.Review>> getReviews(_i3.Client? client, dynamic id) =>
-      (super.noSuchMethod(Invocation.method(#getReviews, [client, id]),
-              returnValue: Future<List<_i2.Review>>.value(<_i2.Review>[]))
-          as _i5.Future<List<_i2.Review>>);
+  _i5.Future<List<_i3.Review>> getReviewsFromRemote(String? id) =>
+      (super.noSuchMethod(Invocation.method(#getReviewsFromRemote, [id]),
+              returnValue: Future<List<_i3.Review>>.value(<_i3.Review>[]))
+          as _i5.Future<List<_i3.Review>>);
   @override
-  _i5.Future<_i2.Review> createReview(_i3.Client? client,
-          {_i2.Review? review, String? propertyId, String? token}) =>
+  _i5.Future<_i3.Review> createRemoteReview(
+          {_i3.Review? review, String? propertyId, String? token}) =>
       (super.noSuchMethod(
-              Invocation.method(#createReview, [client],
+              Invocation.method(#createRemoteReview, [],
                   {#review: review, #propertyId: propertyId, #token: token}),
-              returnValue: Future<_i2.Review>.value(_FakeReview_0()))
-          as _i5.Future<_i2.Review>);
-  @override
-  String toString() => super.toString();
-}
-
-/// A class which mocks [Client].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockClient extends _i1.Mock implements _i3.Client {
-  MockClient() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i5.Future<_i3.Response> head(Uri? url, {Map<String, String>? headers}) =>
-      (super.noSuchMethod(Invocation.method(#head, [url], {#headers: headers}),
-              returnValue: Future<_i3.Response>.value(_FakeResponse_1()))
-          as _i5.Future<_i3.Response>);
-  @override
-  _i5.Future<_i3.Response> get(Uri? url, {Map<String, String>? headers}) =>
-      (super.noSuchMethod(Invocation.method(#get, [url], {#headers: headers}),
-              returnValue: Future<_i3.Response>.value(_FakeResponse_1()))
-          as _i5.Future<_i3.Response>);
-  @override
-  _i5.Future<_i3.Response> post(Uri? url,
-          {Map<String, String>? headers,
-          Object? body,
-          _i6.Encoding? encoding}) =>
-      (super.noSuchMethod(
-              Invocation.method(#post, [url],
-                  {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i3.Response>.value(_FakeResponse_1()))
-          as _i5.Future<_i3.Response>);
-  @override
-  _i5.Future<_i3.Response> put(Uri? url,
-          {Map<String, String>? headers,
-          Object? body,
-          _i6.Encoding? encoding}) =>
-      (super.noSuchMethod(
-              Invocation.method(#put, [url],
-                  {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i3.Response>.value(_FakeResponse_1()))
-          as _i5.Future<_i3.Response>);
-  @override
-  _i5.Future<_i3.Response> patch(Uri? url,
-          {Map<String, String>? headers,
-          Object? body,
-          _i6.Encoding? encoding}) =>
-      (super.noSuchMethod(
-              Invocation.method(#patch, [url],
-                  {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i3.Response>.value(_FakeResponse_1()))
-          as _i5.Future<_i3.Response>);
-  @override
-  _i5.Future<_i3.Response> delete(Uri? url,
-          {Map<String, String>? headers,
-          Object? body,
-          _i6.Encoding? encoding}) =>
-      (super.noSuchMethod(
-              Invocation.method(#delete, [url],
-                  {#headers: headers, #body: body, #encoding: encoding}),
-              returnValue: Future<_i3.Response>.value(_FakeResponse_1()))
-          as _i5.Future<_i3.Response>);
-  @override
-  _i5.Future<String> read(Uri? url, {Map<String, String>? headers}) =>
-      (super.noSuchMethod(Invocation.method(#read, [url], {#headers: headers}),
-          returnValue: Future<String>.value('')) as _i5.Future<String>);
-  @override
-  _i5.Future<_i7.Uint8List> readBytes(Uri? url,
-          {Map<String, String>? headers}) =>
-      (super.noSuchMethod(
-              Invocation.method(#readBytes, [url], {#headers: headers}),
-              returnValue: Future<_i7.Uint8List>.value(_i7.Uint8List(0)))
-          as _i5.Future<_i7.Uint8List>);
-  @override
-  _i5.Future<_i3.StreamedResponse> send(_i3.BaseRequest? request) =>
-      (super.noSuchMethod(Invocation.method(#send, [request]),
-              returnValue:
-                  Future<_i3.StreamedResponse>.value(_FakeStreamedResponse_2()))
-          as _i5.Future<_i3.StreamedResponse>);
-  @override
-  void close() => super.noSuchMethod(Invocation.method(#close, []),
-      returnValueForMissingStub: null);
+              returnValue: Future<_i3.Review>.value(_FakeReview_1()))
+          as _i5.Future<_i3.Review>);
   @override
   String toString() => super.toString();
 }
