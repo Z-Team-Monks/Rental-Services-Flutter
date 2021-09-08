@@ -27,6 +27,22 @@ class _$AuthFaiulreTearOff {
   EmailAlreadyInUse emailAlreadyInUse() {
     return const EmailAlreadyInUse();
   }
+
+  NetworkFailedError networkError() {
+    return const NetworkFailedError();
+  }
+
+  WriteToLocalError writeToLocalError() {
+    return const WriteToLocalError();
+  }
+
+  ReadFromLocalError readFromLocalError() {
+    return const ReadFromLocalError();
+  }
+
+  InvalidValue invalidValue() {
+    return const InvalidValue();
+  }
 }
 
 /// @nodoc
@@ -39,6 +55,10 @@ mixin _$AuthFaiulre {
     required TResult Function() serverAuthError,
     required TResult Function() invalidEmailOrPasssword,
     required TResult Function() emailAlreadyInUse,
+    required TResult Function() networkError,
+    required TResult Function() writeToLocalError,
+    required TResult Function() readFromLocalError,
+    required TResult Function() invalidValue,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -46,6 +66,10 @@ mixin _$AuthFaiulre {
     TResult Function()? serverAuthError,
     TResult Function()? invalidEmailOrPasssword,
     TResult Function()? emailAlreadyInUse,
+    TResult Function()? networkError,
+    TResult Function()? writeToLocalError,
+    TResult Function()? readFromLocalError,
+    TResult Function()? invalidValue,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -55,6 +79,10 @@ mixin _$AuthFaiulre {
     required TResult Function(InvalidEmailOrPasssword value)
         invalidEmailOrPasssword,
     required TResult Function(EmailAlreadyInUse value) emailAlreadyInUse,
+    required TResult Function(NetworkFailedError value) networkError,
+    required TResult Function(WriteToLocalError value) writeToLocalError,
+    required TResult Function(ReadFromLocalError value) readFromLocalError,
+    required TResult Function(InvalidValue value) invalidValue,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -62,6 +90,10 @@ mixin _$AuthFaiulre {
     TResult Function(ServerAuthError value)? serverAuthError,
     TResult Function(InvalidEmailOrPasssword value)? invalidEmailOrPasssword,
     TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
+    TResult Function(NetworkFailedError value)? networkError,
+    TResult Function(WriteToLocalError value)? writeToLocalError,
+    TResult Function(ReadFromLocalError value)? readFromLocalError,
+    TResult Function(InvalidValue value)? invalidValue,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -126,6 +158,10 @@ class _$ServerAuthError implements ServerAuthError {
     required TResult Function() serverAuthError,
     required TResult Function() invalidEmailOrPasssword,
     required TResult Function() emailAlreadyInUse,
+    required TResult Function() networkError,
+    required TResult Function() writeToLocalError,
+    required TResult Function() readFromLocalError,
+    required TResult Function() invalidValue,
   }) {
     return serverAuthError();
   }
@@ -136,6 +172,10 @@ class _$ServerAuthError implements ServerAuthError {
     TResult Function()? serverAuthError,
     TResult Function()? invalidEmailOrPasssword,
     TResult Function()? emailAlreadyInUse,
+    TResult Function()? networkError,
+    TResult Function()? writeToLocalError,
+    TResult Function()? readFromLocalError,
+    TResult Function()? invalidValue,
     required TResult orElse(),
   }) {
     if (serverAuthError != null) {
@@ -151,6 +191,10 @@ class _$ServerAuthError implements ServerAuthError {
     required TResult Function(InvalidEmailOrPasssword value)
         invalidEmailOrPasssword,
     required TResult Function(EmailAlreadyInUse value) emailAlreadyInUse,
+    required TResult Function(NetworkFailedError value) networkError,
+    required TResult Function(WriteToLocalError value) writeToLocalError,
+    required TResult Function(ReadFromLocalError value) readFromLocalError,
+    required TResult Function(InvalidValue value) invalidValue,
   }) {
     return serverAuthError(this);
   }
@@ -161,6 +205,10 @@ class _$ServerAuthError implements ServerAuthError {
     TResult Function(ServerAuthError value)? serverAuthError,
     TResult Function(InvalidEmailOrPasssword value)? invalidEmailOrPasssword,
     TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
+    TResult Function(NetworkFailedError value)? networkError,
+    TResult Function(WriteToLocalError value)? writeToLocalError,
+    TResult Function(ReadFromLocalError value)? readFromLocalError,
+    TResult Function(InvalidValue value)? invalidValue,
     required TResult orElse(),
   }) {
     if (serverAuthError != null) {
@@ -217,6 +265,10 @@ class _$InvalidEmailOrPasssword implements InvalidEmailOrPasssword {
     required TResult Function() serverAuthError,
     required TResult Function() invalidEmailOrPasssword,
     required TResult Function() emailAlreadyInUse,
+    required TResult Function() networkError,
+    required TResult Function() writeToLocalError,
+    required TResult Function() readFromLocalError,
+    required TResult Function() invalidValue,
   }) {
     return invalidEmailOrPasssword();
   }
@@ -227,6 +279,10 @@ class _$InvalidEmailOrPasssword implements InvalidEmailOrPasssword {
     TResult Function()? serverAuthError,
     TResult Function()? invalidEmailOrPasssword,
     TResult Function()? emailAlreadyInUse,
+    TResult Function()? networkError,
+    TResult Function()? writeToLocalError,
+    TResult Function()? readFromLocalError,
+    TResult Function()? invalidValue,
     required TResult orElse(),
   }) {
     if (invalidEmailOrPasssword != null) {
@@ -242,6 +298,10 @@ class _$InvalidEmailOrPasssword implements InvalidEmailOrPasssword {
     required TResult Function(InvalidEmailOrPasssword value)
         invalidEmailOrPasssword,
     required TResult Function(EmailAlreadyInUse value) emailAlreadyInUse,
+    required TResult Function(NetworkFailedError value) networkError,
+    required TResult Function(WriteToLocalError value) writeToLocalError,
+    required TResult Function(ReadFromLocalError value) readFromLocalError,
+    required TResult Function(InvalidValue value) invalidValue,
   }) {
     return invalidEmailOrPasssword(this);
   }
@@ -252,6 +312,10 @@ class _$InvalidEmailOrPasssword implements InvalidEmailOrPasssword {
     TResult Function(ServerAuthError value)? serverAuthError,
     TResult Function(InvalidEmailOrPasssword value)? invalidEmailOrPasssword,
     TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
+    TResult Function(NetworkFailedError value)? networkError,
+    TResult Function(WriteToLocalError value)? writeToLocalError,
+    TResult Function(ReadFromLocalError value)? readFromLocalError,
+    TResult Function(InvalidValue value)? invalidValue,
     required TResult orElse(),
   }) {
     if (invalidEmailOrPasssword != null) {
@@ -308,6 +372,10 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
     required TResult Function() serverAuthError,
     required TResult Function() invalidEmailOrPasssword,
     required TResult Function() emailAlreadyInUse,
+    required TResult Function() networkError,
+    required TResult Function() writeToLocalError,
+    required TResult Function() readFromLocalError,
+    required TResult Function() invalidValue,
   }) {
     return emailAlreadyInUse();
   }
@@ -318,6 +386,10 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
     TResult Function()? serverAuthError,
     TResult Function()? invalidEmailOrPasssword,
     TResult Function()? emailAlreadyInUse,
+    TResult Function()? networkError,
+    TResult Function()? writeToLocalError,
+    TResult Function()? readFromLocalError,
+    TResult Function()? invalidValue,
     required TResult orElse(),
   }) {
     if (emailAlreadyInUse != null) {
@@ -333,6 +405,10 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
     required TResult Function(InvalidEmailOrPasssword value)
         invalidEmailOrPasssword,
     required TResult Function(EmailAlreadyInUse value) emailAlreadyInUse,
+    required TResult Function(NetworkFailedError value) networkError,
+    required TResult Function(WriteToLocalError value) writeToLocalError,
+    required TResult Function(ReadFromLocalError value) readFromLocalError,
+    required TResult Function(InvalidValue value) invalidValue,
   }) {
     return emailAlreadyInUse(this);
   }
@@ -343,6 +419,10 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
     TResult Function(ServerAuthError value)? serverAuthError,
     TResult Function(InvalidEmailOrPasssword value)? invalidEmailOrPasssword,
     TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
+    TResult Function(NetworkFailedError value)? networkError,
+    TResult Function(WriteToLocalError value)? writeToLocalError,
+    TResult Function(ReadFromLocalError value)? readFromLocalError,
+    TResult Function(InvalidValue value)? invalidValue,
     required TResult orElse(),
   }) {
     if (emailAlreadyInUse != null) {
@@ -354,4 +434,431 @@ class _$EmailAlreadyInUse implements EmailAlreadyInUse {
 
 abstract class EmailAlreadyInUse implements AuthFaiulre {
   const factory EmailAlreadyInUse() = _$EmailAlreadyInUse;
+}
+
+/// @nodoc
+abstract class $NetworkFailedErrorCopyWith<$Res> {
+  factory $NetworkFailedErrorCopyWith(
+          NetworkFailedError value, $Res Function(NetworkFailedError) then) =
+      _$NetworkFailedErrorCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$NetworkFailedErrorCopyWithImpl<$Res>
+    extends _$AuthFaiulreCopyWithImpl<$Res>
+    implements $NetworkFailedErrorCopyWith<$Res> {
+  _$NetworkFailedErrorCopyWithImpl(
+      NetworkFailedError _value, $Res Function(NetworkFailedError) _then)
+      : super(_value, (v) => _then(v as NetworkFailedError));
+
+  @override
+  NetworkFailedError get _value => super._value as NetworkFailedError;
+}
+
+/// @nodoc
+
+class _$NetworkFailedError implements NetworkFailedError {
+  const _$NetworkFailedError();
+
+  @override
+  String toString() {
+    return 'AuthFaiulre.networkError()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is NetworkFailedError);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() serverAuthError,
+    required TResult Function() invalidEmailOrPasssword,
+    required TResult Function() emailAlreadyInUse,
+    required TResult Function() networkError,
+    required TResult Function() writeToLocalError,
+    required TResult Function() readFromLocalError,
+    required TResult Function() invalidValue,
+  }) {
+    return networkError();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? serverAuthError,
+    TResult Function()? invalidEmailOrPasssword,
+    TResult Function()? emailAlreadyInUse,
+    TResult Function()? networkError,
+    TResult Function()? writeToLocalError,
+    TResult Function()? readFromLocalError,
+    TResult Function()? invalidValue,
+    required TResult orElse(),
+  }) {
+    if (networkError != null) {
+      return networkError();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ServerAuthError value) serverAuthError,
+    required TResult Function(InvalidEmailOrPasssword value)
+        invalidEmailOrPasssword,
+    required TResult Function(EmailAlreadyInUse value) emailAlreadyInUse,
+    required TResult Function(NetworkFailedError value) networkError,
+    required TResult Function(WriteToLocalError value) writeToLocalError,
+    required TResult Function(ReadFromLocalError value) readFromLocalError,
+    required TResult Function(InvalidValue value) invalidValue,
+  }) {
+    return networkError(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ServerAuthError value)? serverAuthError,
+    TResult Function(InvalidEmailOrPasssword value)? invalidEmailOrPasssword,
+    TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
+    TResult Function(NetworkFailedError value)? networkError,
+    TResult Function(WriteToLocalError value)? writeToLocalError,
+    TResult Function(ReadFromLocalError value)? readFromLocalError,
+    TResult Function(InvalidValue value)? invalidValue,
+    required TResult orElse(),
+  }) {
+    if (networkError != null) {
+      return networkError(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class NetworkFailedError implements AuthFaiulre {
+  const factory NetworkFailedError() = _$NetworkFailedError;
+}
+
+/// @nodoc
+abstract class $WriteToLocalErrorCopyWith<$Res> {
+  factory $WriteToLocalErrorCopyWith(
+          WriteToLocalError value, $Res Function(WriteToLocalError) then) =
+      _$WriteToLocalErrorCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$WriteToLocalErrorCopyWithImpl<$Res>
+    extends _$AuthFaiulreCopyWithImpl<$Res>
+    implements $WriteToLocalErrorCopyWith<$Res> {
+  _$WriteToLocalErrorCopyWithImpl(
+      WriteToLocalError _value, $Res Function(WriteToLocalError) _then)
+      : super(_value, (v) => _then(v as WriteToLocalError));
+
+  @override
+  WriteToLocalError get _value => super._value as WriteToLocalError;
+}
+
+/// @nodoc
+
+class _$WriteToLocalError implements WriteToLocalError {
+  const _$WriteToLocalError();
+
+  @override
+  String toString() {
+    return 'AuthFaiulre.writeToLocalError()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is WriteToLocalError);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() serverAuthError,
+    required TResult Function() invalidEmailOrPasssword,
+    required TResult Function() emailAlreadyInUse,
+    required TResult Function() networkError,
+    required TResult Function() writeToLocalError,
+    required TResult Function() readFromLocalError,
+    required TResult Function() invalidValue,
+  }) {
+    return writeToLocalError();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? serverAuthError,
+    TResult Function()? invalidEmailOrPasssword,
+    TResult Function()? emailAlreadyInUse,
+    TResult Function()? networkError,
+    TResult Function()? writeToLocalError,
+    TResult Function()? readFromLocalError,
+    TResult Function()? invalidValue,
+    required TResult orElse(),
+  }) {
+    if (writeToLocalError != null) {
+      return writeToLocalError();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ServerAuthError value) serverAuthError,
+    required TResult Function(InvalidEmailOrPasssword value)
+        invalidEmailOrPasssword,
+    required TResult Function(EmailAlreadyInUse value) emailAlreadyInUse,
+    required TResult Function(NetworkFailedError value) networkError,
+    required TResult Function(WriteToLocalError value) writeToLocalError,
+    required TResult Function(ReadFromLocalError value) readFromLocalError,
+    required TResult Function(InvalidValue value) invalidValue,
+  }) {
+    return writeToLocalError(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ServerAuthError value)? serverAuthError,
+    TResult Function(InvalidEmailOrPasssword value)? invalidEmailOrPasssword,
+    TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
+    TResult Function(NetworkFailedError value)? networkError,
+    TResult Function(WriteToLocalError value)? writeToLocalError,
+    TResult Function(ReadFromLocalError value)? readFromLocalError,
+    TResult Function(InvalidValue value)? invalidValue,
+    required TResult orElse(),
+  }) {
+    if (writeToLocalError != null) {
+      return writeToLocalError(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class WriteToLocalError implements AuthFaiulre {
+  const factory WriteToLocalError() = _$WriteToLocalError;
+}
+
+/// @nodoc
+abstract class $ReadFromLocalErrorCopyWith<$Res> {
+  factory $ReadFromLocalErrorCopyWith(
+          ReadFromLocalError value, $Res Function(ReadFromLocalError) then) =
+      _$ReadFromLocalErrorCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$ReadFromLocalErrorCopyWithImpl<$Res>
+    extends _$AuthFaiulreCopyWithImpl<$Res>
+    implements $ReadFromLocalErrorCopyWith<$Res> {
+  _$ReadFromLocalErrorCopyWithImpl(
+      ReadFromLocalError _value, $Res Function(ReadFromLocalError) _then)
+      : super(_value, (v) => _then(v as ReadFromLocalError));
+
+  @override
+  ReadFromLocalError get _value => super._value as ReadFromLocalError;
+}
+
+/// @nodoc
+
+class _$ReadFromLocalError implements ReadFromLocalError {
+  const _$ReadFromLocalError();
+
+  @override
+  String toString() {
+    return 'AuthFaiulre.readFromLocalError()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is ReadFromLocalError);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() serverAuthError,
+    required TResult Function() invalidEmailOrPasssword,
+    required TResult Function() emailAlreadyInUse,
+    required TResult Function() networkError,
+    required TResult Function() writeToLocalError,
+    required TResult Function() readFromLocalError,
+    required TResult Function() invalidValue,
+  }) {
+    return readFromLocalError();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? serverAuthError,
+    TResult Function()? invalidEmailOrPasssword,
+    TResult Function()? emailAlreadyInUse,
+    TResult Function()? networkError,
+    TResult Function()? writeToLocalError,
+    TResult Function()? readFromLocalError,
+    TResult Function()? invalidValue,
+    required TResult orElse(),
+  }) {
+    if (readFromLocalError != null) {
+      return readFromLocalError();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ServerAuthError value) serverAuthError,
+    required TResult Function(InvalidEmailOrPasssword value)
+        invalidEmailOrPasssword,
+    required TResult Function(EmailAlreadyInUse value) emailAlreadyInUse,
+    required TResult Function(NetworkFailedError value) networkError,
+    required TResult Function(WriteToLocalError value) writeToLocalError,
+    required TResult Function(ReadFromLocalError value) readFromLocalError,
+    required TResult Function(InvalidValue value) invalidValue,
+  }) {
+    return readFromLocalError(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ServerAuthError value)? serverAuthError,
+    TResult Function(InvalidEmailOrPasssword value)? invalidEmailOrPasssword,
+    TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
+    TResult Function(NetworkFailedError value)? networkError,
+    TResult Function(WriteToLocalError value)? writeToLocalError,
+    TResult Function(ReadFromLocalError value)? readFromLocalError,
+    TResult Function(InvalidValue value)? invalidValue,
+    required TResult orElse(),
+  }) {
+    if (readFromLocalError != null) {
+      return readFromLocalError(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ReadFromLocalError implements AuthFaiulre {
+  const factory ReadFromLocalError() = _$ReadFromLocalError;
+}
+
+/// @nodoc
+abstract class $InvalidValueCopyWith<$Res> {
+  factory $InvalidValueCopyWith(
+          InvalidValue value, $Res Function(InvalidValue) then) =
+      _$InvalidValueCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$InvalidValueCopyWithImpl<$Res> extends _$AuthFaiulreCopyWithImpl<$Res>
+    implements $InvalidValueCopyWith<$Res> {
+  _$InvalidValueCopyWithImpl(
+      InvalidValue _value, $Res Function(InvalidValue) _then)
+      : super(_value, (v) => _then(v as InvalidValue));
+
+  @override
+  InvalidValue get _value => super._value as InvalidValue;
+}
+
+/// @nodoc
+
+class _$InvalidValue implements InvalidValue {
+  const _$InvalidValue();
+
+  @override
+  String toString() {
+    return 'AuthFaiulre.invalidValue()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) || (other is InvalidValue);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() serverAuthError,
+    required TResult Function() invalidEmailOrPasssword,
+    required TResult Function() emailAlreadyInUse,
+    required TResult Function() networkError,
+    required TResult Function() writeToLocalError,
+    required TResult Function() readFromLocalError,
+    required TResult Function() invalidValue,
+  }) {
+    return invalidValue();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? serverAuthError,
+    TResult Function()? invalidEmailOrPasssword,
+    TResult Function()? emailAlreadyInUse,
+    TResult Function()? networkError,
+    TResult Function()? writeToLocalError,
+    TResult Function()? readFromLocalError,
+    TResult Function()? invalidValue,
+    required TResult orElse(),
+  }) {
+    if (invalidValue != null) {
+      return invalidValue();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ServerAuthError value) serverAuthError,
+    required TResult Function(InvalidEmailOrPasssword value)
+        invalidEmailOrPasssword,
+    required TResult Function(EmailAlreadyInUse value) emailAlreadyInUse,
+    required TResult Function(NetworkFailedError value) networkError,
+    required TResult Function(WriteToLocalError value) writeToLocalError,
+    required TResult Function(ReadFromLocalError value) readFromLocalError,
+    required TResult Function(InvalidValue value) invalidValue,
+  }) {
+    return invalidValue(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ServerAuthError value)? serverAuthError,
+    TResult Function(InvalidEmailOrPasssword value)? invalidEmailOrPasssword,
+    TResult Function(EmailAlreadyInUse value)? emailAlreadyInUse,
+    TResult Function(NetworkFailedError value)? networkError,
+    TResult Function(WriteToLocalError value)? writeToLocalError,
+    TResult Function(ReadFromLocalError value)? readFromLocalError,
+    TResult Function(InvalidValue value)? invalidValue,
+    required TResult orElse(),
+  }) {
+    if (invalidValue != null) {
+      return invalidValue(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class InvalidValue implements AuthFaiulre {
+  const factory InvalidValue() = _$InvalidValue;
 }

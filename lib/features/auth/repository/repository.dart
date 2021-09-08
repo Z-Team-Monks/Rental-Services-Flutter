@@ -25,7 +25,26 @@ class AuthRepository {
   Future<Either<AuthFaiulre, String>> signInUser(AuthSignInParam param) async {
     final failureOrSuccess =
         await _authRemoteDataProvider.attemptLogin(userParams: param);
-
     return failureOrSuccess;
+  }
+
+  Future<Either<AuthFaiulre, Unit>> storeToken(
+      {required String key, required String value}) async {
+    final res = await _authLocalDataProvider.storeOnSharedPref(key, value);
+    print("saved token");
+    return res;
+  }
+
+  Either<AuthFaiulre, String?> readToken({required String key}) {
+    final res = _authLocalDataProvider.readFromSharedPref(key);
+    if (res.isLeft()) {
+      return left(AuthFaiulre.invalidValue());
+    } else {
+      final token = res.getOrElse(() => null);
+      if (token == null || token.isEmpty) {
+        return left(AuthFaiulre.invalidValue());
+      }
+      return res;
+    }
   }
 }

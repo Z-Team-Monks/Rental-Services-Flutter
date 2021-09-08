@@ -1,13 +1,22 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as path;
 
+import '../../locator.dart';
+
 class AppDB {
-  late final Database dBInstance;
-  AppDB(int version) {
-    initOrGetDB(version);
+  late final AppDB instance;
+  late final Database db;
+
+  Future<AppDB> getInstance(int version) async {
+    instance = await getIt.get<Future<AppDB>>();
+    await initOrGetDB(version);
+    return instance;
   }
-  Future<Database> initOrGetDB(int version) async {
-    dBInstance = await openDatabase(
+
+  Database get getDb => db;
+
+  Future<void> initOrGetDB(int version) async {
+    db = await openDatabase(
       path.join(await getDatabasesPath(), 'doggie_database.db'),
       onCreate: (db, version) {
         /// create [User] table
@@ -22,6 +31,5 @@ class AppDB {
       },
       version: version,
     );
-    return dBInstance;
   }
 }

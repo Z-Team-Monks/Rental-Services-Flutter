@@ -13,7 +13,6 @@ import 'package:telephony/telephony.dart';
 final GetIt getIt = GetIt.instance;
 
 Future<void> setUp() async {
-  getIt.registerLazySingleton<AppDB>(() => AppDB(1));
   getIt.registerLazySingleton<PropertyRepository>(() => PropertyRepository(
         PropertyLocalDataProvider(),
         PropertyRemoteDataProvider(),

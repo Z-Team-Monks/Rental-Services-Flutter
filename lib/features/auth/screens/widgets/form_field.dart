@@ -26,22 +26,6 @@ class CustomFormField extends StatelessWidget {
           ),
           helperText: 'Not empty',
           errorText: errorMessage,
-          errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Colors.grey),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Colors.grey),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Colors.grey),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(width: 1, color: Colors.grey),
-            borderRadius: BorderRadius.circular(12),
-          ),
         ),
         cursorColor: Colors.black,
         textInputAction: TextInputAction.done,

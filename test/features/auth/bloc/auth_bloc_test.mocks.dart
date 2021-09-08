@@ -8,10 +8,10 @@ import 'package:dartz/dartz.dart' as _i3;
 import 'package:http/http.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:rental/core/models/user.dart' as _i7;
-import 'package:rental/features/auth/repository/repository.dart' as _i4;
 import 'package:rental/features/auth/failures/auth_failure.dart' as _i6;
 import 'package:rental/features/auth/models/params/auth_signin_param.dart'
     as _i8;
+import 'package:rental/features/auth/repository/repository.dart' as _i4;
 
 // ignore_for_file: avoid_redundant_argument_values
 // ignore_for_file: avoid_setters_without_getters
@@ -54,6 +54,19 @@ class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
               returnValue: Future<_i3.Either<_i6.AuthFaiulre, String>>.value(
                   _FakeEither_1<_i6.AuthFaiulre, String>()))
           as _i5.Future<_i3.Either<_i6.AuthFaiulre, String>>);
+  @override
+  _i5.Future<_i3.Either<_i6.AuthFaiulre, _i3.Unit>> storeToken(
+          {String? key, String? value}) =>
+      (super.noSuchMethod(
+              Invocation.method(#storeToken, [], {#key: key, #value: value}),
+              returnValue: Future<_i3.Either<_i6.AuthFaiulre, _i3.Unit>>.value(
+                  _FakeEither_1<_i6.AuthFaiulre, _i3.Unit>()))
+          as _i5.Future<_i3.Either<_i6.AuthFaiulre, _i3.Unit>>);
+  @override
+  _i3.Either<_i6.AuthFaiulre, String?> readToken({String? key}) =>
+      (super.noSuchMethod(Invocation.method(#readToken, [], {#key: key}),
+              returnValue: _FakeEither_1<_i6.AuthFaiulre, String?>())
+          as _i3.Either<_i6.AuthFaiulre, String?>);
   @override
   String toString() => super.toString();
 }

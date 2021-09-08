@@ -8,7 +8,7 @@ import 'package:rental/features/auth/failures/auth_failure.dart';
 import 'package:rental/features/auth/models/params/auth_signin_param.dart';
 
 class AuthRemoteDataProvider {
-  final String baseUrl = "http://10.6.193.148:5000/api";
+  final String baseUrl = "http://10.6.250.117:5000/api/v1";
   final User user = new User(
       name: "Kidus Yoseph",
       email: "se.kidus.yoseph@gmail.com",
@@ -24,22 +24,26 @@ class AuthRemoteDataProvider {
   Future<Either<AuthFaiulre, User>> createUser({
     required AuthSignUpParam authSignUpParam,
   }) async {
-    final http.Response response = await http.post(
-      Uri.parse("$baseUrl/users"),
-      headers: <String, String>{"Content-Type": "application/json"},
-      body: jsonEncode(
-        {
-          "name": authSignUpParam.username,
-          "email": authSignUpParam.email,
-          "password": authSignUpParam.password,
-        },
-      ),
-    );
+    try {
+      final http.Response response = await http.post(
+        Uri.parse("$baseUrl/users"),
+        headers: <String, String>{"Content-Type": "application/json"},
+        body: jsonEncode(
+          {
+            "name": authSignUpParam.username,
+            "email": authSignUpParam.email,
+            "password": authSignUpParam.password,
+          },
+        ),
+      );
 
-    if (response.statusCode == 201) {
-      return right(User.fromJson(jsonDecode(response.body)));
-    } else {
-      throw Exception("Failed to register User!");
+      if (response.statusCode == 201) {
+        return right(User.fromJson(jsonDecode(response.body)));
+      } else {
+        return left(AuthFaiulre.serverAuthError());
+      }
+    } on SocketException catch (e) {
+      return left(AuthFaiulre.networkError());
     }
   }
 
@@ -52,25 +56,27 @@ class AuthRemoteDataProvider {
   Future<Either<AuthFaiulre, String>> attemptLogin({
     required AuthSignInParam userParams,
   }) async {
-    final http.Response response = await http.post(
-      Uri.parse("$baseUrl/auth"),
-      headers: <String, String>{
-        "Content-Type": "application/json",
-      },
-      body: jsonEncode(
-        {
-          "email": userParams.email,
-          "password": userParams.password,
+    try {
+      final http.Response response = await http.post(
+        Uri.parse("$baseUrl/auth"),
+        headers: <String, String>{
+          "Content-Type": "application/json",
         },
-      ),
-    );
+        body: jsonEncode(
+          {
+            "email": userParams.email,
+            "password": userParams.password,
+          },
+        ),
+      );
 
-    if (response.statusCode == 200) {
-      return right(response.body);
-    } else if (response.statusCode == 400) {
-      return left(AuthFaiulre.serverAuthError());
-    } else {
-      return left(AuthFaiulre.serverAuthError());
+      if (response.statusCode == 200) {
+        return right(response.body);
+      } else {
+        return left(AuthFaiulre.invalidEmailOrPasssword());
+      }
+    } on SocketException catch (e) {
+      return left(AuthFaiulre.networkError());
     }
   }
 
