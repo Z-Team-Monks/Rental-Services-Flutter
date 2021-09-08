@@ -63,7 +63,6 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
       yield state.copyWith(
         email: email,
         password: password,
-        // username: state.username,
         message: null,
         status: Formz.validate([email, password]),
       );
@@ -77,26 +76,33 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
         final failureOrSuccess = await authRepository.signInUser(param);
 
         if (failureOrSuccess.isLeft()) {
+          print("not working");
           yield state.copyWith(
               message: failureOrSuccess.fold(
                   (l) => l.maybeMap(
-                        serverAuthError: (serverAuthError) => "serverAuthError",
-                        emailAlreadyInUse: (emailAlreadyInUse) =>
-                            "This email is already in use",
-                        orElse: () => "Unexpected error",
-                      ),
+                      serverAuthError: (serverAuthError) => "Server error",
+                      emailAlreadyInUse: (emailAlreadyInUse) =>
+                          "This email is already in use",
+                      networkError: (networkError) => "Network Error",
+                      invalidEmailOrPasssword: (invalidCredentials) =>
+                          "Invalid email or password is used",
+                      orElse: () => "Unkown error occured"),
                   (r) => null),
               status: FormzStatus.submissionFailure);
         } else {
+          print("working");
+          await authRepository.storeToken(
+              key: "token", value: failureOrSuccess.fold((l) => "", (r) => r));
+
           yield state.copyWith(
             message: null,
             status: FormzStatus.submissionSuccess,
           );
-          //Navigate to home
-
         }
       } else {
+        print("invalid form");
         yield state.copyWith(
+          message: null,
           status: FormzStatus.invalid,
         );
       }
