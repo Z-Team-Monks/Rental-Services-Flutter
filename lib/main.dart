@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute:
-            (isViewed ?? false) ? HomeFeed.pageRoute : SplashScreen.pageRoute,
+            (isViewed ?? false) ? PropertyDetail.pageRoute : SplashScreen.pageRoute,
         onGenerateRoute: RouteGenerator.generateRoute,
         title: 'House Rent',
         theme: CustomTheme.lightTheme,

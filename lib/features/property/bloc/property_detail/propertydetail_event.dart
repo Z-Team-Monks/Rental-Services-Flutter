@@ -8,8 +8,11 @@ abstract class PropertyDetailEvent extends Equatable {
 }
 
 class RequestPropertyDetail extends PropertyDetailEvent {
+  final String id;
   const RequestPropertyDetail({
-    required String id,
+    required this.id,
   });
-}
 
+  @override
+  List<String?> get props => [id];
+}
