@@ -1,18 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rental/features/property/bloc/Reviews/reviews_state.dart';
 import 'package:rental/features/property/bloc/property_detail/propertydetail_bloc.dart';
 import 'package:rental/features/property/data_provider/property_local_data_provider.dart';
 import 'package:rental/features/property/data_provider/property_remote_data_provider.dart';
 import 'package:rental/features/property/repository/property_repository.dart';
-import 'package:rental/core/presentation/constants.dart';
-import 'package:rental/core/presentation/customTheme/appTheme.dart';
-import 'package:rental/features/property/bloc/Reviews/reviews_bloc.dart';
-import 'package:rental/features/property/bloc/Reviews/reviews_event.dart';
-import 'package:rental/features/property/bloc/Reviews/reviews_state.dart';
-import 'package:rental/features/property/data_provider/add_review/review_remote_data_provider.dart';
-import 'package:rental/features/property/repository/add_review/add_review_repository.dart';
-import 'package:rental/features/property/screens/property_feed/components/feed_card.dart';
 import 'package:shimmer/shimmer.dart';
 
 class PropertyDetail extends StatelessWidget {
@@ -77,6 +70,30 @@ class PropertyDetail extends StatelessWidget {
                       ),
                       propertyNameAndRatingShimmer(context, currentTheme),
                       _horizontalUnderline(),
+                      BlocBuilder(builder: (context, state) {
+                        if (state is ReviewsLoading) {
+                          return reviewShimmer();
+                        } else if (state is ReviewOperationSuccess) {
+                          List<Widget> widgets = [];
+                          for (var review in state.reviews) {
+                            widgets.add(
+                              _reviewListCard(
+                                review: review.message ?? "",
+                                imageUrl: "review",
+                                username: "username",
+                              ),
+                            );
+                          }
+                          return Column(children: widgets);
+                        } else if (state is ReviewOperationFailure) {
+                          return Container(
+                            height: 30,
+                            child: Text("Network Error"),
+                          );
+                        } else {
+                          return Container(height: 30);
+                        }
+                      }),
                       // _reviewListCard(),
                       // _reviewListCard(),
                       // _reviewListCard(),
