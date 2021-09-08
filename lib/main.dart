@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental/core/presentation/customTheme/appTheme.dart';
+import 'package:rental/features/property/bloc/Reviews/reviews_bloc.dart';
+import 'package:rental/features/property/bloc/Reviews/reviews_event.dart';
 import 'package:rental/features/property/bloc/add_review/add_review_bloc.dart';
 import 'package:rental/features/property/bloc/property_add/property_add_bloc.dart';
 import 'package:rental/features/property/data_provider/add_review/review_remote_data_provider.dart';
@@ -59,12 +61,13 @@ class MyApp extends StatelessWidget {
                 )),
         BlocProvider<PropertyAddBloc>(
           create: (BuildContext context) => PropertyAddBloc(),
-        )
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute:
-            (isViewed ?? false) ? PropertyDetail.pageRoute : SplashScreen.pageRoute,
+        initialRoute: (isViewed ?? false)
+            ? PropertyDetail.pageRoute
+            : SplashScreen.pageRoute,
         onGenerateRoute: RouteGenerator.generateRoute,
         title: 'House Rent',
         theme: CustomTheme.lightTheme,

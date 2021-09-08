@@ -5,6 +5,14 @@ import 'package:rental/features/property/bloc/property_detail/propertydetail_blo
 import 'package:rental/features/property/data_provider/property_local_data_provider.dart';
 import 'package:rental/features/property/data_provider/property_remote_data_provider.dart';
 import 'package:rental/features/property/repository/property_repository.dart';
+import 'package:rental/core/presentation/constants.dart';
+import 'package:rental/core/presentation/customTheme/appTheme.dart';
+import 'package:rental/features/property/bloc/Reviews/reviews_bloc.dart';
+import 'package:rental/features/property/bloc/Reviews/reviews_event.dart';
+import 'package:rental/features/property/bloc/Reviews/reviews_state.dart';
+import 'package:rental/features/property/data_provider/add_review/review_remote_data_provider.dart';
+import 'package:rental/features/property/repository/add_review/add_review_repository.dart';
+import 'package:rental/features/property/screens/property_feed/components/feed_card.dart';
 import 'package:shimmer/shimmer.dart';
 
 class PropertyDetail extends StatelessWidget {
@@ -13,14 +21,23 @@ class PropertyDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentTheme = Theme.of(context);
-
-    return BlocProvider(
-      create: (context) => PropertyDetailBloc(
-        propertyRepository: PropertyRepository(
-          PropertyLocalDataProvider(),
-          PropertyRemoteDataProvider(),
-        ),
-      )..add(RequestPropertyDetail(id: "6130d66a17dfc38bca19279f")),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (context) => PropertyDetailBloc(
+                  propertyRepository: PropertyRepository(
+                    PropertyLocalDataProvider(),
+                    PropertyRemoteDataProvider(),
+                  ),
+                )..add(RequestPropertyDetail(id: "6130d66a17dfc38bca19279f"))),
+        // BlocProvider<ReviewsBloc>(
+        // create: (context) {
+        //   return ReviewsBloc(
+        //     reviewRepository: ReviewRepository(
+        //       ReviewRemoteDataProvider(),
+        //     ),
+        //   )..add(ReviewsLoad())
+      ],
       child: SafeArea(
         child: Scaffold(
           body: Stack(
@@ -60,9 +77,9 @@ class PropertyDetail extends StatelessWidget {
                       ),
                       propertyNameAndRatingShimmer(context, currentTheme),
                       _horizontalUnderline(),
-                      _reviewListCard(),
-                      _reviewListCard(),
-                      _reviewListCard(),
+                      // _reviewListCard(),
+                      // _reviewListCard(),
+                      // _reviewListCard(),
                       SizedBox(
                         height: 40,
                       ),
@@ -128,8 +145,7 @@ class PropertyDetail extends StatelessWidget {
                                   TextStyle(color: Colors.black, fontSize: 18),
                               children: [
                                 TextSpan(
-                                  text:
-                                      "${state.props[0]!.bill} ETB / ",
+                                  text: "${state.props[0]!.bill} ETB / ",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -141,7 +157,7 @@ class PropertyDetail extends StatelessWidget {
                               children: [
                                 IconButton(
                                     onPressed: () {
-                                      // send message to the owner in herer 
+                                      // send message to the owner in herer
                                     },
                                     icon: Icon(Icons.chat_bubble_outline)),
                                 TextButton.icon(
@@ -401,7 +417,11 @@ Widget _horizontalUnderline({Color color = Colors.redAccent}) {
   );
 }
 
-Widget _reviewListCard() {
+Widget _reviewListCard({
+  required String review,
+  required String imageUrl,
+  required String username,
+}) {
   return Padding(
     padding: const EdgeInsets.symmetric(
       horizontal: 8.0,
@@ -415,26 +435,96 @@ Widget _reviewListCard() {
               height: 50,
               padding: EdgeInsets.all(8.0),
               decoration: BoxDecoration(
-                // color: Colors.red,
+                color: Colors.grey,
                 image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(
-                        "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=634&q=80")),
+                  fit: BoxFit.cover,
+                  image: CachedNetworkImageProvider(imageUrl),
+                ),
                 shape: BoxShape.circle,
               ),
             ),
             SizedBox(
               width: 20,
             ),
-            Text("Niko Altechalm")
+            Text(username)
           ],
         ),
         SizedBox(
           height: 10,
         ),
-        Text(
-          "That's a fantastic new app feature. You and your team did an excellent job of incorporating user testing feedback.",
+        Text(review),
+        SizedBox(height: 10),
+        _horizontalUnderline(color: Colors.grey),
+      ],
+    ),
+  );
+}
+
+Widget reviewShimmer() {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Stack(
+              children: [
+                Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.grey[300],
+                    ),
+                    width: 60,
+                    height: 60,
+                  ),
+                  // child:
+                ),
+              ],
+            ),
+            SizedBox(width: 20),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    height: 10,
+                    width: 100,
+                    color: Colors.grey[300],
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
+        SizedBox(height: 10),
+        Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(
+            height: 8,
+            width: 300,
+            color: Colors.grey[300],
+          ),
+        ),
+        SizedBox(height: 10),
+        Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(
+            height: 8,
+            width: 300,
+            color: Colors.grey[300],
+          ),
+        ),
+        SizedBox(height: 10),
         _horizontalUnderline(color: Colors.grey)
       ],
     ),
