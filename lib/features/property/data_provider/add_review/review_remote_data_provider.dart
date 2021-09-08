@@ -6,7 +6,7 @@ import 'package:rental/core/models/review.dart';
 import 'package:rental/core/models/user.dart';
 
 class ReviewRemoteDataProvider {
-  final String baseUrl = "http://10.6.193.148:5000/api/v1/property/";
+  String baseUrl = "http://10.6.193.148:5000/api/v1/property/";
 
   /// It will return list of [Review] Objects fetched from remote server / API
   ///
@@ -53,6 +53,50 @@ class ReviewRemoteDataProvider {
       return Review.fromJson(jsonDecode(response.body));
     } else {
       throw Exception("Unable to create Property");
+    }
+  }
+
+  Future<Review> updateReview(
+    http.Client client, {
+    required Review review,
+    required String propertyId,
+    required String token,
+  }) async {
+    final http.Response response = await client.patch(
+      Uri.parse("$baseUrl/$propertyId/review"),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(review),
+    );
+    if (response.statusCode == 200) {
+      return Review.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 404) {
+      throw Exception("Review not found");
+    } else {
+      throw Exception("Unable to update property");
+    }
+  }
+
+  Future<Review> getReview(
+    http.Client client, {
+    required String propertyId,
+    required String token,
+  }) async {
+    final http.Response response = await client.get(
+      Uri.parse("$baseUrl/$propertyId/review"),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      return Review.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 404) {
+      throw Exception("Review not found");
+    } else {
+      throw Exception("Network Error");
     }
   }
 }

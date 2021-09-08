@@ -26,7 +26,20 @@ class AddReviewFormBloc extends Bloc<AddReviewFormEvent, AddReviewFormState> {
 
   @override
   Stream<AddReviewFormState> mapEventToState(AddReviewFormEvent event) async* {
-    if (event is MessageChanged) {
+    if (event is LoadReview) {
+      try {
+        final review = await reviewRepository.getRemoteReview(
+          propertyId: propertyId,
+          token: token,
+        );
+        yield state.copyWith(
+          message: Message.pure(review.message ?? ""),
+          rating: review.rating,
+        );
+      } catch (e) {
+        yield state;
+      }
+    } else if (event is MessageChanged) {
       final message = Message.dirty(event.message);
       yield state.copyWith(
         message: message.valid ? message : Message.pure(event.message),

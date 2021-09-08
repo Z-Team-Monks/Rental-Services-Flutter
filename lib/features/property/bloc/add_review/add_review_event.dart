@@ -29,3 +29,7 @@ class RatingChanged extends AddReviewFormEvent {
 }
 
 class FormSubmitted extends AddReviewFormEvent {}
+
+class LoadReview extends AddReviewFormEvent {}
+
+class UpdateReview extends AddReviewFormEvent {}
