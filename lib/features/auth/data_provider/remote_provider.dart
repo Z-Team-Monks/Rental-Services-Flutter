@@ -80,6 +80,25 @@ class AuthRemoteDataProvider {
     }
   }
 
+  Future<Either<AuthFaiulre, bool>> checkIsAdmin() async {
+    try {
+      final http.Response response = await http.post(
+        Uri.parse("$baseUrl/auth/isAdmin"),
+        headers: <String, String>{
+          "Content-Type": "application/json",
+        },
+      );
+
+      if (response.statusCode == 200) {
+        return right(jsonDecode(response.body).isAdmin);
+      } else {
+        return left(AuthFaiulre.invalidEmailOrPasssword());
+      }
+    } on SocketException catch (e) {
+      return left(AuthFaiulre.networkError());
+    }
+  }
+
   /// it will attempt to logout the user
   ///
   /// or throw an error if an error occured

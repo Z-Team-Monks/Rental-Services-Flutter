@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:rental/features/admin/screens/admin_screen.dart';
 import 'package:rental/features/auth/bloc/auth_form_bloc.dart';
 import 'package:rental/features/auth/bloc/user_auth/user_auth_bloc.dart';
 import 'package:rental/features/auth/screens/widgets/form_field.dart';
@@ -60,7 +61,9 @@ class _AuthPageState extends State<AuthPage> {
         top: false,
         child: BlocConsumer<UserAuthBloc, UserAuthState>(
           listener: (context, state) {
-            if (state == UserAuthState.LOGGEDIN) {
+            if (state == UserAuthState.LOGGEDIN_ADMIN) {
+              Navigator.of(context).pushReplacementNamed(AdminPage.pageRoute);
+            } else if (state == UserAuthState.LOGGEDIN) {
               Navigator.of(context).pushReplacementNamed(HomeFeed.pageRoute);
             }
           },

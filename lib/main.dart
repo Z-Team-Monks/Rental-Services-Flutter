@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: AdminPage.pageRoute,
+        initialRoute: AuthPage.pageRoute,
         onGenerateRoute: RouteGenerator.generateRoute,
         title: 'House Rent',
         theme: CustomTheme.lightTheme,

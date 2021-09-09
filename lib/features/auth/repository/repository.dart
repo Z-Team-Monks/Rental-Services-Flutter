@@ -47,4 +47,16 @@ class AuthRepository {
       return res;
     }
   }
+
+  Future<bool> checkIsAdmin() async {
+    final res = await _authRemoteDataProvider.checkIsAdmin();
+    if (res.isLeft()) {
+      final isAdmin = readToken(key: "isAdmin");
+      return isAdmin.toString() == "true" ? true : false;
+    } else {
+      final isAdmin = res.getOrElse(() => false);
+      await storeToken(key: "isAdmin", value: isAdmin.toString());
+      return isAdmin;
+    }
+  }
 }
