@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rental/features/admin/screens/admin_screen.dart';
 import 'package:rental/features/auth/screens/auth_screen.dart';
 import 'package:rental/features/property/screens/add_property/add_property_screen.dart';
 import 'package:rental/features/property/screens/property_detail/property_detail_screen.dart';
@@ -41,6 +42,10 @@ class RouteGenerator {
       case AddProperty.pageRoute:
         return MaterialPageRoute(builder: (context) {
           return AddProperty();
+        });
+      case AdminPage.pageRoute:
+        return MaterialPageRoute(builder: (context) {
+          return AdminPage();
         });
       default:
         throw Exception("invalid screen render!");

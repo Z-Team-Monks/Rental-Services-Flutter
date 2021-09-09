@@ -9,13 +9,12 @@ class UserEntity {
   final String email;
   final bool isAdmin;
 
-  UserEntity({
-    required this.id,
-    required this.email,
-    required this.name,
-    required this.profileImage,
-    required this.isAdmin
-  });
+  UserEntity(
+      {required this.id,
+      required this.email,
+      required this.name,
+      required this.profileImage,
+      required this.isAdmin});
 }
 
 @Entity(tableName: "images")
@@ -44,7 +43,7 @@ class PropertyEntity {
   final String category;
   final double bill;
   final String per;
-  final bool status;
+  final String status;
   final double rating;
 
   PropertyEntity({
@@ -62,7 +61,4 @@ class PropertyEntity {
   });
 }
 
- 
-class ReviewEntity {
-
-}
+class ReviewEntity {}

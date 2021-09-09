@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental/core/presentation/customTheme/appTheme.dart';
+import 'package:rental/features/admin/cubit/admin_cubit.dart';
+import 'package:rental/features/admin/repository/admin_repository.dart';
+import 'package:rental/features/admin/screens/admin_screen.dart';
 import 'package:rental/features/auth/bloc/auth_form_bloc.dart';
 import 'package:rental/features/auth/bloc/user_auth/user_auth_bloc.dart';
 import 'package:rental/features/auth/repository/repository.dart';
@@ -29,6 +32,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
 
   final AuthRepository _authRepository = getIt.get<AuthRepository>();
+  final AdminRepository _adminRepository = getIt.get<AdminRepository>();
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +41,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthFormBloc>(
             create: (BuildContext context) =>
                 AuthFormBloc(authRepository: _authRepository)),
+        BlocProvider<AdminCubit>(
+            create: (BuildContext context) =>
+                AdminCubit(repository: _adminRepository)),
         BlocProvider<UserAuthBloc>(
             create: (BuildContext context) =>
                 UserAuthBloc(authRepository: _authRepository)),
@@ -60,7 +67,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: AuthPage.pageRoute,
+        initialRoute: AdminPage.pageRoute,
         onGenerateRoute: RouteGenerator.generateRoute,
         title: 'House Rent',
         theme: CustomTheme.lightTheme,

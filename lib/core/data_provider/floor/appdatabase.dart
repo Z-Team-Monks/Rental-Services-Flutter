@@ -7,7 +7,7 @@ import 'dart:async';
 part 'appdatabase.g.dart';
 
 @Database(
-  version: 5,
+  version: 7,
   entities: [
     UserEntity,
     ImageEntity,

@@ -69,7 +69,7 @@ class _$AppDatabase extends AppDatabase {
   Future<sqflite.Database> open(String path, List<Migration> migrations,
       [Callback? callback]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
-      version: 5,
+      version: 7,
       onConfigure: (database) async {
         await database.execute('PRAGMA foreign_keys = ON');
         await callback?.onConfigure?.call(database);
@@ -89,7 +89,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `images` (`id` TEXT NOT NULL, `isFromUser` INTEGER NOT NULL, `imageUrl` TEXT NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `properties` (`id` TEXT NOT NULL, `ownerid` TEXT NOT NULL, `createdAt` TEXT NOT NULL, `updatedAt` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `category` TEXT NOT NULL, `bill` REAL NOT NULL, `per` TEXT NOT NULL, `status` INTEGER NOT NULL, `rating` REAL NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `properties` (`id` TEXT NOT NULL, `ownerid` TEXT NOT NULL, `createdAt` TEXT NOT NULL, `updatedAt` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `category` TEXT NOT NULL, `bill` REAL NOT NULL, `per` TEXT NOT NULL, `status` TEXT NOT NULL, `rating` REAL NOT NULL, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -231,7 +231,7 @@ class _$PropertyEntityDao extends PropertyEntityDao {
                   'category': item.category,
                   'bill': item.bill,
                   'per': item.per,
-                  'status': item.status ? 1 : 0,
+                  'status': item.status,
                   'rating': item.rating
                 });
 
@@ -254,7 +254,7 @@ class _$PropertyEntityDao extends PropertyEntityDao {
             category: row['category'] as String,
             bill: row['bill'] as double,
             per: row['per'] as String,
-            status: (row['status'] as int) != 0,
+            status: row['status'] as String,
             rating: row['rating'] as double,
             createdAt: row['createdAt'] as String,
             updatedAt: row['updatedAt'] as String));
@@ -271,7 +271,7 @@ class _$PropertyEntityDao extends PropertyEntityDao {
             category: row['category'] as String,
             bill: row['bill'] as double,
             per: row['per'] as String,
-            status: (row['status'] as int) != 0,
+            status: row['status'] as String,
             rating: row['rating'] as double,
             createdAt: row['createdAt'] as String,
             updatedAt: row['updatedAt'] as String),
@@ -279,8 +279,25 @@ class _$PropertyEntityDao extends PropertyEntityDao {
   }
 
   @override
+  Future<void> deleteProperty(String id) async {
+    await _queryAdapter.queryNoReturn('DELETE * FROM properties WHERE id = ?1',
+        arguments: [id]);
+  }
+
+  @override
+  Future<void> deleteAllProperty() async {
+    await _queryAdapter.queryNoReturn('DELETE * FROM properties');
+  }
+
+  @override
   Future<void> insertProperty(PropertyEntity propertyEntity) async {
     await _propertyEntityInsertionAdapter.insert(
         propertyEntity, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> insertManyProperty(List<PropertyEntity> propertyEntities) async {
+    await _propertyEntityInsertionAdapter.insertList(
+        propertyEntities, OnConflictStrategy.abort);
   }
 }
