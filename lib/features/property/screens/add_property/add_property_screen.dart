@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rental/core/models/property.dart';
 import 'package:rental/core/presentation/customSnackBar.dart';
@@ -41,14 +42,9 @@ class _AddPropertyState extends State<AddProperty> with InputValidationMixin {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text(
-          "Add property",
-          style: TextStyle(
-              fontSize: 25.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Popins',
-              letterSpacing: 1),
-        ),
+        // leading: Icon(Icons.person, color: Colors.black26,),
+        backgroundColor: Colors.white,
+        title: Text('Add property', style: GoogleFonts.poppins (color: Colors.black),),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

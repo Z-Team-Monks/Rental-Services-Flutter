@@ -24,6 +24,8 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
         var data = await _propertyRepository.getPropertiesFromRemote();
         yield PropertyOperationSuccess(data!);
       } catch (e) {
+        print("{[[[[[[[[[[[[[[[erriririieieieieieiei]]]]]]]]]]]]]]]}");
+        print(e);
         yield PropertyOperationFailure();
       }
     } else if (event is PropertySearch) {

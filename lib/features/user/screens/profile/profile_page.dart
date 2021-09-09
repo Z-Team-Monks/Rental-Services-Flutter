@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:loader_skeleton/loader_skeleton.dart';
 import 'package:rental/core/models/property.dart';
 import 'package:rental/core/models/user.dart';
@@ -18,7 +19,9 @@ class ProfilePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        // leading: Icon(Icons.person, color: Colors.black26,),
+        backgroundColor: Colors.white,
+        title: Text('Profile', style: GoogleFonts.poppins (color: Colors.black),),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -232,7 +235,7 @@ Widget MyPropertyCard(
                       final updatePropertyBlock =
                           BlocProvider.of<UpdatePropertyBloc>(context);
                       updatePropertyBlock.add(UpdatePropertyLoadProperty(
-                          productId: "61389e84a6a60a468bce7d11"));
+                          productId: property["_id"]));
                       Navigator.push<void>(
                         context,
                         MaterialPageRoute<void>(

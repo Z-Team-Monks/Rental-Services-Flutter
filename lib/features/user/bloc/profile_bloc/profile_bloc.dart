@@ -18,6 +18,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     ProfileEvent event,
   ) async* {
     if (event is ProfileLoad) {
+      print("user loading");
       yield ProfileLoading();
       // print("user loading");
       try {
@@ -25,7 +26,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         yield ProfileLoaded(user: user);
         print("user loaded" + user.toString());
       } catch (e) {
-        // print("Can't load user");
+        print("Can't load user");
       }
     }
 

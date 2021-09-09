@@ -10,7 +10,7 @@ import 'auth_remote_data_providers_test.mocks.mocks.dart';
 void main() {
   MockClient mockClient = MockClient();
 
-  final String baseUrl = "http://10.6.193.148:5000/api";
+  final String baseUrl = "http://10.6.197.162:5001/api";
 
   void setUpMockClientSuccess200() {
     final String token = "thisIsAFakeJWTTokenLongEnough";

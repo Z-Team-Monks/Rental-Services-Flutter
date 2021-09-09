@@ -7,9 +7,9 @@ import 'package:rental/core/models/user.dart';
 
 class UserRemoteDataProvider {
   // final String baseUrl = "http://10.6.193.148:5000/api";
-  final String baseUrl = "http://192.168.0.164:5001/api/v1";
+  final String baseUrl = "http://10.6.197.162:5001/api/v1";
   final tokens =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDViNDQyOGQzZmFjNzY4Y2RmMWNiOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2Mjg3ODE2MzV9._VCHTjWSSC4ImckvDr4bsG2CJrA-PbCoCnIutOMuBB4";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMmU0YTQzZmNmZWU4NDNmOTQ2MDViZiIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2MzEyMDM2NjV9.qfD1oDM3uSCHGEhko-bHSTYagf46kgD7sFMougFIvVM";
 
   /// Given a [User] it will create or register
   ///
@@ -121,7 +121,8 @@ class UserRemoteDataProvider {
       return User.fromJson(jsonDecode(response.body));
     } else if (response.statusCode == 409) {
       throw EmailAlreadyExistsException();
-    } else {
+  } else {
+      print(response.body);
       throw Exception("Failed to Get User!");
     }
   }
