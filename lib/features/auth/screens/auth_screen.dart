@@ -189,7 +189,7 @@ Widget signInPage(
                     builder: (context, state) {
                       return CustomFormField(
                           errorMessage: state.password.invalid
-                              ? 'password should be at least 8 character long\npassword must contain both letter and number'
+                              ? 'password should be at least 6 character long\npassword must contain both letter and number'
                               : '',
                           label: 'Enter your password',
                           onValueChange: (value) {

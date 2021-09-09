@@ -37,7 +37,7 @@ class AdminRepository {
     // }
 
     final res = await fetchCachedProperties(
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxM2ExM2JkMjcxYTBkNTFiMGQyMmYyNyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzMTE5NjEzOH0.WUEa4a5C9jXHdaWg4iiQ1Oy6qNCVNv8rK1s8R3c6CX8");
+        authToken);
     if (res == null) {
       return left(AdminFaiulre.invalidValue());
     } else if (res.isRight()) {
@@ -58,7 +58,7 @@ class AdminRepository {
     }
     final res = await _adminRemoteDataProvider.approveOrDeclinePost(
         authToken:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxM2ExM2JkMjcxYTBkNTFiMGQyMmYyNyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzMTIwMzEwMH0.jbyuTSnaSpWqIW6FDhM2BLZPke57gpr0lXB4qGwdOEo",
+            authToken,
         postId: id,
         option: APPROVAL.APPROVE);
 
@@ -93,8 +93,11 @@ class AdminRepository {
       String token) async {
     final res = await performRemoteOrLocalFetchOperation<
         Either<AdminFaiulre, List<Property>>>(apiCall: () async {
+      print("===============+++=====API Call=====================================");
+
       return await _adminRemoteDataProvider.fetchPosts(authToken: token);
     }, dbCall: () async {
+      print("===============+++=====DB Call=====================================");
       return await _adminLocalDataProvider.getProperties();
     });
 

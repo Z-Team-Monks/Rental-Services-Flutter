@@ -8,7 +8,7 @@ import 'package:rental/features/admin/failures/admin_failures.dart';
 enum APPROVAL { APPROVE, DISAPPROVE }
 
 class AdminRemoteDataProvider {
-  final String baseUrl = "http://10.6.200.3:5001/api/v1/admin";
+  final String baseUrl = "http://10.6.197.162:3000/api/v1/admin";
 
   Future<Either<AdminFaiulre, List<Property>>> fetchPosts({
     required String authToken,
@@ -28,14 +28,7 @@ class AdminRemoteDataProvider {
         List<Property> properties = [];
         for (var i = 0; i < data.length; i++) {
           try {
-            properties.add(Property(
-                title: "title",
-                description: "description",
-                category: "category",
-                bill: 100,
-                per: "per",
-                status: "pending",
-                images: []));
+            properties.add(Property.fromJson(data[i]));
           } catch (e) {
             print(e);
           }
@@ -71,7 +64,7 @@ class AdminRemoteDataProvider {
                 "Authorization": "Bearer $authToken",
               },
             );
-
+  
       if (response.statusCode == 201) {
         return right(unit);
       } else if (response.statusCode == 400) {

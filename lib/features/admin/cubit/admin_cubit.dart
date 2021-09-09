@@ -20,6 +20,7 @@ class AdminCubit extends Cubit<AdminState> {
                 AdminState.postFetchFailure("Please check your connection!"),
             unAuthorized: (unAuthorized) => AdminState.postFetchFailure(
                 "Unauthorized! please login as admin"),
+                invalidValue: (invalid)=> AdminState.postFetchFailure("Invalid token!"),
             orElse: () =>
                 AdminState.postFetchFailure("Something went very wrong!")),
         (r) => AdminState.postFetchSuccess(r)));

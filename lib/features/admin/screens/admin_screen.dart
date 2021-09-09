@@ -15,14 +15,16 @@ class AdminPage extends StatefulWidget {
 class _AdminPageState extends State<AdminPage> {
   List<Property> prevList = [];
 
-  void showSnakBar(BuildContext context, String message) {
+  void showSnakBar(
+      BuildContext context, String message, ScaffoldMessengerState manager) {
     final lunchBar =
         LunchBars(lunchBarText: message, event: LunchBarEvents.LunchBarSuccess);
-    ScaffoldMessenger.of(context).showSnackBar(lunchBar);
+    manager.showSnackBar(lunchBar);
   }
 
   Widget build(BuildContext context) {
     final adminCubit = BlocProvider.of<AdminCubit>(context)..fetchPosts();
+    final scafold = ScaffoldMessenger.of(context);
 
     return SafeArea(
       child: Scaffold(
@@ -30,25 +32,38 @@ class _AdminPageState extends State<AdminPage> {
           title: Text("Admin Page"),
         ),
         backgroundColor: Colors.grey[50],
-        body: BlocBuilder<AdminCubit, AdminState>(
+        body: BlocConsumer<AdminCubit, AdminState>(
+          listener: (context, state) async {
+            state.maybeMap(
+              postFetchFailure: (error) {
+                showSnakBar(context, "Error: ${error.errorMessage}", scafold);
+              },
+              rejectApproveError: (err) {
+                showSnakBar(context, err.errorMessage, scafold);
+              },
+              orElse: () {
+                // showSnakBar(context, "Unknown error", scafold);
+              },
+            );
+          },
           builder: (context, state) {
             return state.maybeMap(
-              fetchingPosts: (fetching) => CircularProgressIndicator(),
+              fetchingPosts: (fetching) => Center(child: CircularProgressIndicator()),
               postFetchFailure: (error) {
-                showSnakBar(context, "Error: ${error.errorMessage}");
-                adminCubit.fetchPosts();
-                return CircularProgressIndicator();
+                // showSnakBar(context, "Error: ${error.errorMessage}", scafold);
+                // adminCubit.fetchPosts();
+                return Center(child: Text("unable to fetch ${error.errorMessage}"));
               },
               postFetchSuccess: (data) =>
                   propertyList(context, data.properties),
               rejectApproveError: (err) {
-                showSnakBar(context, err.errorMessage);
+                // showSnakBar(context, err.errorMessage, scafold);
                 return propertyList(context, prevList);
               },
               rejectApproveOk: (ok) {
-                showSnakBar(context, "Approved Post!");
+                // showSnakBar(context, "Approved Post!", scafold);
                 adminCubit.fetchPosts();
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               },
               orElse: () {
                 return Center(child: Text("Unkown Error"));
@@ -62,7 +77,8 @@ class _AdminPageState extends State<AdminPage> {
 }
 
 Widget propertyList(BuildContext context, List<Property> properties) {
-  return ListView.builder(
+  return properties.length == 0 ? Center(child: Text("No post pending"),) :
+  ListView.builder(
       padding: const EdgeInsets.all(8),
       itemCount: properties.length,
       itemBuilder: (BuildContext context, int index) {
@@ -165,7 +181,7 @@ Widget listItem(BuildContext context, Property property) {
                         onTap: () {
                           context
                               .read<AdminCubit>()
-                              .approvePost("6139bbd54cd1c14db8d43bfc");
+                              .approvePost(property.id);
                         },
                         child: Text(
                           "Accept",
@@ -182,7 +198,7 @@ Widget listItem(BuildContext context, Property property) {
                         onTap: () {
                           context
                               .read<AdminCubit>()
-                              .disapprovePost("6139bbd54cd1c14db8d43bfc");
+                              .disapprovePost(property.id);
                         },
                         child: Text(
                           "Reject",

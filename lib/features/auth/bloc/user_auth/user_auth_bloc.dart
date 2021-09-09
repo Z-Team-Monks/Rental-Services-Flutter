@@ -33,10 +33,13 @@ class UserAuthBloc extends Bloc<UserAuthEvent, UserAuthState> {
       final user = authRepository.readToken(key: "token");
       if (user.isLeft()) {
         yield UserAuthState.LOGGEDOUT;
-      } else if (await authRepository.checkIsAdmin()) {
+      }else{
+        bool isAdmin = await authRepository.checkIsAdmin(user.getOrElse(() => ""));
+        if (isAdmin) {
         yield UserAuthState.LOGGEDIN_ADMIN;
       } else {
         yield UserAuthState.LOGGEDIN;
+      }
       }
     }
   }

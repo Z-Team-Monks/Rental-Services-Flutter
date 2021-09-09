@@ -48,13 +48,15 @@ class AuthRepository {
     }
   }
 
-  Future<bool> checkIsAdmin() async {
-    final res = await _authRemoteDataProvider.checkIsAdmin();
+  Future<bool> checkIsAdmin(String? token) async {
+    final res = await _authRemoteDataProvider.checkIsAdmin(token!);
     if (res.isLeft()) {
       final isAdmin = readToken(key: "isAdmin");
+      print("Admin with error ${isAdmin}");
       return isAdmin.toString() == "true" ? true : false;
     } else {
       final isAdmin = res.getOrElse(() => false);
+      print("Admin with error ${isAdmin}");
       await storeToken(key: "isAdmin", value: isAdmin.toString());
       return isAdmin;
     }
