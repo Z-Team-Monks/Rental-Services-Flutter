@@ -10,16 +10,12 @@ class ReviewsBloc extends Bloc<ReviewsEvent, ReviewsState> {
 
   @override
   Stream<ReviewsState> mapEventToState(ReviewsEvent event) async* {
-    if (event is ReviewsLoad) {
+    if (event is ReviewsLoadStarted) {
       yield ReviewsLoading();
-      try {
-        yield ReviewOperationSuccess([
-          Review(userId: 'userId'),
-          // Review(userId: 'userId'),
-        ]);
-      } catch (e) {
-        yield ReviewOperationFailure();
-      }
+    } else if (event is ReviewsLoaded) {
+      yield ReviewOperationSuccess(event.reviews);
+    } else if (event is ReviewsLoadingFailed) {
+      yield ReviewOperationFailure();
     }
   }
 }

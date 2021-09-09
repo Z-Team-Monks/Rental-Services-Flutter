@@ -1,27 +1,31 @@
 import 'package:rental/core/models/entity.dart';
+import 'package:rental/core/models/user.dart';
 
 class Review extends EntityModel {
   final String? userId;
+  final User? user;
   final String? message;
   final double? rating;
 
   Review({
-    required this.userId,
+    this.userId,
     this.message,
     this.rating,
+    this.user,
   });
 
   factory Review.fromJson(Map<String, dynamic> json) {
     return Review(
-      userId: json["id"],
+      // userId: json["id"],
       message: json["message"],
       rating: json["rating"],
+      user: User.fromJson(json["user"]),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "id": this.userId,
+      // "id": this.userId,
       "message": this.message,
       "rating": this.rating,
     };

@@ -4,11 +4,11 @@ abstract class LikePropertyState extends Equatable {
   const LikePropertyState();
 }
 
-class LikeInitial extends LikePropertyState {
+class LikePropertyInitial extends LikePropertyState {
   final bool isLiked = false;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [isLiked];
 }
 
 class LikeStatusLoadSuccess extends LikePropertyState {
@@ -26,8 +26,8 @@ class LikePropertyInprogress extends LikePropertyState {
 }
 
 class LikePropertySuccess extends LikePropertyState {
-  final bool isLiked = true;
-
+  final bool isLiked;
+  const LikePropertySuccess(this.isLiked);
   @override
-  List<Object> get props => [];
+  List<Object> get props => [isLiked];
 }

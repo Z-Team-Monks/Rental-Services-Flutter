@@ -19,11 +19,15 @@ class PropertyDetailBloc
     if (event is RequestPropertyDetail) {
       yield PropertyDetailLoading();
       try {
-        var data = await propertyRepository.propertyRemoteDataProvider.getProperty(
+        print("--- property id -- ${event.props[0]}");
+        var data =
+            await propertyRepository.propertyRemoteDataProvider.getProperty(
           event.props[0]!,
         );
+        print("${data.reviewes} -- reviews return");
         yield PropertyDetailOperationSuccess(data);
-      } catch (e) { 
+      } catch (e) {
+        print(e.toString());
         yield PropertyDetailOperationFailure();
       }
     }

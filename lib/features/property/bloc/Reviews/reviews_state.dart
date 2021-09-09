@@ -11,7 +11,7 @@ abstract class ReviewsState extends Equatable {
 class ReviewsLoading extends ReviewsState {}
 
 class ReviewOperationSuccess extends ReviewsState {
-  final Iterable<Review> reviews;
+  final List<dynamic> reviews;
 
   ReviewOperationSuccess([this.reviews = const []]);
 

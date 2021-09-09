@@ -1,4 +1,5 @@
 import 'package:rental/core/models/entity.dart';
+import 'package:rental/core/models/review.dart';
 import 'package:rental/core/models/user.dart';
 
 class Property extends EntityModel {
@@ -41,9 +42,10 @@ class Property extends EntityModel {
   factory Property.fromJson(Map<String, dynamic> json) {
     return Property(
       id: json["_id"],
-      status: json["status"],
+      status: json["status"] == "pending" ? false : true,
       rating: 0.25,
-      reviewes: json["reviewes"],
+      reviewes:
+          (json["reviewes"] as List).map((i) => Review.fromJson(i)).toList(),
       likedBy: json["likedBy"],
       title: json["title"],
       description: json["description"],

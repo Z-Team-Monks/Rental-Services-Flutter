@@ -1,12 +1,24 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rental/features/property/bloc/Reviews/reviews_bloc.dart';
+import 'package:rental/features/property/bloc/Reviews/reviews_event.dart';
 import 'package:rental/features/property/bloc/Reviews/reviews_state.dart';
+import 'package:rental/features/property/bloc/like_property/like_property_bloc.dart';
+import 'package:rental/features/property/bloc/like_property/like_property_event.dart';
+import 'package:rental/features/property/bloc/like_property/like_property_state.dart';
 import 'package:rental/features/property/bloc/property_detail/propertydetail_bloc.dart';
+import 'package:rental/features/property/data_provider/add_review/review_remote_data_provider.dart';
+import 'package:rental/features/property/data_provider/like_property/like_property_remote_data_provider.dart';
 import 'package:rental/features/property/data_provider/property_local_data_provider.dart';
 import 'package:rental/features/property/data_provider/property_remote_data_provider.dart';
+import 'package:rental/features/property/repository/add_review/add_review_repository.dart';
+import 'package:rental/features/property/repository/like_property/like_property_repository.dart';
 import 'package:rental/features/property/repository/property_repository.dart';
+import 'package:rental/features/property/screens/add_review/add_review_popup.dart';
+import 'package:rental/locator.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:telephony/telephony.dart';
 
 class PropertyDetail extends StatelessWidget {
   static const pageRoute = "/property_detail";
@@ -17,23 +29,32 @@ class PropertyDetail extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (context) => PropertyDetailBloc(
-                  propertyRepository: PropertyRepository(
-                    PropertyLocalDataProvider(),
-                    PropertyRemoteDataProvider(),
-                  ),
-                )..add(RequestPropertyDetail(id: "6130d66a17dfc38bca19279f"))),
-        // BlocProvider<ReviewsBloc>(
-        // create: (context) {
-        //   return ReviewsBloc(
-        //     reviewRepository: ReviewRepository(
-        //       ReviewRemoteDataProvider(),
-        //     ),
-        //   )..add(ReviewsLoad())
+          create: (context) => PropertyDetailBloc(
+            propertyRepository: PropertyRepository(
+              PropertyLocalDataProvider(),
+              PropertyRemoteDataProvider(),
+            ),
+          )..add(RequestPropertyDetail(id: "6139bbd54cd1c14db8d43bfc")),
+        ),
+        BlocProvider(create: (context) {
+          return ReviewsBloc(
+            reviewRepository: ReviewRepository(
+              ReviewRemoteDataProvider(),
+            ),
+          )..add(ReviewsLoadStarted());
+        }),
+        BlocProvider(create: (context) {
+          return LikePropertyBloc(
+            likePropertyRepository: LikePropertyRepository(
+              LikePropertyRemoteDataProvider(),
+            ),
+          );
+        })
       ],
       child: SafeArea(
         child: Scaffold(
           body: Stack(
+            fit: StackFit.expand,
             children: [
               SingleChildScrollView(
                 child: Padding(
@@ -70,21 +91,27 @@ class PropertyDetail extends StatelessWidget {
                       ),
                       propertyNameAndRatingShimmer(context, currentTheme),
                       _horizontalUnderline(),
-                      BlocBuilder(builder: (context, state) {
+                      BlocBuilder<ReviewsBloc, ReviewsState>(
+                          builder: (context, state) {
                         if (state is ReviewsLoading) {
-                          return reviewShimmer();
+                          return Column(
+                            children: [
+                              reviewShimmer(),
+                              // reviewShimmer(),
+                            ],
+                          );
                         } else if (state is ReviewOperationSuccess) {
                           List<Widget> widgets = [];
                           for (var review in state.reviews) {
                             widgets.add(
                               _reviewListCard(
                                 review: review.message ?? "",
-                                imageUrl:
-                                    "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=634&q=80",
-                                username: "Niko Altechalchm",
+                                imageUrl: review.user?.profileImage ?? "",
+                                username: review.user?.name ?? "",
                               ),
                             );
                           }
+                          // widgets.add();
                           return Column(children: widgets);
                         } else if (state is ReviewOperationFailure) {
                           return Container(
@@ -95,11 +122,9 @@ class PropertyDetail extends StatelessWidget {
                           return Container(height: 30);
                         }
                       }),
-                      // _reviewListCard(),
-                      // _reviewListCard(),
-                      // _reviewListCard(),
+                      Center(child: AddReviewButton()),
                       SizedBox(
-                        height: 40,
+                        height: 60,
                       ),
                     ],
                   ),
@@ -120,7 +145,25 @@ class PropertyDetail extends StatelessWidget {
                     ],
                     color: Colors.white,
                   ),
-                  child: BlocBuilder<PropertyDetailBloc, PropertyDetailState>(
+                  child: BlocConsumer<PropertyDetailBloc, PropertyDetailState>(
+                    listener: (context, state) {
+                      if (state is PropertyDetailLoading) {
+                      } else if (state is PropertyDetailOperationSuccess) {
+                        print(
+                            "--- property detail success ${state.props[0]?.reviewes?[0]?.user?.profileImage}");
+                        context
+                            .read<ReviewsBloc>()
+                            .add(ReviewsLoaded(state.props[0]?.reviewes ?? []));
+                        context
+                            .read<LikePropertyBloc>()
+                            .add(LoadLikeStatus(state.props[0]?.likedBy ?? []));
+                      } else {
+                        context.read<ReviewsBloc>().add(ReviewsLoadingFailed());
+                        context
+                            .read<LikePropertyBloc>()
+                            .add(LikePropertyFailed());
+                      }
+                    },
                     builder: (context, state) {
                       if (state is PropertyDetailLoading) {
                         return Row(
@@ -145,7 +188,7 @@ class PropertyDetail extends StatelessWidget {
                                   ),
                                 ),
                                 TextButton.icon(
-                                  onPressed: null,
+                                  onPressed: () {},
                                   icon: Icon(Icons.call),
                                   label: Text("Call Owner"),
                                 ),
@@ -174,13 +217,18 @@ class PropertyDetail extends StatelessWidget {
                             Row(
                               children: [
                                 IconButton(
-                                    onPressed: () {
-                                      // send message to the owner in herer
+                                    onPressed: () async {
+                                      await getIt<Telephony>().sendSmsByDefaultApp(
+                                          to:
+                                              "${state.props[0]!.owner!.phoneNumber}",
+                                          message:
+                                              "${state.props[0]!.title}: \n");
                                     },
                                     icon: Icon(Icons.chat_bubble_outline)),
                                 TextButton.icon(
-                                  onPressed: () {
-                                    // call the owner in here
+                                  onPressed: () async {
+                                    await getIt<Telephony>().openDialer(
+                                        "${state.props[0]!.owner!.phoneNumber}");
                                   },
                                   icon: Icon(Icons.call),
                                   label: Text("Call Owner"),
@@ -248,11 +296,11 @@ class PropertyDetail extends StatelessWidget {
                         child: InkWell(
                           onTap: () {},
                           child: Icon(
-                            Icons.favorite_outline,
+                            Icons.favorite,
                             size: 30,
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -295,16 +343,46 @@ class PropertyDetail extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {},
-                          child: Icon(
-                            Icons.favorite,
-                            size: 30,
-                          ),
-                        ),
-                      )
+                      BlocBuilder<LikePropertyBloc, LikePropertyState>(
+                          builder: (context, state) {
+                        if (state is LikePropertyFailed ||
+                            state is LikePropertyInprogress) {
+                          return Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                context
+                                    .read<LikePropertyBloc>()
+                                    .add(LikePropertyChanged(true));
+                              },
+                              child: Icon(
+                                Icons.favorite_outline,
+                                size: 30,
+                              ),
+                            ),
+                          );
+                        } else {
+                          print(
+                              "--- like property load status ${state.props[0]}");
+                          return Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                print("-- like tapped -- ${state.props[0]}");
+                                context.read<LikePropertyBloc>().add(
+                                    LikePropertyChanged(
+                                        !(state.props[0] as bool)));
+                              },
+                              child: Icon(
+                                state.props[0] as bool
+                                    ? Icons.favorite
+                                    : Icons.favorite_outline,
+                                size: 30,
+                              ),
+                            ),
+                          );
+                        }
+                      }),
                     ],
                   ),
                 ),
