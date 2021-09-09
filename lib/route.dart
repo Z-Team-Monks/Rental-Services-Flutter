@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:rental/features/auth/screens/auth_screen.dart';
 import 'package:rental/features/property/screens/add_property/add_property_screen.dart';
 import 'package:rental/features/property/screens/property_detail/property_detail_screen.dart';
 import 'package:rental/features/onBoard/screens/splash_screen.dart';
 import 'package:rental/features/property/screens/property_feed/feed.dart';
 // import 'package:rental/features/property/screens/review_property/add_review_popup.dart';
-import 'package:rental/features/user/screens/profile/profile_page.dart';
-import 'package:rental/features/user/screens/profile/update_profile_screen.dart';
 import 'package:rental/features/property/screens/add_review/add_review_popup.dart';
+import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
 class RouteGenerator {
   static Route? generateRoute(RouteSettings settings) {
@@ -19,10 +19,11 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (BuildContext context) => SplashScreen(),
         );
-      case "loginScreen":
-        throw Exception("screen not implemented yet!");
-      case "registerScreen":
-        throw Exception("screen not implemented yet!");
+      case AuthPage.pageRoute:
+        return MaterialPageRoute(
+          builder: (BuildContext context) =>
+              AuthPage(controller: SolidController()),
+        );
       case HomeFeed.pageRoute:
         return MaterialPageRoute(builder: (context) {
           return HomeFeed();

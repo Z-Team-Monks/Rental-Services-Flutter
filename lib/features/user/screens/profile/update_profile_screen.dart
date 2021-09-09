@@ -26,7 +26,8 @@ class UpdateProfile extends StatelessWidget with InputValidationMixin {
     this.user = user;
     nameTextController = new TextEditingController(text: user.name);
     emailTextController = new TextEditingController(text: user.email);
-    phoneTextController = new TextEditingController(text: user.phoneNumber);
+    phoneTextController =
+        new TextEditingController(text: user.phoneNumber ?? "");
   }
 
   @override
@@ -56,7 +57,7 @@ class UpdateProfile extends StatelessWidget with InputValidationMixin {
                     user = state.user;
                     this.nameTextController.text = user.name;
                     this.emailTextController.text = user.email;
-                    this.phoneTextController.text = user.phoneNumber!;
+                    this.phoneTextController.text = user.phoneNumber ?? "";
 
                     final lunchBar = LunchBars(
                         lunchBarText: "Profile Updated succesfully",
@@ -151,7 +152,7 @@ class UpdateProfile extends StatelessWidget with InputValidationMixin {
                             // initialValue: user.phoneNumber,
                             controller: this.phoneTextController,
                             validator: (phoneNumber) {
-                              if (this.isPhoneNumberValid(phoneNumber ?? "")) {
+                              if (this.isPhoneNumberValid(phoneNumber)) {
                                 return null;
                               }
                               return "Invalid phone format";
@@ -165,7 +166,7 @@ class UpdateProfile extends StatelessWidget with InputValidationMixin {
                               child: TextButton(
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
-                                    print("valid");
+                                    // print("valid");
                                     profileBloc.add(ProfileUpdate(
                                         user: user.copyWith(
                                             name: this.nameTextController.text,
@@ -186,7 +187,11 @@ class UpdateProfile extends StatelessWidget with InputValidationMixin {
                       ),
                     );
                   }
-                  return Center(child: CircularProgressIndicator());
+                  return Center(
+                    child: Container(
+                        margin: EdgeInsets.only(top: 40),
+                        child: CircularProgressIndicator()),
+                  );
                 },
               ),
             ),

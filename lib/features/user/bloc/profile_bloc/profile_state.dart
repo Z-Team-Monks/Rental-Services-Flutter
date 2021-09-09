@@ -7,23 +7,38 @@ part of 'profile_bloc.dart';
 // - ProfileLoaded
 
 @immutable
-abstract class ProfileState {}
+abstract class ProfileState extends Equatable {}
 
-class ProfileLoading extends ProfileState {}
+class ProfileLoading extends ProfileState {
+  @override
+  List<Object?> get props => [];
+}
 
 class ProfileUpdateSuccesful extends ProfileState {
   final User user;
 
   ProfileUpdateSuccesful({required this.user});
+
+  @override
+  List<Object?> get props => [user];
 }
 
-class ProfileUpdateFailure extends ProfileState {}
+class ProfileUpdateFailure extends ProfileState {
+  @override
+  List<Object?> get props => [];
+}
 
-class ProfileUpdateLoading extends ProfileState {}
+class ProfileUpdateLoading extends ProfileState {
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
 
 class ProfileLoaded extends ProfileState {
   final User user;
   String? changedProfilePath;
 
   ProfileLoaded({required this.user, this.changedProfilePath});
+
+  @override
+  List<Object?> get props => [user, changedProfilePath];
 }

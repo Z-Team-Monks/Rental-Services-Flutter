@@ -6,13 +6,10 @@ import 'package:rental/core/exceptions/auth_exception.dart';
 import 'package:rental/core/models/user.dart';
 
 class UserRemoteDataProvider {
-  final String baseUrl = "http://10.6.193.148:5000/api";
-  final User user = new User(
-      name: "Kidus Yoseph",
-      email: "se.kidus.yoseph@gmail.com",
-      phoneNumber: "0972476097",
-      profileImage:
-          "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80");
+  // final String baseUrl = "http://10.6.193.148:5000/api";
+  final String baseUrl = "http://192.168.0.164:5001/api/v1";
+  final tokens =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDViNDQyOGQzZmFjNzY4Y2RmMWNiOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2Mjg3ODE2MzV9._VCHTjWSSC4ImckvDr4bsG2CJrA-PbCoCnIutOMuBB4";
 
   /// Given a [User] it will create or register
   ///
@@ -111,17 +108,15 @@ class UserRemoteDataProvider {
   Future<User> currentUser({
     required String token,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    return user;
-
     final http.Response response = await http.get(
       Uri.parse("$baseUrl/users/me"),
       headers: <String, String>{
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer $tokens',
       },
     );
 
+    print(response.body);
     if (response.statusCode == 200) {
       return User.fromJson(jsonDecode(response.body));
     } else if (response.statusCode == 409) {
@@ -145,7 +140,28 @@ class UserRemoteDataProvider {
   }
 
   Future<User> updateUser(User user) async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    return user.copyWith(email: "updated_email@gmil.com");
+    final http.Response response = await http.put(
+      Uri.parse("$baseUrl/users"),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $tokens',
+      },
+      body: jsonEncode(
+        {
+          "name": user.name,
+          "email": user.email,
+          "phoneNumber": user.phoneNumber,
+          "v": user.v,
+        },
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      print(response.body);
+      return User.fromJson(jsonDecode(response.body));
+    } else {
+      print("Error in updating: " + response.body);
+      throw Exception("Failed to Update User!");
+    }
   }
 }

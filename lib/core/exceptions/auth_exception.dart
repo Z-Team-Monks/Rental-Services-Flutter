@@ -16,4 +16,3 @@ class InvalidEmailAddressException extends AuthException implements Exception {
 class PasswordLenthTooShort extends AuthException implements Exception {
   final String cause = "Password length must be greater than or equal to 6";
 }
-
