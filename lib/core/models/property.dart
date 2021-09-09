@@ -13,7 +13,7 @@ class Property extends EntityModel {
   String per;
   // TODO: improve by createing an image model
   final List<dynamic> images;
-  final bool? status;
+  final String? status;
   final double? rating;
   final User? owner;
   // TODO: improve by createing a review model
@@ -42,7 +42,7 @@ class Property extends EntityModel {
     return Property(
       id: json["_id"],
       status: json["status"],
-      rating: 0.25,
+      rating: json["rating"] * 1.0,
       reviewes: json["reviewes"],
       likedBy: json["likedBy"],
       title: json["title"],

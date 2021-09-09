@@ -15,7 +15,6 @@ class UserRepository {
 
   // call the dataproviders using the data access strategey
   Future<User> updateUser({required User user, String? newProfilePath}) async {
-    print(user.phoneNumber ?? "" + 'new phone number');
     if (newProfilePath != null) {
       // print("updated profilepath");
       // await _userRemoteDataProvider.uploadProfileImage(newProfilePath);

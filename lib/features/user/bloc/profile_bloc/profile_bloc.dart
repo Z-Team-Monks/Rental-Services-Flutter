@@ -40,7 +40,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       try {
         final user = await userRepository.updateUser(
             user: event.user, newProfilePath: event.changedProfilePath);
-        print("updated user ${user.email}");
+        // final updatedUser = await userRepository.getCurrentUser("");
+        // print("updated user ${user.email}");
         yield ProfileUpdateSuccesful(user: user);
         yield ProfileLoaded(user: user);
       } catch (e) {

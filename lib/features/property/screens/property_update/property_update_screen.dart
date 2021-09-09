@@ -350,7 +350,12 @@ class _PropertyUpdateState extends State<PropertyUpdateScreen>
                   ),
                 );
               }
-              return Text("Non defined State");
+              return Container(
+                margin: EdgeInsets.only(top: 50),
+                child: Center(
+                  child: Text("Network error!"),
+                ),
+              );
             }),
           ),
         ),

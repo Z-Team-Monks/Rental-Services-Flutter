@@ -63,7 +63,7 @@ class PropertyAddBloc extends Bloc<PropertyAddEvent, PropertyAddState> {
               submitSuccess: false));
     }
     if (event is PropertyAddRemote) {
-      // print("updating");
+      print("updating");
       yield PropertyAddWidgetState(
           propertyState: state.propertyState.copyWith(
               isLoading: true, submitSuccess: false, submitFailure: false));

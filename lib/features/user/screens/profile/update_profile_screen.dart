@@ -187,7 +187,11 @@ class UpdateProfile extends StatelessWidget with InputValidationMixin {
                       ),
                     );
                   }
-                  return Center(child: CircularProgressIndicator());
+                  return Center(
+                    child: Container(
+                        margin: EdgeInsets.only(top: 40),
+                        child: CircularProgressIndicator()),
+                  );
                 },
               ),
             ),

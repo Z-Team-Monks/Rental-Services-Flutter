@@ -23,6 +23,7 @@ class UpdatePropertyBloc
   ) async* {
     // yield UpdatePropertyLoadingProperty();
     if (event is UpdatePropertyLoadProperty) {
+      print(event.productId);
       try {
         final property =
             await _propertyRepository.getDetailedProduct(event.productId);
@@ -31,7 +32,7 @@ class UpdatePropertyBloc
         print(property);
       } catch (e) {
         print(e.toString());
-        yield UpdatePropertyLoadingProperty();
+        yield UpdatePropertyLoadingFailed();
       }
     }
     if (event is UpdatePropertyUpdate) {

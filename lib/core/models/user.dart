@@ -3,10 +3,12 @@ import 'package:rental/core/models/entity.dart';
 class User extends EntityModel {
   final String? id;
   final String? profileImage;
-  final List<String>? likedProperties;
+  final List<dynamic>? likedProperties;
+  final List<dynamic>? posts;
   final String name;
   final String email;
   final String? phoneNumber;
+  //should password be here?
   final String? password;
   final bool? isAdmin;
   final int? v;
@@ -15,31 +17,37 @@ class User extends EntityModel {
     required this.name,
     required this.email,
     this.id,
-    this.isAdmin,
-    this.password,
     this.profileImage,
     this.likedProperties,
-    this.v,
+    this.posts,
     this.phoneNumber,
+    this.password,
+    this.isAdmin,
+    this.v,
   });
 
   User copyWith({
-    String? id,
-    String? profileImage,
-    List<String>? likedProperties,
     String? name,
     String? email,
-    String? phoneNumber,
+    String? id,
+    String? profileImage,
+    List<dynamic>? likedProperties,
+    List<dynamic>? posts,
     String? password,
+    String? phoneNumber,
     bool? isAdmin,
     int? v,
   }) {
     return User(
+      id: this.id,
       name: name ?? this.name,
       email: email ?? this.email,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      password: password ?? this.password,
       profileImage: profileImage ?? this.profileImage,
+      likedProperties: likedProperties ?? this.likedProperties,
+      posts: posts ?? this.posts,
+      password: password ?? this.password,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      isAdmin: isAdmin ?? this.isAdmin,
     );
   }
 
@@ -48,17 +56,25 @@ class User extends EntityModel {
       id: json["id"],
       name: json["name"],
       email: json["email"],
-      isAdmin: json["isAdmin"],
       profileImage: json["profileImage"],
+      likedProperties: json["likedProperties"],
+      posts: json["posts"],
+      password: json["password"],
+      phoneNumber: json["phoneNumber"],
+      isAdmin: json["isAdmin"],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "profileImage": this.profileImage,
       "id": this.id,
       "name": this.name,
       "email": this.email,
+      "profileImage": this.profileImage,
+      "likedProperties": this.likedProperties,
+      "posts": this.posts,
+      "password": this.password,
+      "phoneNumber": this.phoneNumber,
       "isAdmin": this.isAdmin,
     };
   }

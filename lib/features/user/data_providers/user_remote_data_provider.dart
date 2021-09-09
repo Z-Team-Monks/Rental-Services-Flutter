@@ -9,14 +9,7 @@ class UserRemoteDataProvider {
   // final String baseUrl = "http://10.6.193.148:5000/api";
   final String baseUrl = "http://192.168.0.164:5001/api/v1";
   final tokens =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDViNDQyOGQzZmFjNzY4Y2RmMWNiOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2MzA5NDI3MzV9._5U-JnUFTrKA5l5Qhs7wBNpCVHaTAZCIdhjAcpGWW78";
-
-  final User user = new User(
-      name: "Kidus Yoseph",
-      email: "se.kidus.yoseph@gmail.com",
-      phoneNumber: "0972476097",
-      profileImage:
-          "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80");
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDViNDQyOGQzZmFjNzY4Y2RmMWNiOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2Mjg3ODE2MzV9._VCHTjWSSC4ImckvDr4bsG2CJrA-PbCoCnIutOMuBB4";
 
   /// Given a [User] it will create or register
   ///
@@ -115,9 +108,6 @@ class UserRemoteDataProvider {
   Future<User> currentUser({
     required String token,
   }) async {
-    // await Future.delayed(const Duration(milliseconds: 100));
-    // return user;
-
     final http.Response response = await http.get(
       Uri.parse("$baseUrl/users/me"),
       headers: <String, String>{
@@ -150,7 +140,6 @@ class UserRemoteDataProvider {
   }
 
   Future<User> updateUser(User user) async {
-    // await Future.delayed(const Duration(milliseconds: 100));
     final http.Response response = await http.put(
       Uri.parse("$baseUrl/users"),
       headers: <String, String>{
@@ -159,19 +148,16 @@ class UserRemoteDataProvider {
       },
       body: jsonEncode(
         {
-          "id": user.id,
-          // "profileImage": user.profileImage,
-          "likedProperties": user.likedProperties,
           "name": user.name,
           "email": user.email,
           "phoneNumber": user.phoneNumber,
-          "isAdmin": user.isAdmin,
           "v": user.v,
         },
       ),
     );
 
     if (response.statusCode == 200) {
+      print(response.body);
       return User.fromJson(jsonDecode(response.body));
     } else {
       print("Error in updating: " + response.body);

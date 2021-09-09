@@ -62,8 +62,7 @@ class _AddPropertyState extends State<AddProperty> with InputValidationMixin {
               listener: (context, state) {
                 if (state.propertyState.submitSuccess) {
                   final lunchBar = LunchBars(
-                      lunchBarText:
-                          "Product registered it is being reviewed by our team!",
+                      lunchBarText: "Product is being reviewed by our team!",
                       event: LunchBarEvents.LunchBarSuccess);
                   ScaffoldMessenger.of(context).showSnackBar(lunchBar);
                 }
@@ -293,11 +292,11 @@ class _AddPropertyState extends State<AddProperty> with InputValidationMixin {
                                     ));
                                   },
                                   items: <String>[
-                                    'MONTH',
-                                    'MINUTE',
-                                    'HOUR',
-                                    'DAY',
-                                    'YEAR'
+                                    'Month',
+                                    'Minute',
+                                    'Hour',
+                                    'Day',
+                                    'Year'
                                   ].map<DropdownMenuItem<String>>(
                                       (String value) {
                                     return DropdownMenuItem<String>(

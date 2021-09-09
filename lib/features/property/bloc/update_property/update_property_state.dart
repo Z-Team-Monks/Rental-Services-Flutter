@@ -9,6 +9,8 @@ abstract class UpdatePropertyState extends Equatable {
 
 class UpdatePropertyLoadingProperty extends UpdatePropertyState {}
 
+class UpdatePropertyLoadingFailed extends UpdatePropertyState {}
+
 class UpdatePropertyLoadedProperty extends UpdatePropertyState {
   Property property;
   bool? isUpdated;

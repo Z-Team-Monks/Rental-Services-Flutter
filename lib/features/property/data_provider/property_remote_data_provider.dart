@@ -6,7 +6,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:rental/core/models/property.dart';
 
 class PropertyRemoteDataProvider {
-  final String baseUrl = "http://192.168.43.27:5000/api";
+  // final String baseUrl = "http://192.168.43.27:5000/api";
+  final String baseUrl = "http://192.168.0.164:5001/api/v1";
+  final tokens =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDViNDQyOGQzZmFjNzY4Y2RmMWNiOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2Mjg3ODE2MzV9._VCHTjWSSC4ImckvDr4bsG2CJrA-PbCoCnIutOMuBB4";
 
   /// It will return list of [Property] Objects fetched from remote server / API
   ///
@@ -152,29 +155,33 @@ class PropertyRemoteDataProvider {
     required Property property,
     // required String token,
   }) async {
-    final token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDViNDQyOGQzZmFjNzY4Y2RmMWNiOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2MzExMTYxMTB9.j26kchRFH35maWmu6OWwFk2orS_2wJcpR0FqKPoxdH8";
+    // await Future.delayed(Duration(seconds: 3));
+    // return property;
+
     final http.Response response = await http.put(
-      // Uri.parse("$baseUrl/property"),
-      Uri.parse(
-          "http://192.168.43.46:5001/api/v1/property/61389e84a6a60a468bce7d11"),
+      Uri.parse("$baseUrl/property/61389e84a6a60a468bce7d11"),
+      // Uri.parse(
+      //     "http://192.168.43.46:5001/api/v1/property/61389e84a6a60a468bce7d11"),
       headers: <String, String>{
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer $tokens',
       },
       body: jsonEncode(
         {
           "title": property.title,
           "description": property.description,
           "category": property.category,
-          "cost[bill]": property.bill,
-          "cost[per]": property.per,
+          "cost": {
+            "bill": property.bill,
+            "per": property.per,
+          },
         },
       ),
     );
 
     if (response.statusCode == 204 || response.statusCode == 200) {
       // print("updated" + (jsonDecode(response.body)));
+      // print(Property.fromJson(jsonDecode(response.body)));
       return Property.fromJson(jsonDecode(response.body));
     } else {
       print("Can't update " + response.body);
@@ -199,9 +206,9 @@ class PropertyRemoteDataProvider {
 
   Future<Property> loadProperty({required String id}) async {
     final http.Response response = await http.get(
-      // Uri.parse("$baseUrl/property/$id"),
-      Uri.parse(
-          "http://192.168.43.46:5001/api/v1/property/61389e84a6a60a468bce7d11"),
+      Uri.parse("$baseUrl/property/$id"),
+      // Uri.parse(
+      //     "http://192.168.43.46:5001/api/v1/property/61389e84a6a60a468bce7d11"),
       headers: <String, String>{
         "Content-Type": "application/json",
       },
