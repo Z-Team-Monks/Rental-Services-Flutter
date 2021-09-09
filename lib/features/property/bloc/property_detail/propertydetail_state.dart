@@ -11,11 +11,11 @@ class PropertyDetailInitial extends PropertyDetailState {}
 class PropertyDetailLoading extends PropertyDetailState {}
 
 class PropertyDetailOperationSuccess extends PropertyDetailState {
-  final Property property;
+  final Property? property;
   const PropertyDetailOperationSuccess(this.property);
 
   @override
-  List<Object?> get props => [
+  List<Property?> get props => [
         this.property,
       ];
 }
