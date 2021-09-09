@@ -40,6 +40,7 @@ class RecomedationCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Material(
+        
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(20),

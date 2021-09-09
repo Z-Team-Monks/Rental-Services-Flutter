@@ -4,6 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:rental/core/models/property.dart';
 import 'package:rental/features/property/bloc/Ads/ads_bloc.dart';
+import 'package:rental/features/property/bloc/fillter_property/car_fillter_bloc/car_property_bloc.dart';
+import 'package:rental/features/property/bloc/fillter_property/fillter_property_bloc.dart';
+import 'package:rental/features/property/bloc/fillter_property/house_fillter/house_property_bloc.dart';
+import 'package:rental/features/property/bloc/fillter_property/other_fillter_bloc/other_property_bloc.dart';
 import 'package:rental/features/property/bloc/property_bloc.dart';
 import 'package:rental/features/property/repository/property_repository.dart';
 import 'package:rental/locator.dart';
@@ -27,6 +31,23 @@ class HomeFeed extends StatelessWidget {
             ),
         ),
         BlocProvider(
+          create: (context) => FillterCarPropertyBloc(
+            getIt.get<PropertyRepository>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) =>
+              FillterCarPropertyBloc(getIt.get<PropertyRepository>()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              FillterHousePropertyBloc(getIt.get<PropertyRepository>()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              FillterOtherPropertyBloc(getIt.get<PropertyRepository>()),
+        ),
+        BlocProvider(
           create: (context) => AdsBloc(
             adsRepository: AdsRepository(),
           )..add(LoadAds()),
@@ -43,12 +64,27 @@ class HomeFeed extends StatelessWidget {
   }
 }
 
-class Feed extends StatelessWidget {
+class Feed extends StatefulWidget {
+  @override
+  _FeedState createState() => _FeedState();
+}
+
+class _FeedState extends State<Feed> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    TabController _tabController = TabController(
+      length: 4,
+      vsync: this,
+    );
+
+    _tabController.addListener(() {
+      if (_tabController.index == 0) {
+      } else if (_tabController.index == 1) {}
+    });
     return SafeArea(
       child: Scaffold(
         body: DefaultTabController(
+          initialIndex: 0,
           length: 4,
           child: NestedScrollView(
             physics: NeverScrollableScrollPhysics(),
@@ -85,63 +121,75 @@ class Feed extends StatelessWidget {
                   flexibleSpace: ProfileView(),
                 ),
                 SliverPersistentHeader(
-                  delegate: MyDelegate(TabBar(
-                    tabs: [
-                      Tab(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "All",
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.bold,
+                  delegate: MyDelegate(
+                      TabBar(
+                        controller: _tabController,
+                        tabs: [
+                          Tab(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "All",
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      Tab(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Cars",
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.bold,
+                          Tab(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Cars",
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      Tab(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "House",
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.bold,
+                          Tab(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "House",
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      Tab(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Others",
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.bold,
+                          Tab(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Others",
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                    indicatorColor: Colors.blue,
-                    unselectedLabelColor: Colors.grey,
-                    labelColor: Colors.black,
-                  )),
+                        ],
+                        indicatorColor: Colors.blue,
+                        unselectedLabelColor: Colors.grey,
+                        labelColor: Colors.black,
+                      ), (data) {
+                    BlocProvider.of<PropertyBloc>(context).add(
+                      PropertySearch(keyWord: data),
+                    );
+                    if (_tabController.index != 0) _tabController.animateTo(0);
+                  }, () {
+                    BlocProvider.of<PropertyBloc>(context).add(
+                      PropertiesLoad(),
+                    );
+                  }),
                   floating: true,
                   pinned: true,
                 )
               ];
             },
             body: TabBarView(
+              controller: _tabController,
               children: [
                 Container(
                   child: RefreshIndicator(
@@ -154,28 +202,28 @@ class Feed extends StatelessWidget {
                 ),
                 Container(
                   child: RefreshIndicator(
-                    child: fetchFeed(context),
+                    child: fetchCarCategory(context, "Car"),
                     onRefresh: () async {
-                      BlocProvider.of<PropertyBloc>(context)
-                          .add(PropertiesLoad());
+                      BlocProvider.of<FillterCarPropertyBloc>(context)
+                          .add(PropertyFilterCar());
                     },
                   ),
                 ),
                 Container(
                   child: RefreshIndicator(
-                    child: fetchFeed(context),
+                    child: fetchHouseCategory(context, "House"),
                     onRefresh: () async {
-                      BlocProvider.of<PropertyBloc>(context)
-                          .add(PropertiesLoad());
+                      BlocProvider.of<FillterHousePropertyBloc>(context)
+                          .add(PropertyFilterHouse());
                     },
                   ),
                 ),
                 Container(
                   child: RefreshIndicator(
-                    child: fetchFeed(context),
+                    child: fetchOtherCategory(context, "Other"),
                     onRefresh: () async {
-                      BlocProvider.of<PropertyBloc>(context)
-                          .add(PropertiesLoad());
+                      BlocProvider.of<FillterOtherPropertyBloc>(context)
+                          .add(PropertyFilterOther());
                     },
                   ),
                 ),
@@ -191,6 +239,7 @@ class Feed extends StatelessWidget {
     return BlocBuilder<PropertyBloc, PropertyState>(
       builder: (context, state) {
         if (state is PropertyLoading) {
+          print("---lloadingl--");
           List<Widget> widgets = [];
           for (var i = 0; i < 5; i++) {
             widgets.add(
@@ -200,7 +249,6 @@ class Feed extends StatelessWidget {
               ),
             );
           }
-
           return Container(
             child: ListView(
               // itemExtent: widgets,
@@ -210,7 +258,8 @@ class Feed extends StatelessWidget {
             ),
           );
         } else if (state is PropertyOperationSuccess) {
-   
+          print("---success--");
+          print(state.props);
           return SizedBox(
             child: ListView.builder(
               shrinkWrap: true,
@@ -219,20 +268,25 @@ class Feed extends StatelessWidget {
                 // return widgets[index];
                 return Padding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: 10,
+                    // horizontal: ,
                     vertical: 10,
                   ),
                   child: FeedPropertyCard(
+                    // imgUrl: state.props[index].images[0],
                     imgUrl:
                         "https://images.unsplash.com/photo-1611839699701-5cd5f18c25a4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80",
-                    ratingCount: 4,
-                    name: "Mailibu Beach House",
+                    ratingCount: state.props[index].reviewes!.length,
+                    rating: state.props[index].rating!,
+                    name: state.props[index].title,
+                    description: state.props[index].description,
                     phoneCallback: () async {
-                      await getIt<Telephony>().openDialer("0949024607");
+                      await getIt<Telephony>().openDialer(
+                          "${state.props[index].owner!.phoneNumber}");
                     },
                     messageCallback: () async {
                       await getIt<Telephony>().sendSmsByDefaultApp(
-                          to: "1234567890", message: "Mailibu Beach House:");
+                          to: "${state.props[index].owner!.phoneNumber}",
+                          message: "${state.props[index].title}:");
                     },
                   ),
                 );
@@ -243,6 +297,225 @@ class Feed extends StatelessWidget {
           return Center(
             child: Text("Network Failure"),
           );
+        } else if (state is PropertyNotFound) {
+          return Center(child: Text("No results found!"));
+        } else {
+          return Container(
+            height: 100,
+            width: 100,
+          );
+        }
+      },
+    );
+  }
+
+  Widget fetchCarCategory(BuildContext context, String cat) {
+    BlocProvider.of<FillterCarPropertyBloc>(context).add(PropertyFilterCar());
+    return BlocBuilder<FillterCarPropertyBloc, FillterCarPropertyState>(
+      builder: (context, state) {
+        if (state is PropertyCarLoading) {
+          List<Widget> widgets = [];
+          for (var i = 0; i < 5; i++) {
+            widgets.add(
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: FeedCardShimmer(),
+              ),
+            );
+          }
+          return Container(
+            child: ListView(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              children: widgets,
+            ),
+          );
+        } else if (state is PropertyCarSuccessF) {
+          print(state.props);
+          return SizedBox(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: state.properties.length,
+              itemBuilder: (ctx, index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(
+                    // horizontal: ,
+                    vertical: 10,
+                  ),
+                  child: FeedPropertyCard(
+                    // imgUrl: state.props[index].images[0],
+                    imgUrl:
+                        "https://images.unsplash.com/photo-1611839699701-5cd5f18c25a4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80",
+                    ratingCount: state.properties[index].reviewes!.length,
+                    rating: state.properties[index].rating!,
+                    name: state.properties[index].title,
+                    description: state.properties[index].description,
+                    phoneCallback: () async {
+                      await getIt<Telephony>().openDialer(
+                          "${state.properties[index].owner!.phoneNumber}");
+                    },
+                    messageCallback: () async {
+                      await getIt<Telephony>().sendSmsByDefaultApp(
+                          to: "${state.properties[index].owner!.phoneNumber}",
+                          message: "${state.props[index].title}:");
+                    },
+                  ),
+                );
+              },
+            ),
+          );
+        } else if (state is PropertyCarFailure) {
+          return Center(
+            child: Text("Network Failure"),
+          );
+        } else if (state is PropertyCarNotFound) {
+          return Center(child: Text("No Properties currently avilable!"));
+        } else {
+          print("ELSE - statement is executed");
+          print(state);
+          return Container(
+            height: 100,
+            width: 100,
+          );
+        }
+      },
+    );
+  }
+
+  Widget fetchHouseCategory(BuildContext context, String cat) {
+    BlocProvider.of<FillterHousePropertyBloc>(context)
+        .add(PropertyFilterHouse());
+    return BlocBuilder<FillterHousePropertyBloc, FillterHousePropertyState>(
+      builder: (context, state) {
+        if (state is PropertyHouseLoading) {
+          List<Widget> widgets = [];
+          for (var i = 0; i < 5; i++) {
+            widgets.add(
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: FeedCardShimmer(),
+              ),
+            );
+          }
+          return Container(
+            child: ListView(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              children: widgets,
+            ),
+          );
+        } else if (state is PropertyHouseSuccessF) {
+          print(state.props);
+          return SizedBox(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: state.properties.length,
+              itemBuilder: (ctx, index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(
+                    // horizontal: ,
+                    vertical: 10,
+                  ),
+                  child: FeedPropertyCard(
+                    // imgUrl: state.props[index].images[0],
+                    imgUrl:
+                        "https://images.unsplash.com/photo-1611839699701-5cd5f18c25a4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80",
+                    ratingCount: state.properties[index].reviewes!.length,
+                    rating: state.properties[index].rating!,
+                    name: state.properties[index].title,
+                    description: state.properties[index].description,
+                    phoneCallback: () async {
+                      await getIt<Telephony>().openDialer(
+                          "${state.properties[index].owner!.phoneNumber}");
+                    },
+                    messageCallback: () async {
+                      await getIt<Telephony>().sendSmsByDefaultApp(
+                          to: "${state.properties[index].owner!.phoneNumber}",
+                          message: "${state.props[index].title}:");
+                    },
+                  ),
+                );
+              },
+            ),
+          );
+        } else if (state is PropertyHouseFailure) {
+          return Center(
+            child: Text("Network Failure"),
+          );
+        } else if (state is PropertyHouseNotFound) {
+          return Center(child: Text("No Properties currently avilable!"));
+        } else {
+          return Container(
+            height: 100,
+            width: 100,
+          );
+        }
+      },
+    );
+  }
+
+  Widget fetchOtherCategory(BuildContext context, String cat) {
+    BlocProvider.of<FillterOtherPropertyBloc>(context)
+        .add(PropertyFilterOther());
+    return BlocBuilder<FillterOtherPropertyBloc, FillterOtherPropertyState>(
+      builder: (context, state) {
+        if (state is PropertyOtherLoading) {
+          List<Widget> widgets = [];
+          for (var i = 0; i < 5; i++) {
+            widgets.add(
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: FeedCardShimmer(),
+              ),
+            );
+          }
+          return Container(
+            child: ListView(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              children: widgets,
+            ),
+          );
+        } else if (state is PropertyOtherSuccessF) {
+          print(state.props);
+          return SizedBox(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: state.properties.length,
+              itemBuilder: (ctx, index) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(
+                    // horizontal: ,
+                    vertical: 10,
+                  ),
+                  child: FeedPropertyCard(
+                    // imgUrl: state.props[index].images[0],
+                    imgUrl:
+                        "https://images.unsplash.com/photo-1611839699701-5cd5f18c25a4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80",
+                    ratingCount: state.properties[index].reviewes!.length,
+                    rating: state.properties[index].rating!,
+                    name: state.properties[index].title,
+                    description: state.properties[index].description,
+                    phoneCallback: () async {
+                      await getIt<Telephony>().openDialer(
+                          "${state.properties[index].owner!.phoneNumber}");
+                    },
+                    messageCallback: () async {
+                      await getIt<Telephony>().sendSmsByDefaultApp(
+                          to: "${state.properties[index].owner!.phoneNumber}",
+                          message: "${state.props[index].title}:");
+                    },
+                  ),
+                );
+              },
+            ),
+          );
+        } else if (state is PropertyOtherFailure) {
+          return Center(
+            child: Text("Network Failure"),
+          );
+        } else if (state is PropertyOtherNotFound) {
+          return Center(child: Text("No Properties currently avilable!"));
         } else {
           return Container(
             height: 100,
@@ -255,12 +528,15 @@ class Feed extends StatelessWidget {
 }
 
 class MyDelegate extends SliverPersistentHeaderDelegate {
-  MyDelegate(this.tabBar);
+  MyDelegate(this.tabBar, this.notEmptyCallback, this.emptyCallback);
   final TabBar tabBar;
+  final Function(String) notEmptyCallback;
+  final Function emptyCallback;
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
+    String keyword = "";
     return Container(
       color: Colors.white,
       child: Column(
@@ -271,31 +547,49 @@ class MyDelegate extends SliverPersistentHeaderDelegate {
               color: Colors.white,
             ),
             padding: EdgeInsets.only(left: 15),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        alignLabelWithHint: true,
-                        contentPadding:
-                            EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 5.0),
-                        hintText: "Search here"),
-                  ),
-                  flex: 6,
-                ),
-                Expanded(
-                  child: Material(
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.tune_outlined,
-                        color: Colors.black,
+            child: BlocBuilder<PropertyBloc, PropertyState>(
+              builder: (context, state) {
+                return Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        onChanged: (data) {
+                          if (data.isNotEmpty) {
+                            keyword = data;
+                            notEmptyCallback(data);
+                          } else {
+                            emptyCallback();
+                          }
+                        },
+                        textInputAction: TextInputAction.search,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          alignLabelWithHint: true,
+                          contentPadding:
+                              EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 5.0),
+                          hintText: "Search here",
+                        ),
+                      ),
+                      flex: 6,
+                    ),
+                    Expanded(
+                      child: Material(
+                        child: IconButton(
+                          onPressed: () {
+                            if (keyword.isNotEmpty) {
+                              notEmptyCallback(keyword);  
+                            }
+                          },
+                          icon: Icon(
+                            Icons.search,
+                            color: Colors.black,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ],
+                  ],
+                );
+              },
             ),
           ),
           tabBar,

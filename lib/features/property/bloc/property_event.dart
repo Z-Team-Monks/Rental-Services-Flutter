@@ -23,10 +23,24 @@ class PropertyCreate extends PropertyEvent {
   String toString() => 'Property Created {property: $property}';
 }
 
-class PropertyFilter extends PropertyEvent {
+
+// property fillter events
+class PropertySearch extends PropertyEvent {
   final String keyWord;
-  PropertyFilter({required this.keyWord});
+  PropertySearch({required this.keyWord});
 
   @override
   List<Property?> get props => [];
 }
+
+// class PropertyFilterWithCategory extends PropertyEvent {
+//   final String category;
+//   final List<Property> properties;
+//   PropertyFilterWithCategory(this.category, [this.properties = const []]);
+
+//   @override
+//   List<String?> get props => [category];
+//   List<Property> get fillteredProperties => this.properties;
+// }
+
+

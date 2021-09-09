@@ -4,8 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:rental/core/models/property.dart';
 
 class PropertyRemoteDataProvider {
-
-  final String baseUrl = "http://192.168.43.27:5000/api";
+  final String baseUrl = "http://10.6.197.162:5001/api/v1";
 
   /// It will return list of [Property] Objects fetched from remote server / API
   ///
@@ -17,7 +16,7 @@ class PropertyRemoteDataProvider {
       headers: <String, String>{"Content-Type": "application/json"},
     );
 
-    print("------------q----------property---------------------");
+    print("----------------------property---------------------");
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       print(data);
@@ -30,7 +29,7 @@ class PropertyRemoteDataProvider {
     } else {
       print("----------------------property Failure---------------------");
 
-      throw Exception("Unable to fetch properties");
+      throw Exception("Unable to fetch properties [getProperties]");
     }
   }
 
@@ -115,6 +114,58 @@ class PropertyRemoteDataProvider {
       return Property.fromJson(data);
     } else {
       throw Exception("Unable to fetch proerty With ID --- $id");
+    }
+  }
+
+  /// It will return list of [Property] Objects by searching from the remote server / API
+  ///
+  /// or throws an exceptioin if an error occured
+  ///
+  Future<List<Property>> searchProperty(String keyword) async {
+    final http.Response response = await http.get(
+      Uri.parse("$baseUrl/property/search?limit=5&keyword=$keyword"),
+      headers: <String, String>{"Content-Type": "application/json"},
+    );
+
+    print("----------------------property fillter---------------------");
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      print(data);
+      List<Property> properties = [];
+      for (var i = 0; i < data.length; i++) {
+        properties.add(Property.fromJson(data[i]));
+      }
+      print(data);
+      print("----------------------property search---------------------");
+      return properties;
+    } else {
+      print("----------------------property Failure---------------------");
+      throw Exception("Unable to fetch properties [SearchProperty]");
+    }
+  }
+
+    /// It will return list of [Property] Objects by searching from the remote server / API
+  ///
+  /// or throws an exceptioin if an error occured
+  ///
+  Future<List<Property>> fetchByCategory(String category) async {
+    final http.Response response = await http.get(
+      Uri.parse("$baseUrl/property?category=$category"),
+      headers: <String, String>{"Content-Type": "application/json"},
+    );
+
+    print("----------------------property fillter by category---------------------");
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      print(data);
+      List<Property> properties = [];
+      for (var i = 0; i < data.length; i++) {
+        properties.add(Property.fromJson(data[i]));
+      }
+      return properties;
+    } else {
+      print("----------------------property Failure---------------------");
+      throw Exception("Unable to fetch properties [SearchProperty]");
     }
   }
 }
