@@ -231,7 +231,7 @@ class _$PropertyEntityDao extends PropertyEntityDao {
                   'category': item.category,
                   'bill': item.bill,
                   'per': item.per,
-                  'status': item.status ? 1 : 0,
+                  'status': item.status,
                   'rating': item.rating
                 });
 
@@ -254,7 +254,7 @@ class _$PropertyEntityDao extends PropertyEntityDao {
             category: row['category'] as String,
             bill: row['bill'] as double,
             per: row['per'] as String,
-            status: (row['status'] as int) != 0,
+            status: row['status'] as String,
             rating: row['rating'] as double,
             createdAt: row['createdAt'] as String,
             updatedAt: row['updatedAt'] as String));
@@ -271,7 +271,7 @@ class _$PropertyEntityDao extends PropertyEntityDao {
             category: row['category'] as String,
             bill: row['bill'] as double,
             per: row['per'] as String,
-            status: (row['status'] as int) != 0,
+            status: row['status'] as String,
             rating: row['rating'] as double,
             createdAt: row['createdAt'] as String,
             updatedAt: row['updatedAt'] as String),

@@ -44,7 +44,7 @@ class PropertyEntity {
   final String category;
   final double bill;
   final String per;
-  final bool status;
+  final String status;
   final double rating;
 
   PropertyEntity({

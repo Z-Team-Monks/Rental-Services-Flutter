@@ -45,12 +45,12 @@ class User extends EntityModel {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json["id"],
-      name: json["name"],
-      email: json["email"],
-      isAdmin: json["isAdmin"],
-      profileImage: json["profileImage"],
-    );
+        id: json["id"],
+        name: json["name"],
+        email: json["email"],
+        isAdmin: json["isAdmin"],
+        profileImage: json["profileImage"],
+        phoneNumber: json["phoneNumber"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -60,6 +60,7 @@ class User extends EntityModel {
       "name": this.name,
       "email": this.email,
       "isAdmin": this.isAdmin,
+      "phoneNumber": this.isAdmin
     };
   }
 }
