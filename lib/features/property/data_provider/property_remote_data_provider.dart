@@ -1,10 +1,11 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:rental/core/models/property.dart';
 
 class PropertyRemoteDataProvider {
-
   final String baseUrl = "http://192.168.43.27:5000/api";
 
   /// It will return list of [Property] Objects fetched from remote server / API
@@ -38,10 +39,24 @@ class PropertyRemoteDataProvider {
   ///
   /// the created property. Or throws an exception if an error occured
   ///
-  Future<Property> createProperty({
+  Future<void> createProperty({
+    required List<XFile> images,
     required Property property,
     required String token,
   }) async {
+    token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDViNDQyOGQzZmFjNzY4Y2RmMWNiOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2Mjg3ODE2MzV9._VCHTjWSSC4ImckvDr4bsG2CJrA-PbCoCnIutOMuBB4";
+
+    var options = BaseOptions(
+      baseUrl: 'http://192.168.0.164:5001/api/v1',
+      connectTimeout: 5000,
+      receiveTimeout: 3000,
+      contentType: "multipart/form-data",
+    );
+
+    Dio dio = Dio(options);
+    dio.options.headers["authorization"] = "Bearer $token";
+
     final http.Response response = await http.post(
       Uri.parse("$baseUrl/property"),
       headers: <String, String>{
@@ -60,10 +75,72 @@ class PropertyRemoteDataProvider {
       ),
     );
 
-    if (response.statusCode == 201) {
-      return Property.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception("Unable to create Property");
+    try {
+      // var properties = await dio.get("/property");
+      // print(properties);
+      // return;
+
+      String filename = images[0].path.split('/').last;
+      // print(filename + " " + images[0].path);
+      // // return;
+      // FormData formData = FormData.fromMap({
+      //   "profile": await MultipartFile.fromFile(
+      //     images[0].path,
+      //     filename: filename,
+      //   ),
+      // });
+      var formData = FormData();
+      formData.files.addAll([
+        MapEntry(
+          'profile',
+          MultipartFile.fromFileSync(images[0].path, filename: filename),
+        ),
+      ]);
+
+      var response = await Dio().put(
+        'http://192.168.0.164:5001/api/v1/users/profile',
+        data: formData,
+        options: Options(
+          headers: {
+            'Accept': 'application/json',
+            // For latter use commented
+            "Authorization": "Bearer $token",
+            "Content-Type": "multipart/form-data"
+          },
+        ),
+      );
+      print("here");
+
+      // FormData formData = FormData.fromMap({
+      //   "images": await MultipartFile.fromFile(
+      //     images[0].path,
+      //     filename: filename,
+      //   ),
+      //   "title": property.title,
+      //   "description": property.description,
+      //   "category": property.category,
+      //   "cost[bill]": property.bill,
+      //   "cost[per]": property.per,
+      // });
+
+      // var response = await Dio().post(
+      //   'http://192.168.0.164:5001/api/v1/property',
+      //   data: formData,
+      //   options: Options(
+      //     headers: {
+      //       "accept": "/",
+      //       // For latter use commented
+      //       "Authorization": "Bearer $token",
+      //       "Content-Type": "multipart/form-data"
+      //     },
+      //   ),
+      // );
+      // print("here");
+
+      // final response = await dio.post('/property', data: formData);
+      print(response);
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -73,13 +150,22 @@ class PropertyRemoteDataProvider {
   ///
   Future<Property> editProperty({
     required Property property,
-    required String token,
+    // required String token,
   }) async {
+    // return Property(
+    //     title: "New House",
+    //     description: "Smaller House",
+    //     category: "Car",
+    //     bill: 400,
+    //     per: "MONTH",
+    //     images: []);
+    await Future.delayed(Duration(seconds: 3));
+    return property;
     final http.Response response = await http.post(
       Uri.parse("$baseUrl/property"),
       headers: <String, String>{
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $token',
+        // 'Authorization': 'Bearer $token',
       },
       body: jsonEncode(
         {
@@ -115,6 +201,31 @@ class PropertyRemoteDataProvider {
       return Property.fromJson(data);
     } else {
       throw Exception("Unable to fetch proerty With ID --- $id");
+    }
+  }
+
+  Future<Property> loadProperty({required String id}) async {
+    id = "61389e84a6a60a468bce7d11";
+    await Future.delayed(Duration(seconds: 3));
+    return Property(
+        title: "House",
+        description: "Small House",
+        category: "House",
+        bill: 400,
+        per: "MONTH",
+        images: []);
+
+    final http.Response response = await http.get(
+      Uri.parse("$baseUrl/property/$id"),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+      },
+    );
+
+    if (response.statusCode == 204 || response.statusCode == 200) {
+      return Property.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Unable to load Property");
     }
   }
 }

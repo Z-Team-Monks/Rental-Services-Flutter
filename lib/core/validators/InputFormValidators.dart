@@ -11,8 +11,8 @@ mixin InputValidationMixin {
     return name.length > 0;
   }
 
-  bool isPhoneNumberValid(String phoneNumber) {
-    return phoneNumber.length == 0 ||
+  bool isPhoneNumberValid(String? phoneNumber) {
+    return phoneNumber != null &&
         RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)').hasMatch(phoneNumber);
   }
 

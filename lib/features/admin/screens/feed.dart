@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: _buildShrineTheme(),
+      // theme: _buildShrineTheme(),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -476,75 +476,75 @@ class _MyHomePageState extends State<MyHomePage> {
 //   );
 // }
 
-IconThemeData _customIconTheme(IconThemeData original) {
-  return original.copyWith(color: shrineBrown900);
-}
+// IconThemeData _customIconTheme(IconThemeData original) {
+//   return original.copyWith(color: shrineBrown900);
+// }
 
-ThemeData _buildShrineTheme() {
-  final ThemeData base = ThemeData.light();
-  return base.copyWith(
-    colorScheme: _shrineColorScheme,
-    accentColor: shrineBrown900,
-    primaryColor: shrinePink100,
-    buttonColor: shrinePink100,
-    scaffoldBackgroundColor: shrineBackgroundWhite,
-    cardColor: shrineBackgroundWhite,
-    textSelectionColor: shrinePink100,
-    errorColor: shrineErrorRed,
-    buttonTheme: const ButtonThemeData(
-      colorScheme: _shrineColorScheme,
-      textTheme: ButtonTextTheme.normal,
-    ),
-    primaryIconTheme: _customIconTheme(base.iconTheme),
-    textTheme: _buildShrineTextTheme(base.textTheme),
-    primaryTextTheme: _buildShrineTextTheme(base.primaryTextTheme),
-    accentTextTheme: _buildShrineTextTheme(base.accentTextTheme),
-    iconTheme: _customIconTheme(base.iconTheme),
-  );
-}
+// ThemeData _buildShrineTheme() {
+//   final ThemeData base = ThemeData.light();
+//   return base.copyWith(
+//     colorScheme: _shrineColorScheme,
+//     accentColor: shrineBrown900,
+//     primaryColor: shrinePink100,
+//     buttonColor: shrinePink100,
+//     scaffoldBackgroundColor: shrineBackgroundWhite,
+//     cardColor: shrineBackgroundWhite,
+//     textSelectionColor: shrinePink100,
+//     errorColor: shrineErrorRed,
+//     buttonTheme: const ButtonThemeData(
+//       colorScheme: _shrineColorScheme,
+//       textTheme: ButtonTextTheme.normal,
+//     ),
+//     primaryIconTheme: _customIconTheme(base.iconTheme),
+//     textTheme: _buildShrineTextTheme(base.textTheme),
+//     primaryTextTheme: _buildShrineTextTheme(base.primaryTextTheme),
+//     accentTextTheme: _buildShrineTextTheme(base.accentTextTheme),
+//     iconTheme: _customIconTheme(base.iconTheme),
+//   );
+// }
 
-TextTheme _buildShrineTextTheme(TextTheme base) {
-  return base
-      .copyWith(
-        headline: base.headline!.copyWith(
-          fontWeight: FontWeight.w500,
-          letterSpacing: defaultLetterSpacing,
-        ),
-        title: base.title!.copyWith(
-          fontSize: 18,
-          letterSpacing: defaultLetterSpacing,
-        ),
-        caption: base.caption!.copyWith(
-          fontWeight: FontWeight.w400,
-          fontSize: 14,
-          letterSpacing: defaultLetterSpacing,
-        ),
-        body2: base.body2!.copyWith(
-          fontWeight: FontWeight.w500,
-          fontSize: 16,
-          letterSpacing: defaultLetterSpacing,
-        ),
-        body1: base.body1!.copyWith(
-          letterSpacing: defaultLetterSpacing,
-        ),
-        subhead: base.subhead!.copyWith(
-          letterSpacing: defaultLetterSpacing,
-        ),
-        display1: base.display1!.copyWith(
-          letterSpacing: defaultLetterSpacing,
-        ),
-        button: base.button!.copyWith(
-          fontWeight: FontWeight.w500,
-          fontSize: 14,
-          letterSpacing: defaultLetterSpacing,
-        ),
-      )
-      .apply(
-        fontFamily: 'Rubik',
-        displayColor: shrineBrown900,
-        bodyColor: shrineBrown900,
-      );
-}
+// TextTheme _buildShrineTextTheme(TextTheme base) {
+//   return base
+//       .copyWith(
+//         headline: base.headline!.copyWith(
+//           fontWeight: FontWeight.w500,
+//           letterSpacing: defaultLetterSpacing,
+//         ),
+//         title: base.title!.copyWith(
+//           fontSize: 18,
+//           letterSpacing: defaultLetterSpacing,
+//         ),
+//         caption: base.caption!.copyWith(
+//           fontWeight: FontWeight.w400,
+//           fontSize: 14,
+//           letterSpacing: defaultLetterSpacing,
+//         ),
+//         body2: base.body2!.copyWith(
+//           fontWeight: FontWeight.w500,
+//           fontSize: 16,
+//           letterSpacing: defaultLetterSpacing,
+//         ),
+//         body1: base.body1!.copyWith(
+//           letterSpacing: defaultLetterSpacing,
+//         ),
+//         subhead: base.subhead!.copyWith(
+//           letterSpacing: defaultLetterSpacing,
+//         ),
+//         display1: base.display1!.copyWith(
+//           letterSpacing: defaultLetterSpacing,
+//         ),
+//         button: base.button!.copyWith(
+//           fontWeight: FontWeight.w500,
+//           fontSize: 14,
+//           letterSpacing: defaultLetterSpacing,
+//         ),
+//       )
+//       .apply(
+//         fontFamily: 'Rubik',
+//         displayColor: shrineBrown900,
+//         bodyColor: shrineBrown900,
+//       );
+// }
 
 const ColorScheme _shrineColorScheme = ColorScheme(
   primary: shrinePink100,

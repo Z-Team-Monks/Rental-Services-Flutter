@@ -3,38 +3,37 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loader_skeleton/loader_skeleton.dart';
 import 'package:rental/core/models/property.dart';
 import 'package:rental/core/presentation/customSnackBar.dart';
 import 'package:rental/core/validators/InputFormValidators.dart';
 import 'package:rental/features/property/bloc/property_add/property_add_bloc.dart';
+import 'package:rental/features/property/bloc/update_property/update_property_bloc.dart';
 import 'package:rental/features/user/bloc/profile_bloc/profile_bloc.dart';
 
-class AddProperty extends StatefulWidget with InputValidationMixin {
+class PropertyUpdateScreen extends StatefulWidget with InputValidationMixin {
   static const pageRoute = "/add_property";
 
   @override
-  State<AddProperty> createState() => _AddPropertyState();
+  State<PropertyUpdateScreen> createState() => _PropertyUpdateState();
+  int shouldChange = 0;
 }
 
-class _AddPropertyState extends State<AddProperty> with InputValidationMixin {
+class _PropertyUpdateState extends State<PropertyUpdateScreen>
+    with InputValidationMixin {
   final _formKey = GlobalKey<FormState>();
 
-  final ImagePicker _picker = ImagePicker();
-
-  List<XFile>? images;
-
   String? categoryValue = "House";
+  String? perValue = "MONTH";
 
   final titleTextController = new TextEditingController(text: "House");
-
   final descriptionTextController =
       new TextEditingController(text: "A big house");
-
   final priceTextController = new TextEditingController(text: "400");
 
   @override
   Widget build(BuildContext context) {
-    final propertyAddBloc = BlocProvider.of<PropertyAddBloc>(context);
+    final propertyUpdateBloc = BlocProvider.of<UpdatePropertyBloc>(context);
 
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -42,7 +41,7 @@ class _AddPropertyState extends State<AddProperty> with InputValidationMixin {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(
-          "Add property",
+          "Update property",
           style: TextStyle(
               fontSize: 25.0,
               fontWeight: FontWeight.bold,
@@ -54,30 +53,45 @@ class _AddPropertyState extends State<AddProperty> with InputValidationMixin {
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.only(
-                // top: height * 0.06,
+                top: height * 0.03,
                 left: width * 0.04,
                 right: width * 0.04,
                 bottom: height * 0.01),
-            child: BlocConsumer<PropertyAddBloc, PropertyAddState>(
-              listener: (context, state) {
-                if (state.propertyState.submitSuccess) {
+            child: BlocConsumer<UpdatePropertyBloc, UpdatePropertyState>(
+                listener: (context, state) {
+              if (state is UpdatePropertyLoadedProperty) {
+                if (state.isUpdated == false) {
                   final lunchBar = LunchBars(
-                      lunchBarText:
-                          "Product registered it is being reviewed by our team!",
+                      lunchBarText: "Trouble connecting to the internet",
                       event: LunchBarEvents.LunchBarSuccess);
                   ScaffoldMessenger.of(context).showSnackBar(lunchBar);
                 }
-                if (state.propertyState.submitFailure) {
+
+                if (state.isUpdated == true) {
                   final lunchBar = LunchBars(
-                      lunchBarText:
-                          "Couldn't register your property try later!",
+                      lunchBarText: "Product updated",
                       event: LunchBarEvents.LunchBarError);
                   ScaffoldMessenger.of(context).showSnackBar(lunchBar);
                 }
-              },
-              builder: (context, state) {
-                // print("Rebuilding");
-                // print(state.propertyState.category);
+              }
+            }, builder: (context, state) {
+              if (state is UpdatePropertyLoadingProperty) {
+                return Center(
+                  child: CardPageSkeleton(
+                    totalLines: 10,
+                  ),
+                );
+              }
+              if (state is UpdatePropertyLoadedProperty) {
+                widget.shouldChange += 1;
+                if (widget.shouldChange == 1) {
+                  categoryValue = state.property.category;
+                  perValue = state.property.per;
+                  titleTextController.text = state.property.title;
+                  descriptionTextController.text = state.property.description;
+                  priceTextController.text = state.property.bill.toString();
+                }
+
                 return Form(
                   key: _formKey,
                   child: Column(
@@ -143,26 +157,16 @@ class _AddPropertyState extends State<AddProperty> with InputValidationMixin {
                                 vertical: height * 0.008,
                               ),
                               child: DropdownButton<String>(
-                                value: categoryValue, //"state.dropdownValue",
+                                value: state
+                                    .property.category, //"state.dropdownValue",
                                 icon: const Icon(Icons.arrow_drop_down),
                                 iconSize: 24,
                                 elevation: 16,
                                 style: const TextStyle(color: Colors.black54),
                                 onChanged: (String? newValue) {
-                                  // print("New value");
-                                  // print(newValue);
                                   setState(() {
-                                    categoryValue = newValue;
+                                    state.property.category = newValue!;
                                   });
-                                  // propertyAddBloc
-                                  //     .add(PropertyAddChangeCategoryDropDown(
-                                  //   properyEventValue:
-                                  //       new AddPropertyFormEventValue(
-                                  //           dropdownValue: state
-                                  //               .propertyState.dropdownValue,
-                                  //           images: state.propertyState.images,
-                                  //           category: "Random shit"),
-                                  // ));
                                 },
                                 items: <String>[
                                   'House',
@@ -274,23 +278,16 @@ class _AddPropertyState extends State<AddProperty> with InputValidationMixin {
                                   vertical: height * 0.008,
                                 ),
                                 child: DropdownButton<String>(
-                                  value: state.propertyState
-                                      .dropdownValue, //"state.dropdownValue",
+                                  value: state
+                                      .property.per, //"state.dropdownValue",
                                   icon: const Icon(Icons.arrow_drop_down),
                                   iconSize: 24,
                                   elevation: 16,
                                   style: const TextStyle(color: Colors.black54),
                                   onChanged: (String? newValue) {
-                                    propertyAddBloc
-                                        .add(PropertyAddChangePerDropDown(
-                                      properyEventValue:
-                                          new AddPropertyFormEventValue(
-                                              dropdownValue: newValue!,
-                                              images:
-                                                  state.propertyState.images,
-                                              category:
-                                                  state.propertyState.category),
-                                    ));
+                                    setState(() {
+                                      state.property.per = newValue!;
+                                    });
                                   },
                                   items: <String>[
                                     'MONTH',
@@ -314,127 +311,47 @@ class _AddPropertyState extends State<AddProperty> with InputValidationMixin {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.019,
                       ),
-                      Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: width * 0.008,
-                            vertical: height * 0.008,
-                          ),
+                      Container(
+                        margin: EdgeInsets.only(top: 20),
+                        child: Center(
                           child: SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.088,
-                              width: MediaQuery.of(context).size.width * 1,
-                              child: GestureDetector(
-                                onTap: () async {
-                                  images = await _picker.pickMultiImage();
-                                  if (images != null) {
-                                    propertyAddBloc.add(PropertyAddImages(
-                                      properyEventValue:
-                                          new AddPropertyFormEventValue(
-                                              dropdownValue: state
-                                                  .propertyState.dropdownValue,
-                                              images: images!,
-                                              category:
-                                                  state.propertyState.category),
-                                    ));
-                                  }
-                                },
-                                child: Card(
-                                  color: Colors.grey[300],
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    child: Center(
-                                        child: Text(
-                                      "Upload Images",
-                                      style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: 18,
-                                      ),
-                                    )),
-                                  ),
-                                ),
-                              ))),
-                      state.propertyState.images.length == 0
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Center(child: Text("No images provided")),
-                            )
-                          : SizedBox(
-                              height: 100,
-                              child: Center(
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: state.propertyState.images.length,
-                                  itemBuilder: (_, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.only(left: 2.0),
-                                      child: Image.file(
-                                          File(state.propertyState.images[index]
-                                              .path),
-                                          fit: BoxFit.cover),
-                                    );
-                                  },
-                                ),
+                            width: width * 0.8,
+                            height: 50,
+                            child: TextButton(
+                              onPressed: () {
+                                widget.shouldChange = 0;
+                                propertyUpdateBloc.add(UpdatePropertyUpdate(
+                                    property: new Property(
+                                        title: titleTextController.text,
+                                        description:
+                                            descriptionTextController.text,
+                                        category: state.property.category,
+                                        bill: double.tryParse(
+                                            priceTextController.text)!,
+                                        per: state.property.per,
+                                        images: state.property.images)));
+                              },
+                              child: const Text(
+                                'Update',
                               ),
                             ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.03,
+                          ),
+                        ),
                       ),
-                      Center(
-                        child: state.propertyState.isLoading
-                            ? Center(child: CircularProgressIndicator())
-                            : SizedBox(
-                                width: width * 0.8,
-                                height: 50,
-                                child: TextButton(
-                                  onPressed: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      if (state.propertyState.images.length ==
-                                          0) {
-                                        final lunchBar = LunchBars(
-                                            lunchBarText:
-                                                "Please provide at least one image",
-                                            event:
-                                                LunchBarEvents.LunchBarError);
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(lunchBar);
-                                        return;
-                                      }
-                                      final property = new Property(
-                                          title: titleTextController.text,
-                                          description:
-                                              descriptionTextController.text,
-                                          category: "House",
-                                          bill: double.tryParse(
-                                              priceTextController.text)!,
-                                          per:
-                                              state.propertyState.dropdownValue,
-                                          images: []);
-                                      propertyAddBloc.add(PropertyAddRemote(
-                                        images: state.propertyState.images,
-                                        properyEventValue:
-                                            new AddPropertyFormEventValue(
-                                                dropdownValue: state
-                                                    .propertyState
-                                                    .dropdownValue,
-                                                images:
-                                                    state.propertyState.images,
-                                                category: categoryValue!),
-                                        property: property,
-                                      ));
-                                    }
-                                  },
-                                  child: const Text(
-                                    'Submit',
-                                  ),
-                                ),
+                      state.isLoading
+                          ? Center(
+                              child: Container(
+                                margin: EdgeInsets.only(top: 30),
+                                child: CircularProgressIndicator(),
                               ),
-                      ),
+                            )
+                          : Text(""),
                     ],
                   ),
                 );
-              },
-            ),
+              }
+              return Text("Non defined State");
+            }),
           ),
         ),
       ),

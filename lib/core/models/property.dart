@@ -8,9 +8,9 @@ class Property extends EntityModel {
   final String? updatedAt;
   final String title;
   final String description;
-  final String category;
+  String category;
   final double bill;
-  final String per;
+  String per;
   // TODO: improve by createing an image model
   final List<dynamic> images;
   final bool? status;
