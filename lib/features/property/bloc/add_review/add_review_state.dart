@@ -6,29 +6,30 @@ class AddReviewFormState extends Equatable {
   const AddReviewFormState({
     this.message = const Message.pure(),
     this.rating = 1,
-    this.userId = "",
     this.status = FormzStatus.pure,
+    this.isUpdating = false,
   });
 
   final Message message;
   final double rating;
-  final String userId;
   final FormzStatus status;
+  final bool isUpdating;
 
   AddReviewFormState copyWith({
     Message? message,
     double? rating,
     FormzStatus? status,
-    String? userId,
+    bool? isUpdating,
   }) {
+    print(message?.value);
     return AddReviewFormState(
       message: message ?? this.message,
       rating: rating ?? this.rating,
-      userId: userId ?? this.userId,
       status: status ?? this.status,
+      isUpdating: isUpdating ?? this.isUpdating,
     );
   }
 
   @override
-  List<Object> get props => [message, rating, userId, status];
+  List<Object> get props => [message, rating, status];
 }

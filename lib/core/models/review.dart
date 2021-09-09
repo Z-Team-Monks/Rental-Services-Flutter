@@ -2,12 +2,12 @@ import 'package:rental/core/models/entity.dart';
 
 class Review extends EntityModel {
   final String? userId;
-  final String? message;
+  final String message;
   final double? rating;
 
   Review({
-    required this.userId,
-    this.message,
+    this.userId,
+    required this.message,
     this.rating,
   });
 
@@ -15,13 +15,13 @@ class Review extends EntityModel {
     return Review(
       userId: json["id"],
       message: json["message"],
-      rating: json["rating"],
+      rating: json["rating"] * 1.0,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "id": this.userId,
+      // "id": this.userId,
       "message": this.message,
       "rating": this.rating,
     };

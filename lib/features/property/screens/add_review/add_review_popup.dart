@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
+import 'package:rental/core/presentation/customSnackBar.dart';
 import 'package:rental/core/presentation/customTheme/appTheme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:rental/features/property/bloc/add_review/add_review_bloc.dart';
@@ -44,11 +46,13 @@ const String _heroAddReview = 'add-review-hero';
 class AddReviewPopup extends StatelessWidget {
   static const pageRoute = "/add_review";
   late final FocusNode messageFocusNode;
+  late final TextEditingController messageController;
   AddReviewPopup({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final addReviewFormBloc = BlocProvider.of<AddReviewFormBloc>(context);
+    this.messageController = TextEditingController();
     this.messageFocusNode = FocusNode();
     this.messageFocusNode
       ..addListener(() {
@@ -110,8 +114,15 @@ class AddReviewPopup extends StatelessWidget {
                     const SizedBox(height: 16),
                     BlocBuilder<AddReviewFormBloc, AddReviewFormState>(
                         builder: (context, state) {
-                      return TextFormField(
-                        initialValue: state.message.value,
+                      messageController.value = TextEditingValue(
+                        text: state.message.value,
+                        selection: TextSelection.fromPosition(
+                          TextPosition(
+                              offset: messageController.selection.base.offset),
+                        ),
+                      );
+                      return TextField(
+                        controller: messageController,
                         focusNode: messageFocusNode,
                         keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
@@ -143,9 +154,6 @@ class AddReviewPopup extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        // decoration: InputDecoration(
-
-                        // ),
                         cursorColor: Colors.black,
                         maxLines: 6,
                         textInputAction: TextInputAction.done,
@@ -157,20 +165,58 @@ class AddReviewPopup extends StatelessWidget {
                       );
                     }),
                     const SizedBox(height: 14),
-                    SizedBox(
-                      width: double.infinity,
-                      child: TextButton(
-                        onPressed: () {
-                          messageFocusNode.unfocus();
-                          context
-                              .read<AddReviewFormBloc>()
-                              .add(FormSubmitted());
-                        },
-                        child: const Text(
-                          'Submit',
-                        ),
-                      ),
-                    ),
+                    BlocConsumer<AddReviewFormBloc, AddReviewFormState>(
+                      listener: (context, state) {
+                        if (state.isUpdating &&
+                            state.status == FormzStatus.submissionSuccess) {
+                          print("success");
+                          final lunchBar = LunchBars(
+                              lunchBarText: "Review Update Success",
+                              event: LunchBarEvents.LunchBarSuccess);
+                          ScaffoldMessenger.of(context).showSnackBar(lunchBar);
+                        } else if (state.status ==
+                            FormzStatus.submissionSuccess) {
+                          print("success");
+                          final lunchBar = LunchBars(
+                              lunchBarText: "Review Created Successfully",
+                              event: LunchBarEvents.LunchBarSuccess);
+                          ScaffoldMessenger.of(context).showSnackBar(lunchBar);
+                        } else if (state.status ==
+                            FormzStatus.submissionFailure) {
+                          print("failure");
+                          final lunchBar = LunchBars(
+                              lunchBarText: "Failed",
+                              event: LunchBarEvents.LunchBarSuccess);
+                          ScaffoldMessenger.of(context).showSnackBar(lunchBar);
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state.status == FormzStatus.submissionInProgress) {
+                          return Center(
+                            child: SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+
+                        return SizedBox(
+                          width: double.infinity,
+                          child: TextButton(
+                            onPressed: () {
+                              messageFocusNode.unfocus();
+                              context
+                                  .read<AddReviewFormBloc>()
+                                  .add(FormSubmitted());
+                            },
+                            child: const Text(
+                              'Submit',
+                            ),
+                          ),
+                        );
+                      },
+                    )
                   ],
                 ),
               ),

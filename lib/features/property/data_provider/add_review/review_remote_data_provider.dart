@@ -6,7 +6,7 @@ import 'package:rental/core/models/review.dart';
 import 'package:rental/core/models/user.dart';
 
 class ReviewRemoteDataProvider {
-  String baseUrl = "http://10.6.193.148:5000/api/v1/property/";
+  String baseUrl = "http://10.6.200.3:5001/api/v1/property/";
 
   /// It will return list of [Review] Objects fetched from remote server / API
   ///
@@ -49,7 +49,7 @@ class ReviewRemoteDataProvider {
       body: jsonEncode(review),
     );
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       return Review.fromJson(jsonDecode(response.body));
     } else {
       throw Exception("Unable to create Property");
@@ -62,7 +62,7 @@ class ReviewRemoteDataProvider {
     required String propertyId,
     required String token,
   }) async {
-    final http.Response response = await client.patch(
+    final http.Response response = await client.put(
       Uri.parse("$baseUrl/$propertyId/review"),
       headers: <String, String>{
         "Content-Type": "application/json",
