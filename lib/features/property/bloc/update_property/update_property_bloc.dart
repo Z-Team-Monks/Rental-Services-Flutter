@@ -23,11 +23,16 @@ class UpdatePropertyBloc
   ) async* {
     // yield UpdatePropertyLoadingProperty();
     if (event is UpdatePropertyLoadProperty) {
-      final property =
-          await _propertyRepository.getDetailedProduct(event.productId);
-      print(property);
-      yield UpdatePropertyLoadedProperty(
-          property: property, isLoading: false, isLoaded: true);
+      try {
+        final property =
+            await _propertyRepository.getDetailedProduct(event.productId);
+        yield UpdatePropertyLoadedProperty(
+            property: property, isLoading: false, isLoaded: true);
+        print(property);
+      } catch (e) {
+        print(e.toString());
+        yield UpdatePropertyLoadingProperty();
+      }
     }
     if (event is UpdatePropertyUpdate) {
       yield UpdatePropertyLoadedProperty(
@@ -40,8 +45,8 @@ class UpdatePropertyBloc
             isUpdated: true,
             isLoading: false,
             isLoaded: false);
-        // print("Updated " + updatedProperty.title);
       } catch (e) {
+        print(e.toString());
         yield UpdatePropertyLoadedProperty(
             property: event.property,
             isUpdated: false,

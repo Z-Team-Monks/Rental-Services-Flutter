@@ -24,7 +24,7 @@ class _PropertyUpdateState extends State<PropertyUpdateScreen>
   final _formKey = GlobalKey<FormState>();
 
   String? categoryValue = "House";
-  String? perValue = "MONTH";
+  String? perValue = "Month";
 
   final titleTextController = new TextEditingController(text: "House");
   final descriptionTextController =
@@ -290,11 +290,11 @@ class _PropertyUpdateState extends State<PropertyUpdateScreen>
                                     });
                                   },
                                   items: <String>[
-                                    'MONTH',
-                                    'MINUTE',
-                                    'HOUR',
-                                    'DAY',
-                                    'YEAR'
+                                    'Month',
+                                    'Minute',
+                                    'Hour',
+                                    'Day',
+                                    'Year'
                                   ].map<DropdownMenuItem<String>>(
                                       (String value) {
                                     return DropdownMenuItem<String>(

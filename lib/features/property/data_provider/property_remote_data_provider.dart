@@ -152,39 +152,32 @@ class PropertyRemoteDataProvider {
     required Property property,
     // required String token,
   }) async {
-    // return Property(
-    //     title: "New House",
-    //     description: "Smaller House",
-    //     category: "Car",
-    //     bill: 400,
-    //     per: "MONTH",
-    //     images: []);
-    await Future.delayed(Duration(seconds: 3));
-    return property;
-    final http.Response response = await http.post(
-      Uri.parse("$baseUrl/property"),
+    final token =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDViNDQyOGQzZmFjNzY4Y2RmMWNiOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2MzExMTYxMTB9.j26kchRFH35maWmu6OWwFk2orS_2wJcpR0FqKPoxdH8";
+    final http.Response response = await http.put(
+      // Uri.parse("$baseUrl/property"),
+      Uri.parse(
+          "http://192.168.43.46:5001/api/v1/property/61389e84a6a60a468bce7d11"),
       headers: <String, String>{
         "Content-Type": "application/json",
-        // 'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer $token',
       },
       body: jsonEncode(
         {
-          "images": property.images,
           "title": property.title,
           "description": property.description,
           "category": property.category,
           "cost[bill]": property.bill,
-          "cost[per]": property.bill,
-
-          /// TODO: if there rare additionl properties that could be edited
-          /// TODO: they will be included in here
+          "cost[per]": property.per,
         },
       ),
     );
 
     if (response.statusCode == 204 || response.statusCode == 200) {
+      // print("updated" + (jsonDecode(response.body)));
       return Property.fromJson(jsonDecode(response.body));
     } else {
+      print("Can't update " + response.body);
       throw Exception("Unable to update Property");
     }
   }
@@ -205,26 +198,20 @@ class PropertyRemoteDataProvider {
   }
 
   Future<Property> loadProperty({required String id}) async {
-    id = "61389e84a6a60a468bce7d11";
-    await Future.delayed(Duration(seconds: 3));
-    return Property(
-        title: "House",
-        description: "Small House",
-        category: "House",
-        bill: 400,
-        per: "MONTH",
-        images: []);
-
     final http.Response response = await http.get(
-      Uri.parse("$baseUrl/property/$id"),
+      // Uri.parse("$baseUrl/property/$id"),
+      Uri.parse(
+          "http://192.168.43.46:5001/api/v1/property/61389e84a6a60a468bce7d11"),
       headers: <String, String>{
         "Content-Type": "application/json",
       },
     );
 
     if (response.statusCode == 204 || response.statusCode == 200) {
+      print(response.body);
       return Property.fromJson(jsonDecode(response.body));
     } else {
+      print("Error Message " + response.body);
       throw Exception("Unable to load Property");
     }
   }

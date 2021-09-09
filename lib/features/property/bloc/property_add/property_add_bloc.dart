@@ -15,7 +15,7 @@ class PropertyAddBloc extends Bloc<PropertyAddEvent, PropertyAddState> {
   PropertyAddBloc({required this.propertyRepository})
       : super(PropertyAddWidgetState(
             propertyState: new AddPropertyFormState(
-                dropdownValue: 'MONTH',
+                dropdownValue: 'Month',
                 category: 'House',
                 images: [],
                 isLoading: false,
