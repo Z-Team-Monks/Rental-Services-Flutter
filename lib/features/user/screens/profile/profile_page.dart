@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loader_skeleton/loader_skeleton.dart';
+import 'package:rental/core/helpers/get_image_url.dart';
 import 'package:rental/core/models/property.dart';
 import 'package:rental/core/models/user.dart';
 import 'package:rental/features/property/bloc/update_property/update_property_bloc.dart';
@@ -16,12 +17,14 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         // leading: Icon(Icons.person, color: Colors.black26,),
         backgroundColor: Colors.white,
-        title: Text('Profile', style: GoogleFonts.poppins (color: Colors.black),),
+        title: Text(
+          'Profile',
+          style: GoogleFonts.poppins(color: Colors.black),
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -43,7 +46,8 @@ class ProfilePage extends StatelessWidget {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(state.user.profileImage!),
+                            image: NetworkImage(
+                                getImageUrl(state.user.profileImage!)),
                           ),
                         ),
                       ),
@@ -199,7 +203,6 @@ Widget MyPropertyCard(
   // property.likedBy.length;
   int comments = property["reviewes"].length;
   //property.reviewes.length;
-
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 2.0),
     child: Column(
@@ -213,7 +216,7 @@ Widget MyPropertyCard(
               image: DecorationImage(
                 fit: BoxFit.fill,
                 image: NetworkImage(property["images"].length > 0
-                    ? property["images"][0]
+                    ? getImageUrl(property["images"][0])
                     : "https://images.unsplash.com/photo-1599809275671-b5942cabc7a2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmVhbCUyMGVzdGF0ZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80"),
                 // image: NetworkImage(
                 // "https://images.unsplash.com/photo-1599809275671-b5942cabc7a2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmVhbCUyMGVzdGF0ZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80"),

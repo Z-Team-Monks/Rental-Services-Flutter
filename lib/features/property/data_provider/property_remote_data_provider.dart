@@ -8,10 +8,10 @@ import 'package:rental/core/models/property.dart';
 class PropertyRemoteDataProvider {
   // final String baseUrl = "http://192.168.43.27:5000/api";
   // final String baseUrl = "http://192.168.43.27:5001/api/v1";
-  final String baseUrl = "http://10.6.197.162:5001/api/v1";
-  
+  final String baseUrl = "http://10.6.200.3:5001/api/v1";
+
   final tokens =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDViNDQyOGQzZmFjNzY4Y2RmMWNiOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2Mjg3ODE2MzV9._VCHTjWSSC4ImckvDr4bsG2CJrA-PbCoCnIutOMuBB4";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMzliYjM3NGNkMWMxNGRiOGQ0M2JmOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2MzExNzM1NDV9.DoR9lgtTcYlEYMxnnEV4-n56eargHLp3Ipkxkbrlou0";
 
   /// It will return list of [Property] Objects fetched from remote server / API
   ///
@@ -50,7 +50,7 @@ class PropertyRemoteDataProvider {
     required String token,
   }) async {
     token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMmU0YTQzZmNmZWU4NDNmOTQ2MDViZiIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2MzEyMDM2NjV9.qfD1oDM3uSCHGEhko-bHSTYagf46kgD7sFMougFIvVM";
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMzliYjM3NGNkMWMxNGRiOGQ0M2JmOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2MzExNzM1NDV9.DoR9lgtTcYlEYMxnnEV4-n56eargHLp3Ipkxkbrlou0";
     var options = BaseOptions(
       baseUrl: '$baseUrl',
       connectTimeout: 5000,
@@ -102,7 +102,7 @@ class PropertyRemoteDataProvider {
       ]);
 
       var response = await Dio().put(
-        'http://192.168.43.27:5001/api/v1/users/profile',
+        'http://10.6.200.3:5001/api/v1/users/profile',
         data: formData,
         options: Options(
           headers: {

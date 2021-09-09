@@ -70,11 +70,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
         BlocProvider<UpdatePropertyBloc>(
-          create: (BuildContext context) =>
-              UpdatePropertyBloc(propertyRepository)
-                // ..add(UpdatePropertyLoadProperty(
-                //     productId: "61389e84a6a60a468bce7d11")),
-        )
+            create: (BuildContext context) =>
+                UpdatePropertyBloc(propertyRepository)
+            // ..add(UpdatePropertyLoadProperty(
+            //     productId: "61389e84a6a60a468bce7d11")),
+            )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -120,7 +120,7 @@ class _HomeState extends State<Home> {
       drawerScrimColor: Colors.black.withOpacity(0.2),
       // drawerScrimColor: Colors.transparent,
       // drawer: BlurredDrawer(),
-     
+
       body: _children[_currentIndex],
       bottomNavigationBar: SizedBox(
         height: size.height * 0.068,

@@ -16,8 +16,8 @@ class UserRepository {
   // call the dataproviders using the data access strategey
   Future<User> updateUser({required User user, String? newProfilePath}) async {
     if (newProfilePath != null) {
-      // print("updated profilepath");
-      // await _userRemoteDataProvider.uploadProfileImage(newProfilePath);
+      print("updated profilepath $newProfilePath");
+      await _userRemoteDataProvider.uploadProfileImage(newProfilePath);
     }
     var updatedUser = await _userRemoteDataProvider.updateUser(user);
     // print("Updated user" + user.toString());
