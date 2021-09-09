@@ -4,11 +4,11 @@ import 'package:rental/core/presentation/customTheme/appTheme.dart';
 import 'package:rental/features/auth/bloc/auth_form_bloc.dart';
 import 'package:rental/features/auth/bloc/user_auth/user_auth_bloc.dart';
 import 'package:rental/features/auth/repository/repository.dart';
-import 'package:rental/features/auth/screens/auth_screen.dart';
 import 'package:rental/features/property/bloc/update_property/update_property_bloc.dart';
 import 'package:rental/features/property/data_provider/property_local_data_provider.dart';
 import 'package:rental/features/property/data_provider/property_remote_data_provider.dart';
 import 'package:rental/features/property/repository/property_repository.dart';
+import 'package:rental/features/property/bloc/property_add/property_add_bloc.dart';
 import 'package:rental/features/property/screens/add_property/add_property_screen.dart';
 import 'package:rental/features/property/screens/property_feed/feed.dart';
 import 'package:rental/features/user/bloc/profile_bloc/profile_bloc.dart';
@@ -16,7 +16,6 @@ import 'package:rental/features/user/data_providers/user_remote_data_provider.da
 import 'package:rental/features/user/repository/user_repository.dart';
 import 'package:rental/features/user/screens/profile/profile_page.dart';
 import 'package:rental/locator.dart';
-import 'package:rental/route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'features/property/bloc/property_add/property_add_bloc.dart';

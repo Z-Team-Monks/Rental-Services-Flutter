@@ -1,4 +1,5 @@
 import 'package:rental/core/models/entity.dart';
+import 'package:rental/core/models/review.dart';
 import 'package:rental/core/models/user.dart';
 
 class Property extends EntityModel {
@@ -20,7 +21,7 @@ class Property extends EntityModel {
   final List<dynamic>? reviewes;
   final List<dynamic>? likedBy;
   bool visible = true;
-  
+
   Property({
     this.id,
     this.ownerid,
@@ -44,7 +45,8 @@ class Property extends EntityModel {
       id: json["_id"],
       status: json["status"],
       rating: json["rating"] * 1.0,
-      reviewes: json["reviewes"],
+      reviewes:
+          (json["reviewes"] as List).map((i) => Review.fromJson(i)).toList(),
       likedBy: json["likedBy"],
       title: json["title"],
       description: json["description"],
