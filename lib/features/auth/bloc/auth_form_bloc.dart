@@ -4,6 +4,7 @@ import 'package:rental/features/auth/repository/repository.dart';
 import 'package:rental/features/auth/models/exports.dart';
 import 'package:rental/features/auth/models/params/auth_signin_param.dart';
 import 'package:equatable/equatable.dart';
+import 'dart:convert';
 
 part 'auth_form_event.dart';
 part 'auth_form_state.dart';
@@ -126,11 +127,12 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
             email: state.email.value,
             password: state.password.value);
 
-        final failureOrSuccess = await authRepository.createRemoteUser(param);
+        final failureOrSuccessUser =
+            await authRepository.createRemoteUser(param);
 
-        if (failureOrSuccess.isLeft()) {
+        if (failureOrSuccessUser.isLeft()) {
           yield state.copyWith(
-              message: failureOrSuccess.fold(
+              message: failureOrSuccessUser.fold(
                   (l) => l.maybeMap(
                         serverAuthError: (serverAuthError) => "serverAuthError",
                         emailAlreadyInUse: (emailAlreadyInUse) =>
@@ -140,12 +142,37 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
                   (r) => null),
               status: FormzStatus.submissionFailure);
         } else {
-          yield state.copyWith(
-            message: null,
-            status: FormzStatus.submissionSuccess,
-          );
-          //Navigate to home
+          final AuthSignInParam param =
+              AuthSignInParam(email: email.value, password: password.value);
 
+          final failureOrSuccess = await authRepository.signInUser(param);
+
+          if (failureOrSuccess.isLeft()) {
+            yield state.copyWith(
+                message: failureOrSuccess.fold(
+                    (l) => l.maybeMap(
+                        serverAuthError: (serverAuthError) => "Server error",
+                        networkError: (networkError) => "Network Error",
+                        invalidEmailOrPasssword: (invalidCredentials) =>
+                            "Invalid email or password is used",
+                        orElse: () => "Unkown error occured"),
+                    (r) => null),
+                status: FormzStatus.submissionFailure);
+          } else {
+            await authRepository.storeToken(
+                key: "user",
+                value:
+                    failureOrSuccessUser.fold((l) => "", (r) => jsonEncode(r)));
+
+            await authRepository.storeToken(
+                key: "token",
+                value: failureOrSuccess.fold((l) => "", (r) => r));
+
+            yield state.copyWith(
+              message: null,
+              status: FormzStatus.submissionSuccess,
+            );
+          }
         }
       } else {
         yield state.copyWith(

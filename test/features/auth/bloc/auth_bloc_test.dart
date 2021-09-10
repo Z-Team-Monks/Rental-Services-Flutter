@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:rental/core/models/user.dart';
 import 'package:rental/features/auth/bloc/auth_form_bloc.dart';
 import 'package:rental/features/auth/repository/repository.dart';
 import 'package:rental/features/auth/models/exports.dart';
@@ -164,6 +165,67 @@ void main() {
         ),
         AuthFormState(
           message: null,
+          email: email,
+          password: password,
+          status: FormzStatus.submissionSuccess,
+        ),
+      ];
+    });
+
+    blocTest(
+        "emits [AuthFormState (valid), AuthFormState (In Progress), AuthFormState (success)] when signup form is submitted with valid inputs",
+        build: () {
+      when(mocksAuthRepository.createRemoteUser(any)).thenAnswer(
+          (_) async => Future.value(right(User(name: "name", email: "email"))));
+
+      when(mocksAuthRepository.signInUser(any))
+          .thenAnswer((_) async => Future.value(right("userToken")));
+
+      when(mocksAuthRepository.storeToken(
+              value: anyNamed("value"), key: anyNamed("key")))
+          .thenAnswer((_) async => Future.value(right(unit)));
+
+      when(mocksAuthRepository.storeToken(
+              value: anyNamed("value"), key: anyNamed("key")))
+          .thenAnswer((_) async => Future.value(right(unit)));
+
+      return AuthFormBloc(authRepository: mocksAuthRepository);
+    }, act: (AuthFormBloc bloc) {
+      bloc.add(UsernameChanged(username: "nabek"));
+      bloc.add(EmailChanged(email: "email@gmail.com"));
+      bloc.add(PasswordChanged(password: "strong123password"));
+
+      bloc.add(SignUpFormSubmitted());
+    }, expect: () {
+      final username = Username.dirty("nabek");
+      final email = Email.dirty("email@gmail.com");
+      final password = Password.dirty("strong123password");
+
+      return [
+        AuthFormState(
+          username: username,
+          status: Formz.validate([username]),
+        ),
+        AuthFormState(
+          username: username,
+          email: email,
+          status: Formz.validate([email]),
+        ),
+        AuthFormState(
+          username: username,
+          email: email,
+          password: password,
+          status: Formz.validate([password]),
+        ),
+        AuthFormState(
+          username: username,
+          email: email,
+          password: password,
+          status: FormzStatus.submissionInProgress,
+        ),
+        AuthFormState(
+          message: null,
+          username: username,
           email: email,
           password: password,
           status: FormzStatus.submissionSuccess,
