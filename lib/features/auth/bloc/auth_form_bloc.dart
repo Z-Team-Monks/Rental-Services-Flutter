@@ -91,14 +91,39 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
                   (r) => null),
               status: FormzStatus.submissionFailure);
         } else {
-          print("working");
-          await authRepository.storeToken(
-              key: "token", value: failureOrSuccess.fold((l) => "", (r) => r));
+          print("working logged in");
+          final token = failureOrSuccess.getOrElse(() => "");
+          final failureOrSuccessCurrentUser =
+              await authRepository.getCurrentUser(token);
 
-          yield state.copyWith(
-            message: null,
-            status: FormzStatus.submissionSuccess,
-          );
+          if (failureOrSuccessCurrentUser.isLeft()) {
+            print("not working on getting current user");
+            yield state.copyWith(
+                message: failureOrSuccess.fold(
+                    (l) => l.maybeMap(
+                        serverAuthError: (serverAuthError) =>
+                            "Server error unable to get user",
+                        networkError: (networkError) =>
+                            "Network Error getting user",
+                        invalidValue: (invalidValue) =>
+                            "Invalid token provided",
+                        orElse: () =>
+                            "Unkown error occured while getting current user"),
+                    (r) => null),
+                status: FormzStatus.submissionFailure);
+          } else {
+            await authRepository.storeToken(
+                key: "user",
+                value: failureOrSuccessCurrentUser.fold(
+                    (l) => "", (r) => jsonEncode(r)));
+
+            await authRepository.storeToken(key: "token", value: token);
+
+            yield state.copyWith(
+              message: null,
+              status: FormzStatus.submissionSuccess,
+            );
+          }
         }
       } else {
         print("invalid form");

@@ -61,4 +61,11 @@ class AuthRepository {
       return isAdmin;
     }
   }
+
+  Future<Either<AuthFaiulre, User>> getCurrentUser(String? token) async {
+    if (token == null) return left(AuthFaiulre.invalidValue());
+    final failureOrSuccess =
+        await _authRemoteDataProvider.currentUser(token: token);
+    return failureOrSuccess;
+  }
 }

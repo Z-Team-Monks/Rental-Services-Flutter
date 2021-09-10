@@ -125,19 +125,26 @@ class AuthRemoteDataProvider {
   Future<Either<AuthFaiulre, User>> currentUser({
     required String token,
   }) async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    final http.Response response = await http.get(
-      Uri.parse("${AppConstants.baseUrl}/users/me"),
-      headers: <String, String>{
-        "Content-Type": "application/json",
-        'Authorization': 'Bearer ${AppConstants.token}',
-      },
-    );
+    try {
+      final http.Response response = await http.get(
+        Uri.parse("${AppConstants.baseUrl}/users/me"),
+        headers: <String, String>{
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $token',
+        },
+      );
 
-    if (response.statusCode == 200) {
-      return right(User.fromJson(jsonDecode(response.body)));
-    } else {
-      return left(AuthFaiulre.emailAlreadyInUse());
+      if (response.statusCode == 200) {
+        return right(User.fromJson(jsonDecode(response.body)));
+      } else {
+        return left(AuthFaiulre.serverAuthError());
+      }
+    } on SocketException catch (e) {
+      print("Newtwork Error in [currentUser] method: $e");
+      return left(AuthFaiulre.networkError());
+    } catch (e) {
+      print("Unkown Error in [currentUser] method: $e");
+      return left(AuthFaiulre.networkError());
     }
   }
 
