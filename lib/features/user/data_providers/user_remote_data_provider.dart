@@ -9,7 +9,7 @@ import 'package:rental/core/network.dart';
 class UserRemoteDataProvider extends AppConstants {
   // final String baseUrl = "http://10.6.193.148:5000/api";
   final tokens =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMmU0YTQzZmNmZWU4NDNmOTQ2MDViZiIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2MzEyMDM2NjV9.qfD1oDM3uSCHGEhko-bHSTYagf46kgD7sFMougFIvVM";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDViNDQyOGQzZmFjNzY4Y2RmMWNiOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2Mjg3ODE2MzV9._VCHTjWSSC4ImckvDr4bsG2CJrA-PbCoCnIutOMuBB4";
 
   /// Given a [User] it will create or register
   ///
@@ -128,15 +128,63 @@ class UserRemoteDataProvider extends AppConstants {
   }
 
   Future<void> uploadProfileImage(String path) async {
-    String url = "";
-    var dio = Dio();
+    // String url = "";
+    // var dio = Dio();
+    // try {
+    //   var formData =
+    //       FormData.fromMap({'file': await MultipartFile.fromFile(path)});
+    //   var response = await dio.put("$baseUrl/users/profile", data: formData);
+    //   return response.data;
+    // } catch (e) {
+    //   print(e.toString());
+    // }
+    // String fileName = path.split('/').last;
+
+    // FormData data = FormData.fromMap({
+    //   "file": await MultipartFile.fromFile(
+    //     path,
+    //     filename: fileName,
+    //   ),
+    // });
+
+    // Dio dio = new Dio();
+
+    // dio
+    //     .post("$baseUrl/proflie", data: data)
+    //     .then((response) => print(response))
+    //     .catchError((error) => print(error));
+
     try {
-      var formData =
-          FormData.fromMap({'file': await MultipartFile.fromFile(path)});
-      var response = await dio.post(url, data: formData);
-      return response.data;
+      print("fetching start..");
+      String filename = path.split('/').last;
+      FormData formData = FormData.fromMap({
+        "image": await MultipartFile.fromFile(
+          path,
+          filename: filename,
+        ),
+      });
+
+      var response = await Dio().put(
+        '$baseUrl/users/profile',
+        data: formData,
+        options: Options(
+          headers: {
+            "accept": "/",
+            // For latter use commented
+            "Authorization": "Bearer $tokens",
+            "Content-Type": "multipart/form-data"
+          },
+        ),
+      );
+      if (response.statusCode == 201) {
+        print("done");
+        // return response;
+      } else {
+        // return "phone number already exist";
+      }
     } catch (e) {
       print(e);
+      return null;
     }
   }
 

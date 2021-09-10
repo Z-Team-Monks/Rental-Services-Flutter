@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:rental/core/helpers/get_image_url.dart';
 import 'package:rental/core/models/user.dart';
 import 'package:rental/core/presentation/customSnackBar.dart';
 import 'package:rental/core/presentation/txt_field.dart';
@@ -94,7 +95,8 @@ class UpdateProfile extends StatelessWidget with InputValidationMixin {
                                         }
                                         // print(user.profileImage);
                                         return NetworkProfile(
-                                            profileURL: user.profileImage!);
+                                            profileURL: getImageUrl(
+                                                user.profileImage!));
                                       }),
                                   Align(
                                     alignment: Alignment.center,

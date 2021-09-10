@@ -26,6 +26,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         yield ProfileLoaded(user: user);
         print("user loaded" + user.toString());
       } catch (e) {
+        print(e.toString());
         print("Can't load user");
       }
     }
