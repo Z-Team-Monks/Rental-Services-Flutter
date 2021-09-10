@@ -8,8 +8,8 @@ import 'package:rental/core/network.dart';
 
 class UserRemoteDataProvider {
   // final String baseUrl = "http://10.6.193.148:5000/api";
-  final tokens =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDViNDQyOGQzZmFjNzY4Y2RmMWNiOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2Mjg3ODE2MzV9._VCHTjWSSC4ImckvDr4bsG2CJrA-PbCoCnIutOMuBB4";
+  // final tokens =
+  //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDViNDQyOGQzZmFjNzY4Y2RmMWNiOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2Mjg3ODE2MzV9._VCHTjWSSC4ImckvDr4bsG2CJrA-PbCoCnIutOMuBB4";
 
   /// Given a [User] it will create or register
   ///
@@ -36,6 +36,23 @@ class UserRemoteDataProvider {
     }
     {
       throw Exception("Failed to register User!");
+    }
+  }
+
+  ///Returns true if succeded in deleting the user otherwise false
+  Future<bool> deleteUser() async {
+    final http.Response response = await http.post(
+      Uri.parse("${AppConstants.baseUrl}/users/deleteme"),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer ${AppConstants.token}',
+      },
+    );
+    if (response.statusCode == 201) {
+      return true;
+    }
+    {
+      return false;
     }
   }
 

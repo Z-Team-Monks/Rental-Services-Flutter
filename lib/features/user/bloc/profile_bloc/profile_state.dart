@@ -30,7 +30,7 @@ class ProfileUpdateFailure extends ProfileState {
 
 class ProfileUpdateLoading extends ProfileState {
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 
 class ProfileLoaded extends ProfileState {

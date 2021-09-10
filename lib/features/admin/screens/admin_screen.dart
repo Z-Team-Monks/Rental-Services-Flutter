@@ -245,56 +245,56 @@ ThemeData _buildShrineTheme() {
       colorScheme: _shrineColorScheme,
       textTheme: ButtonTextTheme.normal,
     ),
-    primaryIconTheme: _customIconTheme(base.iconTheme),
-    textTheme: _buildShrineTextTheme(base.textTheme),
-    primaryTextTheme: _buildShrineTextTheme(base.primaryTextTheme),
-    accentTextTheme: _buildShrineTextTheme(base.accentTextTheme),
-    iconTheme: _customIconTheme(base.iconTheme),
+    // primaryIconTheme: _customIconTheme(base.iconTheme),
+    // textTheme: _buildShrineTextTheme(base.textTheme),
+    // primaryTextTheme: _buildShrineTextTheme(base.primaryTextTheme),
+    // accentTextTheme: _buildShrineTextTheme(base.accentTextTheme),
+    // iconTheme: _customIconTheme(base.iconTheme),
   );
 }
 
-TextTheme _buildShrineTextTheme(TextTheme base) {
-  return base
-      .copyWith(
-        headline: base.headline!.copyWith(
-          fontWeight: FontWeight.w500,
-          letterSpacing: defaultLetterSpacing,
-        ),
-        title: base.title!.copyWith(
-          fontSize: 18,
-          letterSpacing: defaultLetterSpacing,
-        ),
-        caption: base.caption!.copyWith(
-          fontWeight: FontWeight.w400,
-          fontSize: 14,
-          letterSpacing: defaultLetterSpacing,
-        ),
-        body2: base.body2!.copyWith(
-          fontWeight: FontWeight.w500,
-          fontSize: 16,
-          letterSpacing: defaultLetterSpacing,
-        ),
-        body1: base.body1!.copyWith(
-          letterSpacing: defaultLetterSpacing,
-        ),
-        subhead: base.subhead!.copyWith(
-          letterSpacing: defaultLetterSpacing,
-        ),
-        display1: base.display1!.copyWith(
-          letterSpacing: defaultLetterSpacing,
-        ),
-        button: base.button!.copyWith(
-          fontWeight: FontWeight.w500,
-          fontSize: 14,
-          letterSpacing: defaultLetterSpacing,
-        ),
-      )
-      .apply(
-        fontFamily: 'Rubik',
-        displayColor: shrineBrown900,
-        bodyColor: shrineBrown900,
-      );
-}
+// TextTheme _buildShrineTextTheme(TextTheme base) {
+//   return base
+//       .copyWith(
+//         headline: base.headline!.copyWith(
+//           fontWeight: FontWeight.w500,
+//           letterSpacing: defaultLetterSpacing,
+//         ),
+//         title: base.title!.copyWith(
+//           fontSize: 18,
+//           letterSpacing: defaultLetterSpacing,
+//         ),
+//         caption: base.caption!.copyWith(
+//           fontWeight: FontWeight.w400,
+//           fontSize: 14,
+//           letterSpacing: defaultLetterSpacing,
+//         ),
+//         body2: base.body2!.copyWith(
+//           fontWeight: FontWeight.w500,
+//           fontSize: 16,
+//           letterSpacing: defaultLetterSpacing,
+//         ),
+//         body1: base.body1!.copyWith(
+//           letterSpacing: defaultLetterSpacing,
+//         ),
+//         subhead: base.subhead!.copyWith(
+//           letterSpacing: defaultLetterSpacing,
+//         ),
+//         display1: base.display1!.copyWith(
+//           letterSpacing: defaultLetterSpacing,
+//         ),
+//         button: base.button!.copyWith(
+//           fontWeight: FontWeight.w500,
+//           fontSize: 14,
+//           letterSpacing: defaultLetterSpacing,
+//         ),
+//       )
+//       .apply(
+//         fontFamily: 'Rubik',
+//         displayColor: shrineBrown900,
+//         bodyColor: shrineBrown900,
+//       );
+// }
 
 const ColorScheme _shrineColorScheme = ColorScheme(
   primary: shrinePink100,

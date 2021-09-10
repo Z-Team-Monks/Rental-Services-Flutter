@@ -48,6 +48,7 @@ dependencies:
   telephony: ^0.1.4
   cached_network_image: ^3.1.0
   curved_navigation_bar: ^1.0.1
+  network_image_mock: ^2.0.1
 
  
 dev_dependencies:

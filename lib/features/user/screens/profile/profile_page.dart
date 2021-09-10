@@ -7,10 +7,13 @@ import 'package:loader_skeleton/loader_skeleton.dart';
 import 'package:rental/core/helpers/get_image_url.dart';
 import 'package:rental/core/models/property.dart';
 import 'package:rental/core/models/user.dart';
+import 'package:rental/core/presentation/customSnackBar.dart';
 import 'package:rental/features/auth/screens/auth_screen.dart';
 import 'package:rental/features/property/bloc/update_property/update_property_bloc.dart';
 import 'package:rental/features/property/screens/property_update/property_update_screen.dart';
 import 'package:rental/features/user/bloc/profile_bloc/profile_bloc.dart';
+import 'package:rental/features/user/data_providers/user_remote_data_provider.dart';
+import 'package:rental/features/user/repository/user_repository.dart';
 import 'package:rental/features/user/screens/profile/update_profile_screen.dart';
 import 'package:rental/locator.dart';
 import 'package:rental/main.dart';
@@ -37,6 +40,25 @@ class ProfilePage extends StatelessWidget {
                   (route) => false);
               // Navigator.popAndPushNamed(context, AuthPage.pageRoute);
             },
+          ),
+          IconButton(
+            icon: Icon(Icons.restore_from_trash, color: Colors.black),
+            onPressed: () async {
+              var isDeleted = await UserRemoteDataProvider().deleteUser();
+              if (isDeleted) {
+                getIt<SharedPreferences>().setString("token", "");
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (c) => AuthPage(controller: SolidController()),
+                    ),
+                    (route) => false);
+              } else {
+                final lunchBar = LunchBars(
+                    lunchBarText: "Couldn't delete your account!",
+                    event: LunchBarEvents.LunchBarError);
+                ScaffoldMessenger.of(context).showSnackBar(lunchBar);
+              }
+            },
           )
         ],
         // leading: Icon(Icons.person, color: Colors.black26,),
@@ -49,149 +71,145 @@ class ProfilePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Container(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(height: 20.0),
-              BlocConsumer<ProfileBloc, ProfileState>(
-                listener: (_, state) {},
-                builder: (_, state) {
-                  if (state is ProfileLoaded) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                          height: 120,
-                          width: 120,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                  getImageUrl(state.user.profileImage!)),
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 20.0),
+                BlocConsumer<ProfileBloc, ProfileState>(
+                  listener: (_, state) {},
+                  builder: (_, state) {
+                    if (state is ProfileLoaded) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                            height: 120,
+                            width: 120,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                    getImageUrl(state.user.profileImage!)),
+                              ),
                             ),
                           ),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              state.user.name,
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                            infoTexts(state.user.email),
-                            state.user.phoneNumber != null
-                                ? infoTexts(state.user.phoneNumber!)
-                                : Text(""),
-                            Container(
-                              width: 120,
-                              height: 32,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                state.user.name,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
                               ),
-                              child: TextButton(
-                                onPressed: () {
-                                  Navigator.push<void>(
-                                    context,
-                                    MaterialPageRoute<void>(
-                                      builder: (BuildContext context) =>
-                                          UpdateProfile(state.user),
-                                    ),
-                                  );
-                                },
-                                child: Text("Edit my profile"),
+                              infoTexts(state.user.email),
+                              state.user.phoneNumber != null
+                                  ? infoTexts(state.user.phoneNumber!)
+                                  : Text(""),
+                              Container(
+                                width: 120,
+                                height: 32,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.push<void>(
+                                      context,
+                                      MaterialPageRoute<void>(
+                                        builder: (BuildContext context) =>
+                                            UpdateProfile(state.user),
+                                      ),
+                                    );
+                                  },
+                                  child: Text("Edit my profile"),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                            ],
+                          )
+                        ],
+                      );
+                    }
+                    return CardSkeleton(
+                      isCircularImage: true,
+                      isBottomLinesActive: true,
+                    );
+                  },
+                ),
+                DefaultTabController(
+                    length: 2, // length of tabs
+                    initialIndex: 0,
+                    child: SingleChildScrollView(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Container(
+                              child: TabBar(
+                                labelColor: Colors.green,
+                                unselectedLabelColor: Colors.black,
+                                tabs: [
+                                  Tab(text: 'Properties'),
+                                  Tab(text: 'Liked'),
+                                ],
                               ),
                             ),
                             SizedBox(
-                              height: 30,
+                              height: 10,
                             ),
-                          ],
-                        )
-                      ],
-                    );
-                  }
-                  return CardSkeleton(
-                    isCircularImage: true,
-                    isBottomLinesActive: true,
-                  );
-                },
-              ),
-              DefaultTabController(
-                length: 2, // length of tabs
-                initialIndex: 0,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Container(
-                        child: TabBar(
-                          labelColor: Colors.green,
-                          unselectedLabelColor: Colors.black,
-                          tabs: [
-                            Tab(text: 'Properties'),
-                            Tab(text: 'Liked'),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 400, //height of TabBarView
-                        decoration: BoxDecoration(
-                            border: Border(
-                                top: BorderSide(
-                                    color: Colors.grey, width: 0.5))),
-                        child: BlocConsumer<ProfileBloc, ProfileState>(
-                          listener: (context, state) {
-                            // TODO: implement listener
-                          },
-                          builder: (context, state) {
-                            if (state is ProfileLoaded) {
-                              return TabBarView(children: <Widget>[
-                                GridView.count(
-                                    crossAxisCount: 2,
-                                    children: List.generate(
-                                        state.user.posts!.length, (index) {
-                                      return MyPropertyCard(
-                                          size,
-                                          state.user.posts![index],
-                                          context,
-                                          true);
-                                    })),
-                                GridView.count(
-                                    crossAxisCount: 2,
-                                    children: List.generate(
-                                        state.user.likedProperties!.length,
-                                        (index) {
-                                      return MyPropertyCard(
-                                          size,
-                                          state.user.posts![index],
-                                          context,
-                                          false);
-                                    })),
-                              ]);
-                            }
-                            return TabBarView(
-                              children: <Widget>[
-                                CardPageSkeleton(
-                                  totalLines: 5,
-                                ),
-                                CardPageSkeleton(
-                                  totalLines: 5,
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+                            Container(
+                                height: 400, //height of TabBarView
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        top: BorderSide(
+                                            color: Colors.grey, width: 0.5))),
+                                child: BlocConsumer<ProfileBloc, ProfileState>(
+                                  listener: (context, state) {
+                                    // TODO: implement listener
+                                  },
+                                  builder: (context, state) {
+                                    if (state is ProfileLoaded) {
+                                      return TabBarView(children: <Widget>[
+                                        GridView.count(
+                                            crossAxisCount: 2,
+                                            children: List.generate(
+                                                state.user.posts!.length,
+                                                (index) {
+                                              return MyPropertyCard(
+                                                  size,
+                                                  state.user.posts![index],
+                                                  context,
+                                                  true);
+                                            })),
+                                        GridView.count(
+                                            crossAxisCount: 2,
+                                            children: List.generate(
+                                                state.user.likedProperties!
+                                                    .length, (index) {
+                                              return MyPropertyCard(
+                                                  size,
+                                                  state.user.posts![index],
+                                                  context,
+                                                  false);
+                                            })),
+                                      ]);
+                                    }
+                                    return TabBarView(children: <Widget>[
+//Widget
+                                      CardPageSkeleton(
+                                        totalLines: 5,
+                                      ),
+                                      CardPageSkeleton(
+                                        totalLines: 5,
+                                      ),
+                                    ]);
+                                  },
+                                ))
+                          ]),
+                    )),
+              ]),
         ),
       ),
     );

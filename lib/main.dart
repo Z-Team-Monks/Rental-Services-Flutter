@@ -13,7 +13,6 @@ import 'package:rental/features/property/data_provider/property_remote_data_prov
 import 'package:rental/features/property/repository/property_repository.dart';
 import 'package:rental/features/property/bloc/property_add/property_add_bloc.dart';
 import 'package:rental/features/property/screens/add_property/add_property_screen.dart';
-import 'package:rental/features/property/screens/property_detail/property_detail_screen.dart';
 import 'package:rental/features/property/screens/property_feed/feed.dart';
 import 'package:rental/features/user/bloc/profile_bloc/profile_bloc.dart';
 import 'package:rental/features/user/data_providers/user_remote_data_provider.dart';
@@ -21,10 +20,7 @@ import 'package:rental/features/user/repository/user_repository.dart';
 import 'package:rental/features/user/screens/profile/profile_page.dart';
 import 'package:rental/locator.dart';
 import 'package:rental/route.dart';
-// import 'package:rental/route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
-
 import 'features/admin/cubit/admin_cubit.dart';
 import 'features/auth/screens/auth_screen.dart';
 import 'features/onBoard/screens/splash_screen.dart';
@@ -32,7 +28,6 @@ import 'features/property/bloc/add_review/add_review_bloc.dart';
 import 'features/property/bloc/property_add/property_add_bloc.dart';
 import 'features/property/data_provider/add_review/review_remote_data_provider.dart';
 import 'features/property/repository/add_review/add_review_repository.dart';
-// import '';
 
 bool? isViewed;
 void main() async {

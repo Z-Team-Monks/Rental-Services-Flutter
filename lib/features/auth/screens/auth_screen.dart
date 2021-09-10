@@ -328,7 +328,7 @@ Widget signUpPage(AuthFormBloc authFormBloc, UserAuthBloc userAuthBloc,
                   BlocBuilder<AuthFormBloc, AuthFormState>(
                     builder: (context, state) {
                       return CustomFormField(
-                          obscure: true,
+                          obscure: false,
                           errorMessage: state.email.invalid
                               ? 'Please ensure username is not empty'
                               : '',
