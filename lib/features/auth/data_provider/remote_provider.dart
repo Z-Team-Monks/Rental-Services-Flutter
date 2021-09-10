@@ -36,13 +36,21 @@ class AuthRemoteDataProvider {
           },
         ),
       );
-
+      print("User signup sent!");
       if (response.statusCode == 201) {
+        print("User signup success!");
         return right(User.fromJson(jsonDecode(response.body)));
       } else {
+        print(
+            "User signup denied by server! statusCode: ${response.statusCode}");
+        print("Failure: ${response.body.toString()}");
         return left(AuthFaiulre.serverAuthError());
       }
     } on SocketException catch (e) {
+      print("User signup network failed!");
+      return left(AuthFaiulre.networkError());
+    } catch (e) {
+      print("createUser Unexpected Error: $e");
       return left(AuthFaiulre.networkError());
     }
   }
@@ -70,12 +78,21 @@ class AuthRemoteDataProvider {
         ),
       );
 
+      print("User attemptLogin sent!");
       if (response.statusCode == 200) {
+        print("User attemptLogin success!");
         return right(response.body);
       } else {
+        print(
+            "User attemptLogin denied by server! statusCode: ${response.statusCode}");
+        print("Failure: ${response.body.toString()}");
         return left(AuthFaiulre.invalidEmailOrPasssword());
       }
     } on SocketException catch (e) {
+      print("User attemptLogin network failed!");
+      return left(AuthFaiulre.networkError());
+    } catch (e) {
+      print("attemptLogin Unexpected Error: $e");
       return left(AuthFaiulre.networkError());
     }
   }
@@ -89,20 +106,22 @@ class AuthRemoteDataProvider {
           "Authorization": "Bearer ${AppConstants.token}",
         },
       );
-      // print("21738888999999999333333333Workssssssssssssssssss");
-      // print(response.body);
-      print(response.statusCode);
+
+      print("check isAdmin request sent!");
       if (response.statusCode == 200) {
+        print("check isAdmin request success!");
         return right(jsonDecode(response.body)["isAdmin"]);
       } else {
-        print("serverrrr eeeeeeeeeeerrror");
+        print(
+            "check isAdmin request failed! StatusCode: ${response.statusCode}");
+        print("checkIsAdmin Error: ${response.body.toString()}");
         return left(AuthFaiulre.invalidEmailOrPasssword());
       }
     } on SocketException catch (e) {
-      print("newtwork eeeeeeeeeeerrror $e");
+      print("check isAdmin request Network error!");
       return left(AuthFaiulre.networkError());
     } catch (e) {
-      print(e);
+      print("CheckIsAdmin Unexpected Error: $e");
       return left(AuthFaiulre.networkError());
     }
   }
@@ -134,9 +153,14 @@ class AuthRemoteDataProvider {
         },
       );
 
+      print("getCurrentUser request sent!");
       if (response.statusCode == 200) {
+        print("getCurrentUser request Success!");
         return right(User.fromJson(jsonDecode(response.body)));
       } else {
+        print(
+            "getCurrentUser request Failed! StatusCode: ${response.statusCode}");
+        print("getCurrentUser error: ${response.body.toString()}");
         return left(AuthFaiulre.serverAuthError());
       }
     } on SocketException catch (e) {

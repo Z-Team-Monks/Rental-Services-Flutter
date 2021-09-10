@@ -1,5 +1,7 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:rental/features/auth/failures/auth_failure.dart';
 import 'package:rental/features/auth/repository/repository.dart';
 import 'package:rental/features/auth/models/exports.dart';
 import 'package:rental/features/auth/models/params/auth_signin_param.dart';
@@ -112,17 +114,38 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
                     (r) => null),
                 status: FormzStatus.submissionFailure);
           } else {
-            await authRepository.storeToken(
+            final resUser = await storeCredentialsToPref(authRepository,
                 key: "user",
                 value: failureOrSuccessCurrentUser.fold(
                     (l) => "", (r) => jsonEncode(r)));
 
-            await authRepository.storeToken(key: "token", value: token);
+            final resToken = await storeCredentialsToPref(authRepository,
+                key: "token", value: token);
 
-            yield state.copyWith(
-              message: null,
-              status: FormzStatus.submissionSuccess,
-            );
+            if (resUser.isLeft() || resToken.isLeft()) {
+              yield state.copyWith(
+                  message: resUser.isLeft()
+                      ? resUser.fold(
+                          (l) => l.maybeMap(
+                              writeToLocalError: (writeToLocalError) =>
+                                  "Error saving user to local storage",
+                              orElse: () =>
+                                  "Unkown error occured while saving token user"),
+                          (r) => null)
+                      : resToken.fold(
+                          (l) => l.maybeMap(
+                              writeToLocalError: (writeToLocalError) =>
+                                  "Error saving token to local storage",
+                              orElse: () =>
+                                  "Unkown error occured while saving token"),
+                          (r) => null),
+                  status: FormzStatus.submissionFailure);
+            } else {
+              yield state.copyWith(
+                message: null,
+                status: FormzStatus.submissionSuccess,
+              );
+            }
           }
         }
       } else {
@@ -162,6 +185,7 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
                         serverAuthError: (serverAuthError) => "serverAuthError",
                         emailAlreadyInUse: (emailAlreadyInUse) =>
                             "This email is already in use",
+                        networkError: (networkError) => "Network Error",
                         orElse: () => "Unexpected error",
                       ),
                   (r) => null),
@@ -184,19 +208,39 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
                     (r) => null),
                 status: FormzStatus.submissionFailure);
           } else {
-            await authRepository.storeToken(
+            final resUser = await storeCredentialsToPref(authRepository,
                 key: "user",
                 value:
                     failureOrSuccessUser.fold((l) => "", (r) => jsonEncode(r)));
 
-            await authRepository.storeToken(
+            final resToken = await storeCredentialsToPref(authRepository,
                 key: "token",
                 value: failureOrSuccess.fold((l) => "", (r) => r));
 
-            yield state.copyWith(
-              message: null,
-              status: FormzStatus.submissionSuccess,
-            );
+            if (resUser.isLeft() || resToken.isLeft()) {
+              yield state.copyWith(
+                  message: resUser.isLeft()
+                      ? resUser.fold(
+                          (l) => l.maybeMap(
+                              writeToLocalError: (writeToLocalError) =>
+                                  "Error saving user to local storage",
+                              orElse: () =>
+                                  "Unkown error occured while saving token user"),
+                          (r) => null)
+                      : resToken.fold(
+                          (l) => l.maybeMap(
+                              writeToLocalError: (writeToLocalError) =>
+                                  "Error saving token to local storage",
+                              orElse: () =>
+                                  "Unkown error occured while saving token"),
+                          (r) => null),
+                  status: FormzStatus.submissionFailure);
+            } else {
+              yield state.copyWith(
+                message: null,
+                status: FormzStatus.submissionSuccess,
+              );
+            }
           }
         }
       } else {
@@ -206,4 +250,14 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
       }
     }
   }
+}
+
+Future<Either<AuthFaiulre, Unit>> storeCredentialsToPref(
+    AuthRepository repository,
+    {required String key,
+    required String value}) async {
+  final result = await repository.storeToken(key: key, value: value);
+
+  if (result.isLeft()) return left(AuthFaiulre.writeToLocalError());
+  return right(unit);
 }
