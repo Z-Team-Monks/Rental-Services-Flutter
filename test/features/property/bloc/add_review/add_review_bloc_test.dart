@@ -29,7 +29,7 @@ void main() {
   });
 
   group('AddReviewFormBloc', () {
-    final review = Review(userId: "userId", message: "messsge");
+    final review = Review(message: "messsge", rating: 2.0);
     blocTest(
       'emits [AddReviewFormState (valid)] when a valid message is entered',
       build: () {
@@ -70,7 +70,6 @@ void main() {
     blocTest(
       'emits [AddReviewFormState (Valid), AddReviewFormState (InProgress), AddReviewFormState (Success)] when is FormSubmitted Succesfully',
       build: () {
-        setUp();
         when(
           mockReviewRepository.createRemoteReview(
             review: anyNamed("review"),
@@ -78,15 +77,18 @@ void main() {
             token: anyNamed("token"),
           ),
         ).thenAnswer((_) => Future.value(review));
+        setUp();
         return bloc;
       },
       act: (AddReviewFormBloc bloc) {
+        bloc.add(PropertyChanged("propertyId"));
         bloc.add(MessageChanged(message: "message"));
         bloc.add(FormSubmitted());
       },
       expect: () {
         final message = Message.dirty("message");
         return [
+          AddReviewFormState(),
           AddReviewFormState(
             message: message,
             status: Formz.validate([message]),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:rental/core/models/user.dart';
 import 'package:rental/locator.dart';
@@ -10,7 +12,9 @@ class LoadLikeStatus extends LikePropertyEvent {
   LoadLikeStatus(List<dynamic> likedBy) {
     var loggedInUser;
     try {
-      loggedInUser = getIt<SharedPreferences>().get("user");
+      loggedInUser = User.fromJson(
+              jsonDecode(getIt<SharedPreferences>().getString("user") ?? ""))
+          .id;
     } catch (e) {
       loggedInUser = "6139bb374cd1c14db8d43bf8";
     }
