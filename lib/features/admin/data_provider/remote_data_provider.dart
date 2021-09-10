@@ -17,7 +17,7 @@ class AdminRemoteDataProvider {
         Uri.parse("${AppConstants.baseUrl}/admin/feed"),
         headers: <String, String>{
           "Content-Type": "application/json",
-          "Authorization": "Bearer $authToken",
+          "Authorization": "Bearer ${AppConstants.token}",
         },
       );
 
@@ -53,14 +53,14 @@ class AdminRemoteDataProvider {
               Uri.parse("${AppConstants.baseUrl}/admin/approve/$postId"),
               headers: <String, String>{
                 "Content-Type": "application/json",
-                "Authorization": "Bearer $authToken",
+                "Authorization": "Bearer ${AppConstants.token}",
               },
             )
           : await http.delete(
               Uri.parse("${AppConstants.baseUrl}/admin/approve/$postId"),
               headers: <String, String>{
                 "Content-Type": "application/json",
-                "Authorization": "Bearer $authToken",
+                "Authorization": "Bearer ${AppConstants.token}",
               },
             );
 

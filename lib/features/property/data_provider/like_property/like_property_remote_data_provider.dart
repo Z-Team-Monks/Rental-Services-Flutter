@@ -17,7 +17,7 @@ class LikePropertyRemoteDataProvider {
       Uri.parse("${AppConstants.baseUrl}/$propertyId/like"),
       headers: <String, String>{
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer ${AppConstants.token}',
       },
     );
 
@@ -44,7 +44,7 @@ class LikePropertyRemoteDataProvider {
       Uri.parse("${AppConstants.baseUrl}/$propertyId/like"),
       headers: <String, String>{
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer ${AppConstants.token}',
       },
     );
 

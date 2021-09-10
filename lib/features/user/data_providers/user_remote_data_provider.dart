@@ -112,7 +112,7 @@ class UserRemoteDataProvider {
       Uri.parse("${AppConstants.baseUrl}/users/me"),
       headers: <String, String>{
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $tokens',
+        'Authorization': 'Bearer ${AppConstants.token}',
       },
     );
 
@@ -145,7 +145,7 @@ class UserRemoteDataProvider {
           headers: {
             "accept": "/",
             // For latter use commented
-            "Authorization": "Bearer $tokens",
+            "Authorization": "Bearer ${AppConstants.token}",
             "Content-Type": "multipart/form-data"
           },
         ),
@@ -167,7 +167,7 @@ class UserRemoteDataProvider {
       Uri.parse("${AppConstants.baseUrl}/users"),
       headers: <String, String>{
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $tokens',
+        'Authorization': 'Bearer ${AppConstants.token}',
       },
       body: jsonEncode(
         {
@@ -215,7 +215,7 @@ class UserRemoteDataProvider {
           headers: {
             "accept": "/",
             // For latter use commented
-            "Authorization": "Bearer $authToken",
+            "Authorization": "Bearer ${AppConstants.token}",
             "Content-Type": "multipart/form-data"
           },
         ),

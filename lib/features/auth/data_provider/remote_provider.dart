@@ -86,7 +86,7 @@ class AuthRemoteDataProvider {
         Uri.parse("${AppConstants.baseUrl}/auth/isAdmin"),
         headers: <String, String>{
           "Content-Type": "application/json",
-          "Authorization": "Bearer $token",
+          "Authorization": "Bearer ${AppConstants.token}",
         },
       );
       // print("21738888999999999333333333Workssssssssssssssssss");
@@ -130,7 +130,7 @@ class AuthRemoteDataProvider {
       Uri.parse("${AppConstants.baseUrl}/users/me"),
       headers: <String, String>{
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer ${AppConstants.token}',
       },
     );
 
