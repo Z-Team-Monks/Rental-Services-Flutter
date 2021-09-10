@@ -1,4 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
 import 'package:mockito/annotations.dart';
@@ -11,14 +12,18 @@ import 'package:rental/features/property/bloc/add_review/add_review_state.dart';
 import 'package:rental/features/property/bloc/add_review/value_objects/message.dart';
 import 'package:rental/features/property/data_provider/add_review/review_remote_data_provider.dart';
 import 'package:rental/features/property/repository/add_review/add_review_repository.dart';
-import 'package:rental/locator.dart';
+import 'package:rental/locator.dart' as getIt;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'add_review_bloc_test.mocks.dart';
 
 @GenerateMocks([ReviewRepository])
-void main() {
+void main() async {
   late AddReviewFormBloc bloc;
   MockReviewRepository mockReviewRepository = MockReviewRepository();
-
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences.setMockInitialValues(
+      {"flutter.token": "akjfd", "flutter.user": ""});
+  await getIt.setUp();
   void setUp() {
     bloc = AddReviewFormBloc(reviewRepository: mockReviewRepository);
   }
