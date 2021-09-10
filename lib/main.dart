@@ -24,7 +24,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'features/admin/cubit/admin_cubit.dart';
 import 'features/auth/screens/auth_screen.dart';
 import 'features/onBoard/screens/splash_screen.dart';
+import 'features/property/bloc/add_review/add_review_bloc.dart';
 import 'features/property/bloc/property_add/property_add_bloc.dart';
+import 'features/property/data_provider/add_review/review_remote_data_provider.dart';
+import 'features/property/repository/add_review/add_review_repository.dart';
 
 bool? isViewed;
 void main() async {
