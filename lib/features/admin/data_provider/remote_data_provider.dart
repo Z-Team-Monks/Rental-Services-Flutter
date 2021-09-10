@@ -8,7 +8,7 @@ import 'package:rental/features/admin/failures/admin_failures.dart';
 enum APPROVAL { APPROVE, DISAPPROVE }
 
 class AdminRemoteDataProvider {
-  final String baseUrl = "http://10.6.197.162:3000/api/v1/admin";
+  final String baseUrl = "http://192.168.0.196:3000/api/v1/admin";
 
   Future<Either<AdminFaiulre, List<Property>>> fetchPosts({
     required String authToken,

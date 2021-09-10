@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental/core/presentation/customTheme/appTheme.dart';
 import 'package:rental/features/admin/cubit/admin_cubit.dart';
 import 'package:rental/features/admin/repository/admin_repository.dart';
-import 'package:rental/features/admin/screens/admin_screen.dart';
 import 'package:rental/features/auth/bloc/auth_form_bloc.dart';
 import 'package:rental/features/auth/bloc/user_auth/user_auth_bloc.dart';
 import 'package:rental/features/auth/repository/repository.dart';
@@ -54,7 +53,7 @@ class MyApp extends StatelessWidget {
         //             UserRemoteDataProvider(),
         //             // UserLocalDataProvider(),
         //           ),
-        //         )..add(ProfileLoad())),
+        //         )..add(ProfileLoad()),),
         BlocProvider<AddReviewFormBloc>(
             create: (BuildContext context) => AddReviewFormBloc(
                   reviewRepository: ReviewRepository(

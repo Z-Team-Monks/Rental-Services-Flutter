@@ -8,7 +8,7 @@ import 'package:rental/features/auth/failures/auth_failure.dart';
 import 'package:rental/features/auth/models/params/auth_signin_param.dart';
 
 class AuthRemoteDataProvider {
-  final String baseUrl = "http://10.6.197.162:3000/api/v1";
+  final String baseUrl = "http://192.168.0.196:3000/api/v1";
   final User user = new User(
       name: "Kidus Yoseph",
       email: "se.kidus.yoseph@gmail.com",
