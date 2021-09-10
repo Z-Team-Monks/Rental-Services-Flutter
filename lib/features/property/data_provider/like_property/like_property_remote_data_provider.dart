@@ -21,7 +21,9 @@ class LikePropertyRemoteDataProvider {
       },
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print(response.body);
+      print("------ likeCount fetched ------");
       var data = jsonDecode(response.body)["likeCount"];
       return data;
     } else if (response.statusCode == 400) {
@@ -41,7 +43,7 @@ class LikePropertyRemoteDataProvider {
     required String propertyId,
     required String token,
   }) async {
-    print("${AppConstants.baseUrl}/$propertyId/like");
+    print("${AppConstants.baseUrl}/property/$propertyId/like");
     final http.Response response = await client.delete(
       Uri.parse("${AppConstants.baseUrl}/property/$propertyId/like"),
       headers: <String, String>{
@@ -50,7 +52,9 @@ class LikePropertyRemoteDataProvider {
       },
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print(response.body);
+      print("------ likeCount fetched ------");
       var data = jsonDecode(response.body)["likeCount"];
       return data;
     } else if (response.statusCode == 400) {
