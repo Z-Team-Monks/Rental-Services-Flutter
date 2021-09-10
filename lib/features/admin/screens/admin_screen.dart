@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:rental/core/models/property.dart';
 import 'package:rental/core/presentation/customSnackBar.dart';
 import 'package:rental/features/admin/cubit/admin_cubit.dart';
@@ -29,7 +30,13 @@ class _AdminPageState extends State<AdminPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Admin Page"),
+          backgroundColor: Colors.white,
+          title: Text(
+            "Admin Page",
+            style: GoogleFonts.poppins(
+              color: Colors.black,
+            ),
+          ),
         ),
         backgroundColor: Colors.grey[50],
         body: BlocConsumer<AdminCubit, AdminState>(
@@ -48,11 +55,13 @@ class _AdminPageState extends State<AdminPage> {
           },
           builder: (context, state) {
             return state.maybeMap(
-              fetchingPosts: (fetching) => Center(child: CircularProgressIndicator()),
+              fetchingPosts: (fetching) =>
+                  Center(child: CircularProgressIndicator()),
               postFetchFailure: (error) {
                 // showSnakBar(context, "Error: ${error.errorMessage}", scafold);
                 // adminCubit.fetchPosts();
-                return Center(child: Text("unable to fetch ${error.errorMessage}"));
+                return Center(
+                    child: Text("unable to fetch ${error.errorMessage}"));
               },
               postFetchSuccess: (data) =>
                   propertyList(context, data.properties),
@@ -77,13 +86,16 @@ class _AdminPageState extends State<AdminPage> {
 }
 
 Widget propertyList(BuildContext context, List<Property> properties) {
-  return properties.length == 0 ? Center(child: Text("No post pending"),) :
-  ListView.builder(
-      padding: const EdgeInsets.all(8),
-      itemCount: properties.length,
-      itemBuilder: (BuildContext context, int index) {
-        return listItem(context, properties[index]);
-      });
+  return properties.length == 0
+      ? Center(
+          child: Text("No post pending"),
+        )
+      : ListView.builder(
+          padding: const EdgeInsets.all(8),
+          itemCount: properties.length,
+          itemBuilder: (BuildContext context, int index) {
+            return listItem(context, properties[index]);
+          });
 }
 
 Widget listItem(BuildContext context, Property property) {
@@ -179,9 +191,7 @@ Widget listItem(BuildContext context, Property property) {
                       padding: const EdgeInsets.all(16.0),
                       child: InkWell(
                         onTap: () {
-                          context
-                              .read<AdminCubit>()
-                              .approvePost(property.id);
+                          context.read<AdminCubit>().approvePost(property.id);
                         },
                         child: Text(
                           "Accept",
