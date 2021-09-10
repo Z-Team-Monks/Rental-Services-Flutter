@@ -133,6 +133,10 @@ void main() {
       when(mocksAuthRepository.signInUser(any))
           .thenAnswer((_) async => Future.value(right("userToken")));
 
+      when(mocksAuthRepository.storeToken(
+              value: anyNamed("value"), key: anyNamed("key")))
+          .thenAnswer((_) async => Future.value(right(unit)));
+
       return AuthFormBloc(authRepository: mocksAuthRepository);
     }, act: (AuthFormBloc bloc) {
       bloc.add(EmailChanged(email: "email@gmail.com"));
