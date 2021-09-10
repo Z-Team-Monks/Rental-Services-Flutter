@@ -7,6 +7,7 @@ import 'package:rental/features/onBoard/screens/splash_screen.dart';
 import 'package:rental/features/property/screens/property_feed/feed.dart';
 // import 'package:rental/features/property/screens/review_property/add_review_popup.dart';
 import 'package:rental/features/property/screens/add_review/add_review_popup.dart';
+import 'package:rental/main.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
 class RouteGenerator {
@@ -46,6 +47,10 @@ class RouteGenerator {
       case AdminPage.pageRoute:
         return MaterialPageRoute(builder: (context) {
           return AdminPage();
+        });
+      case "/home":
+        return MaterialPageRoute(builder: (context) {
+          return Home();
         });
       default:
         throw Exception("invalid screen render!");

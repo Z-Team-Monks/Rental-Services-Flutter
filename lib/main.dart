@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental/core/presentation/customTheme/appTheme.dart';
 import 'package:rental/features/admin/repository/admin_repository.dart';
+import 'package:rental/features/admin/screens/admin_screen.dart';
 import 'package:rental/features/auth/bloc/auth_form_bloc.dart';
 import 'package:rental/features/auth/bloc/user_auth/user_auth_bloc.dart';
 import 'package:rental/features/auth/repository/repository.dart';
@@ -16,9 +17,11 @@ import 'package:rental/features/user/data_providers/user_remote_data_provider.da
 import 'package:rental/features/user/repository/user_repository.dart';
 import 'package:rental/features/user/screens/profile/profile_page.dart';
 import 'package:rental/locator.dart';
+import 'package:rental/route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'features/admin/cubit/admin_cubit.dart';
+import 'features/auth/screens/auth_screen.dart';
 import 'features/property/bloc/property_add/property_add_bloc.dart';
 // import '';
 
@@ -97,19 +100,20 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        // initialRoute: AuthPage.pageRoute,
-        // onGenerateRoute: RouteGenerator.generateRoute,
+        initialRoute: AuthPage.pageRoute,
+        onGenerateRoute: RouteGenerator.generateRoute,
         title: 'House Rent',
         theme: CustomTheme.lightTheme,
         darkTheme: CustomTheme.darkTHeme,
         themeMode: ThemeMode.light,
-        home: Home(),
+        // home: Home(),
       ),
     );
   }
 }
 
 class Home extends StatefulWidget {
+  static String pageRoute = "/home";
   @override
   State<StatefulWidget> createState() {
     return _HomeState();
@@ -121,7 +125,6 @@ class _HomeState extends State<Home> {
   final List<Widget> _children = [
     HomeFeed(),
     AddProperty(),
-    ProfilePage(),
   ];
   final List<String> _titles = ["Home", "Cases", "Symptoms"];
 
@@ -134,9 +137,48 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    List<BottomNavigationBarItem> data = [
+      BottomNavigationBarItem(
+        icon: new Icon(
+          Icons.home,
+        ),
+        title: new Text(
+          '',
+          style: TextStyle(fontSize: 14),
+        ),
+      ),
+      BottomNavigationBarItem(
+        icon: new Icon(
+          Icons.add,
+        ),
+        title: new Text(
+          '',
+          style: TextStyle(fontSize: 14),
+        ),
+      ),
+      BottomNavigationBarItem(
+        icon: Icon(Icons.person),
+        title: Text(
+          '',
+          style: TextStyle(fontSize: 14),
+        ),
+      ),
+    ];
+    if (getIt<SharedPreferences>().getBool("isAdmin") ?? false) {
+      _children
+        ..add(
+          ProfilePage(),
+        );
+    } else {
+      _children
+        ..add(
+          AdminPage(),
+        );
+    }
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       drawerScrimColor: Colors.black.withOpacity(0.2),
+
       // drawerScrimColor: Colors.transparent,
       // drawer: BlurredDrawer(),
 
@@ -151,32 +193,7 @@ class _HomeState extends State<Home> {
           unselectedItemColor: Colors.grey,
           selectedItemColor: Colors.redAccent,
           currentIndex: _currentIndex,
-          items: [
-            BottomNavigationBarItem(
-              icon: new Icon(
-                Icons.home,
-              ),
-              title: new Text(
-                '',
-                style: TextStyle(fontSize: 14),
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: new Icon(
-                Icons.add,
-              ),
-              title: new Text(
-                '',
-                style: TextStyle(fontSize: 14),
-              ),
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                title: Text(
-                  '',
-                  style: TextStyle(fontSize: 14),
-                )),
-          ],
+          items: [],
         ),
       ),
     );

@@ -6,6 +6,7 @@ import 'package:rental/features/auth/bloc/auth_form_bloc.dart';
 import 'package:rental/features/auth/bloc/user_auth/user_auth_bloc.dart';
 import 'package:rental/features/auth/screens/widgets/form_field.dart';
 import 'package:rental/features/property/screens/property_feed/feed.dart';
+import 'package:rental/main.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
 class AuthPage extends StatefulWidget {
@@ -62,7 +63,7 @@ class _AuthPageState extends State<AuthPage> {
         child: BlocConsumer<UserAuthBloc, UserAuthState>(
           listener: (context, state) {
             if (state == UserAuthState.LOGGEDIN_ADMIN) {
-              Navigator.of(context).pushReplacementNamed(AdminPage.pageRoute);
+              Navigator.of(context).pushReplacementNamed(Home.pageRoute);
             } else if (state == UserAuthState.LOGGEDIN) {
               Navigator.of(context).pushReplacementNamed(HomeFeed.pageRoute);
             }
