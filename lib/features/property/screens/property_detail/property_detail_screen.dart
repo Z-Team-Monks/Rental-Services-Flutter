@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:rental/core/helpers/get_image_url.dart';
 import 'package:rental/features/property/bloc/Reviews/reviews_bloc.dart';
 import 'package:rental/features/property/bloc/Reviews/reviews_event.dart';
 import 'package:rental/features/property/bloc/Reviews/reviews_state.dart';
+import 'package:rental/features/property/bloc/add_review/add_review_bloc.dart';
 import 'package:rental/features/property/bloc/like_property/like_property_bloc.dart';
 import 'package:rental/features/property/bloc/like_property/like_property_event.dart';
 import 'package:rental/features/property/bloc/like_property/like_property_state.dart';
@@ -21,6 +24,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:telephony/telephony.dart';
 
 class PropertyDetail extends StatelessWidget {
+  final String propertyId;
+  PropertyDetail(this.propertyId);
   static const pageRoute = "/property_detail";
 
   @override
@@ -34,22 +39,28 @@ class PropertyDetail extends StatelessWidget {
               PropertyLocalDataProvider(),
               PropertyRemoteDataProvider(),
             ),
-          )..add(RequestPropertyDetail(id: "6139bbd54cd1c14db8d43bfc")),
+          )..add(RequestPropertyDetail(id: this.propertyId)),
         ),
         BlocProvider(create: (context) {
           return ReviewsBloc(
             reviewRepository: ReviewRepository(
               ReviewRemoteDataProvider(),
             ),
-          )..add(ReviewsLoadStarted());
+          );
         }),
         BlocProvider(create: (context) {
           return LikePropertyBloc(
+            propertyId: this.propertyId,
             likePropertyRepository: LikePropertyRepository(
               LikePropertyRemoteDataProvider(),
             ),
           );
-        })
+        }),
+
+        // BlocProvider<AddReviewFormBloc>(
+        //     create: (BuildContext context) => AddReviewFormBloc(
+        //           reviewRepository: ReviewRemoteDataProvider(),
+        //         )),
       ],
       child: SafeArea(
         child: Scaffold(
@@ -67,26 +78,7 @@ class PropertyDetail extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Row(
-                          children: [
-                            imageSubViewShimmer(
-                              context,
-                            ),
-                            imageSubViewShimmer(context),
-                            _imageSubView(
-                              "assets/images/content/house-image.png",
-                              child: Container(
-                                color: Color.fromARGB(130, 255, 255, 255),
-                                child: Center(
-                                  child: Text(
-                                    "2+",
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                          children: [imageSubViewShimmer(context)],
                         ),
                       ),
                       propertyNameAndRatingShimmer(context, currentTheme),
@@ -102,27 +94,41 @@ class PropertyDetail extends StatelessWidget {
                           );
                         } else if (state is ReviewOperationSuccess) {
                           List<Widget> widgets = [];
-                          for (var review in state.reviews) {
-                            widgets.add(
-                              _reviewListCard(
-                                review: review.message ?? "",
-                                imageUrl: review.user?.profileImage ?? "",
-                                username: review.user?.name ?? "",
-                              ),
+                          print(
+                              "][][][][][][[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[");
+                          print(state.reviews);
+                          print(
+                              "][][][][][][[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[");
+                          if (state.reviews.length != 0) {
+                            for (var review in state.reviews) {
+                              widgets.add(
+                                _reviewListCard(
+                                  review: review.message ?? "",
+                                  imageUrl: review.user?.profileImage ?? "",
+                                  username: review.user?.name ?? "",
+                                ),
+                              );
+                            }
+                            return Column(children: widgets);
+                          } else {
+                            return Container(
+                              height: 30,
+                              child: Center(child: Text("No reviews yet")),
                             );
                           }
                           // widgets.add();
-                          return Column(children: widgets);
                         } else if (state is ReviewOperationFailure) {
                           return Container(
                             height: 30,
                             child: Text("Network Error"),
                           );
                         } else {
-                          return Container(height: 30);
+                          return Container(
+                            height: 30,
+                          );
                         }
                       }),
-                      Center(child: AddReviewButton()),
+                      // Center(child: ),
                       SizedBox(
                         height: 60,
                       ),
@@ -148,9 +154,8 @@ class PropertyDetail extends StatelessWidget {
                   child: BlocConsumer<PropertyDetailBloc, PropertyDetailState>(
                     listener: (context, state) {
                       if (state is PropertyDetailLoading) {
+                        context.read<ReviewsBloc>().add(ReviewsLoadStarted());
                       } else if (state is PropertyDetailOperationSuccess) {
-                        print(
-                            "--- property detail success ${state.props[0]?.reviewes?[0]?.user?.profileImage}");
                         context
                             .read<ReviewsBloc>()
                             .add(ReviewsLoaded(state.props[0]?.reviewes ?? []));
@@ -158,6 +163,7 @@ class PropertyDetail extends StatelessWidget {
                             .read<LikePropertyBloc>()
                             .add(LoadLikeStatus(state.props[0]?.likedBy ?? []));
                       } else {
+                        print("---- loading propertty fialed");
                         context.read<ReviewsBloc>().add(ReviewsLoadingFailed());
                         context
                             .read<LikePropertyBloc>()
@@ -166,6 +172,7 @@ class PropertyDetail extends StatelessWidget {
                     },
                     builder: (context, state) {
                       if (state is PropertyDetailLoading) {
+                        print("property detail loading ------------");
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -238,6 +245,7 @@ class PropertyDetail extends StatelessWidget {
                           ],
                         );
                       } else {
+                        print("=== loadin failed property");
                         return Text("Network Error");
                       }
                     },
@@ -307,7 +315,7 @@ class PropertyDetail extends StatelessWidget {
               )
             ],
           );
-        } else {
+        } else if (state is PropertyDetailOperationSuccess) {
           return Stack(
             children: [
               Container(
@@ -316,7 +324,8 @@ class PropertyDetail extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage("assets/images/content/house-image.png"),
+                    image: CachedNetworkImageProvider(
+                        getImageUrl(state.property!.images[0])),
                   ),
                   borderRadius: BorderRadius.circular(25),
                 ),
@@ -331,7 +340,9 @@ class PropertyDetail extends StatelessWidget {
                       Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
                           child: Container(
                             padding: EdgeInsets.all(5),
                             decoration: BoxDecoration(
@@ -389,6 +400,8 @@ class PropertyDetail extends StatelessWidget {
               )
             ],
           );
+        } else {
+          return Container();
         }
       },
     );
@@ -398,25 +411,65 @@ class PropertyDetail extends StatelessWidget {
     return BlocBuilder<PropertyDetailBloc, PropertyDetailState>(
       builder: (context, state) {
         if (state is PropertyDetailLoading) {
-          return Shimmer.fromColors(
-            baseColor: Colors.grey[300]!,
-            highlightColor: Colors.grey[100]!,
-            child: Container(
-              margin: EdgeInsets.only(
-                right: 5,
+          var shimmer = <Widget>[];
+          for (var i = 0; i < 3; i++) {
+            shimmer.add(Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                margin: EdgeInsets.only(
+                  right: 5,
+                ),
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.grey[300],
+                ),
               ),
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.grey[300],
+            ));
+            shimmer.add(SizedBox(
+              width: 6,
+            ));
+          }
+          return Row(children: shimmer);
+        } else if (state is PropertyDetailOperationSuccess) {
+          var images = <Widget>[];
+          if (state.property!.images.length >= 2) {
+            for (var i = 1; i < state.property!.images.length; i++) {
+              images.add(
+                _imageSubView(
+                  getImageUrl(state.property!.images[i]),
+                ),
+              );
+
+              images.add(
+                SizedBox(
+                  width: 6,
+                ),
+              );
+            }
+            images.add(
+              Row(
+                children: [
+                  AddReviewButton(
+                    propertyId: propertyId,
+                  )
+                ],
               ),
-            ),
+            );
+          }
+          return Expanded(
+            child: Row(
+                children: images,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween),
           );
         } else {
-          return _imageSubView(
-            "assets/images/content/house-image.png",
-          );
+          return Column(children: [
+            _imageSubView(
+              "assets/images/content/house-image.png",
+            )
+          ]);
         }
       },
     );
@@ -456,25 +509,42 @@ class PropertyDetail extends StatelessWidget {
         } else if (state is PropertyDetailOperationSuccess) {
           return Column(
             children: [
-              Text(
-                "${state.props[0]!.title}",
-                style: currentTheme.textTheme.headline4,
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "${state.props[0]!.title}",
+                  style: currentTheme.textTheme.headline4,
+                ),
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    width: 15,
+                  Row(
+                    children: [
+                      // SizedBox(
+                      //   width: 15,
+                      // ),
+                      Icon(
+                        Icons.star,
+                        size: 15,
+                        color: Colors.redAccent,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                          "${state.props[0]!.rating} (${state.props[0]!.reviewes!.length} Reviews) • Ethiopia"),
+                    ],
                   ),
-                  Icon(
-                    Icons.star,
-                    size: 15,
-                    color: Colors.redAccent,
+                  Row(
+                    children: [
+                      (state.props[0]!.images.length <= 1)
+                          ? AddReviewButton(
+                              propertyId: propertyId,
+                            )
+                          : Container()
+                    ],
                   ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Text(
-                      "${state.props[0]!.rating} (${state.props[0]!.reviewes!.length} Reviews) • Norway")
                 ],
               ),
             ],
@@ -534,7 +604,7 @@ Widget _reviewListCard({
                 color: Colors.grey,
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(imageUrl),
+                  image: CachedNetworkImageProvider(getImageUrl(imageUrl)),
                 ),
                 shape: BoxShape.circle,
               ),
@@ -542,13 +612,20 @@ Widget _reviewListCard({
             SizedBox(
               width: 20,
             ),
-            Text(username)
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Text(username,
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                    ))),
           ],
         ),
         SizedBox(
           height: 10,
         ),
-        Text(review),
+        Align(
+            alignment: Alignment.centerLeft,
+            child: Text(review, style: GoogleFonts.poppins())),
         SizedBox(height: 10),
         _horizontalUnderline(color: Colors.grey),
       ],

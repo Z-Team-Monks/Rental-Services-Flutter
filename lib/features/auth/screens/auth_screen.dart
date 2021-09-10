@@ -63,9 +63,9 @@ class _AuthPageState extends State<AuthPage> {
         child: BlocConsumer<UserAuthBloc, UserAuthState>(
           listener: (context, state) {
             if (state == UserAuthState.LOGGEDIN_ADMIN) {
-              Navigator.of(context).pushReplacementNamed(Home.pageRoute);
+              Navigator.of(context).pushReplacementNamed("/");
             } else if (state == UserAuthState.LOGGEDIN) {
-              Navigator.of(context).pushReplacementNamed(Home.pageRoute);
+              Navigator.of(context).pushReplacementNamed("/");
             }
           },
           builder: (context, state) {
@@ -115,10 +115,14 @@ class _AuthPageState extends State<AuthPage> {
                         scrollDirection: Axis.horizontal,
                         controller: controller,
                         children: <Widget>[
-                          signInPage(
-                              authFormBloc,userAuthBloc, this.emailNode, this.passwordNode),
-                          signUpPage(authFormBloc,userAuthBloc, this.usernameNode,
-                              this.emailNode, this.passwordNode),
+                          signInPage(authFormBloc, userAuthBloc, this.emailNode,
+                              this.passwordNode),
+                          signUpPage(
+                              authFormBloc,
+                              userAuthBloc,
+                              this.usernameNode,
+                              this.emailNode,
+                              this.passwordNode),
                         ],
                       ),
                     ),
@@ -128,8 +132,8 @@ class _AuthPageState extends State<AuthPage> {
   }
 }
 
-Widget signInPage(
-    AuthFormBloc authFormBloc,UserAuthBloc userAuthBloc, FocusNode emailNode, FocusNode passwordNode) {
+Widget signInPage(AuthFormBloc authFormBloc, UserAuthBloc userAuthBloc,
+    FocusNode emailNode, FocusNode passwordNode) {
   return SingleChildScrollView(
     child: Container(
       decoration: BoxDecoration(
@@ -243,7 +247,7 @@ Widget signInPage(
                             listener: (ctx, state) {
                               if (state.status ==
                                   FormzStatus.submissionSuccess) {
-                                     userAuthBloc.add(UserStatusChecking());
+                                userAuthBloc.add(UserStatusChecking());
                                 // Navigator.of(ctx)
                                 //     .pushReplacementNamed(HomeFeed.pageRoute);
                               }
@@ -276,8 +280,8 @@ Widget signInPage(
   );
 }
 
-Widget signUpPage(AuthFormBloc authFormBloc,UserAuthBloc userAuthBloc, FocusNode usernameNode,
-    FocusNode emailNode, FocusNode passwordNode) {
+Widget signUpPage(AuthFormBloc authFormBloc, UserAuthBloc userAuthBloc,
+    FocusNode usernameNode, FocusNode emailNode, FocusNode passwordNode) {
   return SingleChildScrollView(
     child: Container(
       decoration: BoxDecoration(
@@ -395,7 +399,7 @@ Widget signUpPage(AuthFormBloc authFormBloc,UserAuthBloc userAuthBloc, FocusNode
                             listener: (ctx, state) {
                               if (state.status ==
                                   FormzStatus.submissionSuccess) {
-                                    userAuthBloc.add(UserStatusChecking());
+                                userAuthBloc.add(UserStatusChecking());
                                 // Navigator.of(ctx)
                                 //     .pushReplacementNamed(HomeFeed.pageRoute);
                               }

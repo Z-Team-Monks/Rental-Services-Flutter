@@ -1,5 +1,6 @@
 import 'package:rental/core/models/property.dart';
 import 'package:rental/core/models/review.dart';
+import 'package:rental/core/network.dart';
 import 'package:rental/features/property/bloc/add_review/value_objects/message.dart';
 import 'package:rental/features/property/data_provider/add_review/review_remote_data_provider.dart';
 import 'package:rental/features/property/repository/add_review/add_review_repository.dart';
@@ -12,16 +13,10 @@ import 'package:formz/formz.dart';
 
 class AddReviewFormBloc extends Bloc<AddReviewFormEvent, AddReviewFormState> {
   final ReviewRepository reviewRepository;
-  final userId;
   final propertyId;
   final token;
-  AddReviewFormBloc({required this.reviewRepository})
-      // : userId = 'getIt.get<SharedPreferences>().getString("userId") ?? ""',
-      : userId = "userId",
-        propertyId = "propertyId",
-        // 'getIt.get<SharedPreferences>().getString("propertyId") ?? ""',
-        // token = 'getIt.get<SharedPreferences>().getString("token") ?? ""',
-        token = "token",
+  AddReviewFormBloc({required this.reviewRepository, required this.propertyId})
+      : token = AppConstants.token,
         super(const AddReviewFormState());
 
   @override

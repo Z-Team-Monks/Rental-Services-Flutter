@@ -21,6 +21,7 @@ class PropertyRemoteDataProvider {
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       print(data);
+      print("--- properties decoded --------");
       List<Property> properties = [];
       for (var i = 0; i < data.length; i++) {
         properties.add(Property.fromJson(data[i]));
@@ -87,7 +88,7 @@ class PropertyRemoteDataProvider {
         options: Options(
           headers: {
             "accept": "/",
-            "Authorization": "Bearer $token",
+            "Authorization": "Bearer ${AppConstants.token}",
             "Content-Type": "multipart/form-data"
           },
         ),
@@ -121,7 +122,7 @@ class PropertyRemoteDataProvider {
       //     "http://192.168.43.46:5001/api/v1/property/61389e84a6a60a468bce7d11"),
       headers: <String, String>{
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer ${AppConstants.token}',
       },
       body: jsonEncode(
         {

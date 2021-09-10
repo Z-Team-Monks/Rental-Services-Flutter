@@ -94,8 +94,8 @@ class PropertyRepository {
   }
 
   Future<Property> updateProdcut(Property property) async {
-    final updaetdProduct =
-        await _propertyRemoteDataProvider.editProperty(property: property);
+    final updaetdProduct = await _propertyRemoteDataProvider.editProperty(
+        property: property, token: "");
     return updaetdProduct;
   }
 }

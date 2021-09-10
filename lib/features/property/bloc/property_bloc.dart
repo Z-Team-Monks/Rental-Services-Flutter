@@ -22,10 +22,13 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
       yield PropertyLoading();
       try {
         var data = await _propertyRepository.getPropertiesFromRemote();
-        yield PropertyOperationSuccess(data!);
+
+        if (data!.length == 0) {
+          yield PropertyFeedEmpty();
+        } else
+          yield PropertyOperationSuccess(data);
       } catch (e) {
-        print("{[[[[[[[[[[[[[[[erriririieieieieieiei]]]]]]]]]]]]]]]}");
-        print(e);
+        print(e.toString());
         yield PropertyOperationFailure();
       }
     } else if (event is PropertySearch) {

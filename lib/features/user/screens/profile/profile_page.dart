@@ -28,160 +28,149 @@ class ProfilePage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.center, children: <
-                  Widget>[
-            SizedBox(height: 20.0),
-            BlocConsumer<ProfileBloc, ProfileState>(
-              listener: (_, state) {},
-              builder: (_, state) {
-                if (state is ProfileLoaded) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        height: 120,
-                        width: 120,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(
-                                getImageUrl(state.user.profileImage!)),
-                          ),
-                        ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 20.0),
+                BlocConsumer<ProfileBloc, ProfileState>(
+                  listener: (_, state) {},
+                  builder: (_, state) {
+                    if (state is ProfileLoaded) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text(
-                            state.user.name,
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          infoTexts(state.user.email),
-                          state.user.phoneNumber != null
-                              ? infoTexts(state.user.phoneNumber!)
-                              : Text(""),
                           Container(
+                            height: 120,
                             width: 120,
-                            height: 32,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: TextButton(
-                              onPressed: () {
-                                Navigator.push<void>(
-                                  context,
-                                  MaterialPageRoute<void>(
-                                    builder: (BuildContext context) =>
-                                        UpdateProfile(state.user),
-                                  ),
-                                );
-                              },
-                              child: Text("Edit my profile"),
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                    getImageUrl(state.user.profileImage!)),
+                              ),
                             ),
                           ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                        ],
-                      )
-                    ],
-                  );
-                }
-                return CardSkeleton(
-                  isCircularImage: true,
-                  isBottomLinesActive: true,
-                );
-              },
-            ),
-            DefaultTabController(
-                length: 3, // length of tabs
-                initialIndex: 0,
-                child: SingleChildScrollView(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Container(
-                          child: TabBar(
-                            labelColor: Colors.green,
-                            unselectedLabelColor: Colors.black,
-                            tabs: [
-                              Tab(text: 'Properties'),
-                              Tab(text: 'Liked'),
-                              Tab(text: 'Wishlist'),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                state.user.name,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              infoTexts(state.user.email),
+                              state.user.phoneNumber != null
+                                  ? infoTexts(state.user.phoneNumber!)
+                                  : Text(""),
+                              Container(
+                                width: 120,
+                                height: 32,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.push<void>(
+                                      context,
+                                      MaterialPageRoute<void>(
+                                        builder: (BuildContext context) =>
+                                            UpdateProfile(state.user),
+                                      ),
+                                    );
+                                  },
+                                  child: Text("Edit my profile"),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
                             ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                            height: 400, //height of TabBarView
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    top: BorderSide(
-                                        color: Colors.grey, width: 0.5))),
-                            child: BlocConsumer<ProfileBloc, ProfileState>(
-                              listener: (context, state) {
-                                // TODO: implement listener
-                              },
-                              builder: (context, state) {
-                                if (state is ProfileLoaded) {
-                                  return TabBarView(children: <Widget>[
-                                    GridView.count(
-                                        crossAxisCount: 2,
-                                        children: List.generate(
-                                            state.user.posts!.length, (index) {
-                                          return MyPropertyCard(
-                                              size,
-                                              state.user.posts![index],
-                                              context,
-                                              true);
-                                        })),
-                                    GridView.count(
-                                        crossAxisCount: 2,
-                                        children: List.generate(
-                                            state.user.likedProperties!.length,
-                                            (index) {
-                                          return MyPropertyCard(
-                                              size,
-                                              state.user.posts![index],
-                                              context,
-                                              false);
-                                        })),
-                                    GridView.count(
-                                        crossAxisCount: 2,
-                                        children: List.generate(
-                                            state.user.likedProperties!.length,
-                                            (index) {
-                                          return MyPropertyCard(
-                                              size,
-                                              state.user.posts![index],
-                                              context,
-                                              false);
-                                        })),
-                                  ]);
-                                }
-                                return TabBarView(children: <Widget>[
+                          )
+                        ],
+                      );
+                    }
+                    return CardSkeleton(
+                      isCircularImage: true,
+                      isBottomLinesActive: true,
+                    );
+                  },
+                ),
+                DefaultTabController(
+                    length: 2, // length of tabs
+                    initialIndex: 0,
+                    child: SingleChildScrollView(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Container(
+                              child: TabBar(
+                                labelColor: Colors.green,
+                                unselectedLabelColor: Colors.black,
+                                tabs: [
+                                  Tab(text: 'Properties'),
+                                  Tab(text: 'Liked'),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                                height: 400, //height of TabBarView
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        top: BorderSide(
+                                            color: Colors.grey, width: 0.5))),
+                                child: BlocConsumer<ProfileBloc, ProfileState>(
+                                  listener: (context, state) {
+                                    // TODO: implement listener
+                                  },
+                                  builder: (context, state) {
+                                    if (state is ProfileLoaded) {
+                                      return TabBarView(children: <Widget>[
+                                        GridView.count(
+                                            crossAxisCount: 2,
+                                            children: List.generate(
+                                                state.user.posts!.length,
+                                                (index) {
+                                              return MyPropertyCard(
+                                                  size,
+                                                  state.user.posts![index],
+                                                  context,
+                                                  true);
+                                            })),
+                                        GridView.count(
+                                            crossAxisCount: 2,
+                                            children: List.generate(
+                                                state.user.likedProperties!
+                                                    .length, (index) {
+                                              return MyPropertyCard(
+                                                  size,
+                                                  state.user.posts![index],
+                                                  context,
+                                                  false);
+                                            })),
+                                      ]);
+                                    }
+                                    return TabBarView(children: <Widget>[
 //Widget
-                                  CardPageSkeleton(
-                                    totalLines: 5,
-                                  ),
-                                  CardPageSkeleton(
-                                    totalLines: 5,
-                                  ),
-                                  CardPageSkeleton(
-                                    totalLines: 5,
-                                  ),
-                                ]);
-                              },
-                            ))
-                      ]),
-                )),
-          ]),
+                                      CardPageSkeleton(
+                                        totalLines: 5,
+                                      ),
+                                      CardPageSkeleton(
+                                        totalLines: 5,
+                                      ),
+                                      CardPageSkeleton(
+                                        totalLines: 5,
+                                      ),
+                                    ]);
+                                  },
+                                ))
+                          ]),
+                    )),
+              ]),
         ),
       ),
     );

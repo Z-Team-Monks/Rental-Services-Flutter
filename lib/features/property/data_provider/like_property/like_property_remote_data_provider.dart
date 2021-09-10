@@ -14,7 +14,7 @@ class LikePropertyRemoteDataProvider {
     required String propertyId,
   }) async {
     final http.Response response = await client.post(
-      Uri.parse("${AppConstants.baseUrl}/$propertyId/like"),
+      Uri.parse("${AppConstants.baseUrl}/property/$propertyId/like"),
       headers: <String, String>{
         "Content-Type": "application/json",
         'Authorization': 'Bearer ${AppConstants.token}',
@@ -27,6 +27,7 @@ class LikePropertyRemoteDataProvider {
     } else if (response.statusCode == 400) {
       throw Exception("User has already liked the property");
     } else {
+      print(response.statusCode);
       throw Exception("Error");
     }
   }
@@ -40,8 +41,9 @@ class LikePropertyRemoteDataProvider {
     required String propertyId,
     required String token,
   }) async {
+    print("${AppConstants.baseUrl}/$propertyId/like");
     final http.Response response = await client.delete(
-      Uri.parse("${AppConstants.baseUrl}/$propertyId/like"),
+      Uri.parse("${AppConstants.baseUrl}/property/$propertyId/like"),
       headers: <String, String>{
         "Content-Type": "application/json",
         'Authorization': 'Bearer ${AppConstants.token}',
@@ -54,6 +56,7 @@ class LikePropertyRemoteDataProvider {
     } else if (response.statusCode == 400) {
       throw Exception("User hasn't liked this property");
     } else {
+      print(response.statusCode);
       throw Exception("Error");
     }
   }

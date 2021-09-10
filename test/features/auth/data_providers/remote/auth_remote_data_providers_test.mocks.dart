@@ -3,14 +3,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:rental/core/network.dart';
 
 import 'auth_remote_data_providers_test.mocks.mocks.dart';
 
 @GenerateMocks([http.Client])
 void main() {
   MockClient mockClient = MockClient();
-
-  final String baseUrl = "http://10.6.197.162:5001/api";
 
   void setUpMockClientSuccess200() {
     final String token = "thisIsAFakeJWTTokenLongEnough";

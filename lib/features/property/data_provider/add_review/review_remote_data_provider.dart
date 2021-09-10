@@ -43,7 +43,7 @@ class ReviewRemoteDataProvider {
       Uri.parse("${AppConstants.baseUrl}/$propertyId/review"),
       headers: <String, String>{
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer ${AppConstants.token}',
       },
       body: jsonEncode(review),
     );

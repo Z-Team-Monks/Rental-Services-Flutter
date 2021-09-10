@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rental/core/helpers/get_image_url.dart';
 import 'package:shimmer/shimmer.dart';
 import './contact_icon_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -15,6 +16,9 @@ class FeedPropertyCard extends StatefulWidget {
   /// FeedCard rating count [String]
   final double rating;
 
+  /// FeedCard rating id [String]
+  final String id;
+
   /// FeedCard name of the Property [String]
   final String name;
 
@@ -27,6 +31,9 @@ class FeedPropertyCard extends StatefulWidget {
   /// FeedCard message Button onTap handler [Function]
   final Function messageCallback;
 
+  /// FeedCard message Button onTap handler [Function]
+  final Function(String) goToDetailCallBack;
+
   const FeedPropertyCard({
     Key? key,
     required this.imgUrl,
@@ -36,6 +43,8 @@ class FeedPropertyCard extends StatefulWidget {
     required this.description,
     required this.phoneCallback,
     required this.messageCallback,
+    required this.goToDetailCallBack,
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -58,7 +67,7 @@ class _FeedPropertyCardState extends State<FeedPropertyCard> {
                     image: DecorationImage(
                       fit: BoxFit.cover,
                       image: CachedNetworkImageProvider(
-                        widget.imgUrl,
+                        getImageUrl(widget.imgUrl),
                       ),
                     )),
                 width: double.infinity,
@@ -74,16 +83,7 @@ class _FeedPropertyCardState extends State<FeedPropertyCard> {
                     width: double.infinity,
                   ),
                   onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            content: Container(
-                                height: 50,
-                                child:
-                                    Center(child: CircularProgressIndicator())),
-                          );
-                        });
+                    widget.goToDetailCallBack(widget.id);
                   },
                 ),
               ),

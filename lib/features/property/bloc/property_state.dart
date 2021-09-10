@@ -31,3 +31,5 @@ class PropertyFillturedSuccess extends PropertyState {
   @override
   List<Property> get props => properties;
 }
+
+class PropertyFeedEmpty extends PropertyState {}

@@ -20,3 +20,5 @@ class ReviewOperationSuccess extends ReviewsState {
 }
 
 class ReviewOperationFailure extends ReviewsState {}
+
+class ReviewEmpty extends ReviewsState {}

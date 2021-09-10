@@ -32,14 +32,14 @@ class RouteGenerator {
         });
       case "postScreen":
         throw Exception("screen not implemented yet!");
-      case PropertyDetail.pageRoute:
-        return MaterialPageRoute(builder: (context) {
-          return PropertyDetail();
-        });
-      case AddReviewPopup.pageRoute:
-        return MaterialPageRoute(builder: (context) {
-          return AddReviewPopup();
-        });
+      // case PropertyDetail.pageRoute:
+      //   return MaterialPageRoute(builder: (context) {
+      //     return PropertyDetail();
+      //   });
+      // case AddReviewPopup.pageRoute:
+      //   return MaterialPageRoute(builder: (context) {
+      //     return AddReviewPopup();
+      //   });
       case AddProperty.pageRoute:
         return MaterialPageRoute(builder: (context) {
           return AddProperty();

@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rental/core/network.dart';
 import 'package:rental/features/property/repository/like_property/like_property_repository.dart';
 
 import 'like_property_event.dart';
@@ -8,10 +9,9 @@ class LikePropertyBloc extends Bloc<LikePropertyEvent, LikePropertyState> {
   final String propertyId;
   final String token;
   final LikePropertyRepository likePropertyRepository;
-  LikePropertyBloc({required this.likePropertyRepository})
-      : propertyId = "6139bbd54cd1c14db8d43bfc",
-        token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMzliYjM3NGNkMWMxNGRiOGQ0M2JmOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2MzExNzM1NDV9.DoR9lgtTcYlEYMxnnEV4-n56eargHLp3Ipkxkbrlou0",
+  LikePropertyBloc(
+      {required this.likePropertyRepository, required this.propertyId})
+      : token = AppConstants.token,
         super(LikePropertyInitial());
 
   @override

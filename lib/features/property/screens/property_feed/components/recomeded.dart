@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:rental/core/helpers/get_image_url.dart';
 import 'package:shimmer/shimmer.dart';
 
 // class RecomedationCard extends StatefulWidget {
@@ -40,7 +41,6 @@ class RecomedationCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Material(
-        
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
@@ -64,7 +64,7 @@ class RecomedationCard extends StatelessWidget {
                           topRight: Radius.circular(20)),
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(imgUrl),
+                        image: CachedNetworkImageProvider(getImageUrl(imgUrl)),
                       ),
                     ),
                   ),
