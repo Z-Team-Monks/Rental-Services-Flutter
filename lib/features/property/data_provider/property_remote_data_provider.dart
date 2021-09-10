@@ -6,10 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:rental/core/models/property.dart';
 import 'package:rental/core/network.dart';
 
-class PropertyRemoteDataProvider extends AppConstants {
-  final tokens =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDViNDQyOGQzZmFjNzY4Y2RmMWNiOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2Mjg3ODE2MzV9._VCHTjWSSC4ImckvDr4bsG2CJrA-PbCoCnIutOMuBB4";
-
+class PropertyRemoteDataProvider {
   /// It will return list of [Property] Objects fetched from remote server / API
   ///
   /// or throws an exceptioin if an error occured
@@ -90,7 +87,7 @@ class PropertyRemoteDataProvider extends AppConstants {
         options: Options(
           headers: {
             "accept": "/",
-            "Authorization": "Bearer $tokens",
+            "Authorization": "Bearer $token",
             "Content-Type": "multipart/form-data"
           },
         ),
@@ -113,7 +110,7 @@ class PropertyRemoteDataProvider extends AppConstants {
   ///
   Future<Property> editProperty({
     required Property property,
-    // required String token,
+    required String token,
   }) async {
     // await Future.delayed(Duration(seconds: 3));
     // return property;
@@ -124,7 +121,7 @@ class PropertyRemoteDataProvider extends AppConstants {
       //     "http://192.168.43.46:5001/api/v1/property/61389e84a6a60a468bce7d11"),
       headers: <String, String>{
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $tokens',
+        'Authorization': 'Bearer $token',
       },
       body: jsonEncode(
         {
@@ -150,6 +147,7 @@ class PropertyRemoteDataProvider extends AppConstants {
   }
 
   Future<Property> getProperty(String id) async {
+    print("------- get property in progress");
     final http.Response response = await http.get(
       Uri.parse("${AppConstants.baseUrl}/property/$id"),
       headers: <String, String>{"Content-Type": "application/json"},

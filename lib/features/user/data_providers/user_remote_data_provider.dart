@@ -6,7 +6,7 @@ import 'package:rental/core/exceptions/auth_exception.dart';
 import 'package:rental/core/models/user.dart';
 import 'package:rental/core/network.dart';
 
-class UserRemoteDataProvider extends AppConstants {
+class UserRemoteDataProvider {
   // final String baseUrl = "http://10.6.193.148:5000/api";
   final tokens =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDViNDQyOGQzZmFjNzY4Y2RmMWNiOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2Mjg3ODE2MzV9._VCHTjWSSC4ImckvDr4bsG2CJrA-PbCoCnIutOMuBB4";
@@ -128,32 +128,6 @@ class UserRemoteDataProvider extends AppConstants {
   }
 
   Future<void> uploadProfileImage(String path) async {
-    // String url = "";
-    // var dio = Dio();
-    // try {
-    //   var formData =
-    //       FormData.fromMap({'file': await MultipartFile.fromFile(path)});
-    //   var response = await dio.put("${AppConstants.baseUrl}/users/profile", data: formData);
-    //   return response.data;
-    // } catch (e) {
-    //   print(e.toString());
-    // }
-    // String fileName = path.split('/').last;
-
-    // FormData data = FormData.fromMap({
-    //   "file": await MultipartFile.fromFile(
-    //     path,
-    //     filename: fileName,
-    //   ),
-    // });
-
-    // Dio dio = new Dio();
-
-    // dio
-    //     .post("${AppConstants.baseUrl}/proflie", data: data)
-    //     .then((response) => print(response))
-    //     .catchError((error) => print(error));
-
     try {
       print("fetching start..");
       String filename = path.split('/').last;
@@ -214,28 +188,6 @@ class UserRemoteDataProvider extends AppConstants {
     }
   }
 
-  // static Future<dynamic> uploadFile(filePath) async {
-  //   //jwt authentication token
-  //   //Note: this authToken and user id parameter will depend on my backend api structure
-  //   //in your case it can be only auth token
-  //   var _userId = '6105b4428d3fac768cdf1cb8';
-
-  //   try {
-  //     FormData formData = new FormData.fromMap({
-  //       "image": await MultipartFile.fromFile(filePath, filename: "profile")
-  //     });
-
-  //     Response response =
-  //         await Dio().put("http://10.6.207.85:5001/api/v1/users/profile",
-  //             data: formData,
-  //             options: Options(headers: <String, String>{
-  //               'Authorization': 'Bearer $authToken',
-  //             }));
-  //     return response;
-  //   } on DioError catch (e) {
-  //     return e.response;
-  //   } catch (e) {}
-  // }
   Future<dynamic> uploadProfile(String path) async {
     try {
       var authToken =

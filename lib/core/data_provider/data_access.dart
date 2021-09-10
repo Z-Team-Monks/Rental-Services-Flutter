@@ -1,7 +1,5 @@
 import 'dart:io';
-
-// import 'package:connectivity/connectivity.dart';
-// import 'package:rental/core/models/property.dart';
+import 'package:rental/core/models/property.dart';
 
 typedef ApiCall<T> = Future<T> Function();
 typedef DbCall<T> = Future<T> Function(T);
