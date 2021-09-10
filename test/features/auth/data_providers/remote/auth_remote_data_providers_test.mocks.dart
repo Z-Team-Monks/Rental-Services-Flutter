@@ -15,7 +15,8 @@ void main() {
   void setUpMockClientSuccess200() {
     final String token = "thisIsAFakeJWTTokenLongEnough";
     when(
-      mockClient.get(Uri.parse("$baseUrl/auth"), headers: anyNamed('headers')),
+      mockClient.get(Uri.parse("${AppConstants.baseUrl}/auth"),
+          headers: anyNamed('headers')),
     ).thenAnswer(
       (_) async => http.Response(token, 200),
     );

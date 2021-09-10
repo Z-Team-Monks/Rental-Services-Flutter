@@ -133,7 +133,7 @@ class UserRemoteDataProvider extends AppConstants {
     // try {
     //   var formData =
     //       FormData.fromMap({'file': await MultipartFile.fromFile(path)});
-    //   var response = await dio.put("$baseUrl/users/profile", data: formData);
+    //   var response = await dio.put("${AppConstants.baseUrl}/users/profile", data: formData);
     //   return response.data;
     // } catch (e) {
     //   print(e.toString());
@@ -150,7 +150,7 @@ class UserRemoteDataProvider extends AppConstants {
     // Dio dio = new Dio();
 
     // dio
-    //     .post("$baseUrl/proflie", data: data)
+    //     .post("${AppConstants.baseUrl}/proflie", data: data)
     //     .then((response) => print(response))
     //     .catchError((error) => print(error));
 
@@ -165,7 +165,7 @@ class UserRemoteDataProvider extends AppConstants {
       });
 
       var response = await Dio().put(
-        '$baseUrl/users/profile',
+        '${AppConstants.baseUrl}/users/profile',
         data: formData,
         options: Options(
           headers: {

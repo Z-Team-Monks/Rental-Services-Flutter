@@ -4,17 +4,16 @@ import 'package:http/http.dart' as http;
 import 'package:rental/core/models/property.dart';
 import 'package:rental/core/models/review.dart';
 import 'package:rental/core/models/user.dart';
+import 'package:rental/core/network.dart';
 
 class ReviewRemoteDataProvider {
-  final String baseUrl = "http://10.6.193.148:5000/api/v1/property/";
-
   /// It will return list of [Review] Objects fetched from remote server / API
   ///
   /// or throws an exceptioin if an error occured
   ///
   Future<List<Review>> getReviews(http.Client client, id) async {
     final http.Response response = await client.get(
-      Uri.parse("$baseUrl/$id/review"),
+      Uri.parse("${AppConstants.baseUrl}/$id/review"),
       headers: <String, String>{"Content-Type": "application/json"},
     );
 
@@ -41,7 +40,7 @@ class ReviewRemoteDataProvider {
     required String token,
   }) async {
     final http.Response response = await client.post(
-      Uri.parse("$baseUrl/$propertyId/review"),
+      Uri.parse("${AppConstants.baseUrl}/$propertyId/review"),
       headers: <String, String>{
         "Content-Type": "application/json",
         'Authorization': 'Bearer $token',

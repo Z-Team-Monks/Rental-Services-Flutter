@@ -4,11 +4,11 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:rental/core/models/user.dart';
+import 'package:rental/core/network.dart';
 import 'package:rental/features/auth/failures/auth_failure.dart';
 import 'package:rental/features/auth/models/params/auth_signin_param.dart';
 
 class AuthRemoteDataProvider {
-  final String baseUrl = "http://192.168.0.196:3000/api/v1";
   final User user = new User(
       name: "Kidus Yoseph",
       email: "se.kidus.yoseph@gmail.com",
@@ -26,7 +26,7 @@ class AuthRemoteDataProvider {
   }) async {
     try {
       final http.Response response = await http.post(
-        Uri.parse("$baseUrl/users"),
+        Uri.parse("${AppConstants.baseUrl}/users"),
         headers: <String, String>{"Content-Type": "application/json"},
         body: jsonEncode(
           {
@@ -58,7 +58,7 @@ class AuthRemoteDataProvider {
   }) async {
     try {
       final http.Response response = await http.post(
-        Uri.parse("$baseUrl/auth"),
+        Uri.parse("${AppConstants.baseUrl}/auth"),
         headers: <String, String>{
           "Content-Type": "application/json",
         },
@@ -83,15 +83,15 @@ class AuthRemoteDataProvider {
   Future<Either<AuthFaiulre, bool>> checkIsAdmin(token) async {
     try {
       final http.Response response = await http.get(
-        Uri.parse("$baseUrl/auth/isAdmin"),
+        Uri.parse("${AppConstants.baseUrl}/auth/isAdmin"),
         headers: <String, String>{
           "Content-Type": "application/json",
-           "Authorization": "Bearer $token",
+          "Authorization": "Bearer $token",
         },
       );
-        // print("21738888999999999333333333Workssssssssssssssssss");
-        // print(response.body);
-        print(response.statusCode);
+      // print("21738888999999999333333333Workssssssssssssssssss");
+      // print(response.body);
+      print(response.statusCode);
       if (response.statusCode == 200) {
         return right(jsonDecode(response.body)["isAdmin"]);
       } else {
@@ -101,7 +101,7 @@ class AuthRemoteDataProvider {
     } on SocketException catch (e) {
       print("newtwork eeeeeeeeeeerrror $e");
       return left(AuthFaiulre.networkError());
-    } catch (e){
+    } catch (e) {
       print(e);
       return left(AuthFaiulre.networkError());
     }
@@ -127,7 +127,7 @@ class AuthRemoteDataProvider {
   }) async {
     await Future.delayed(const Duration(milliseconds: 100));
     final http.Response response = await http.get(
-      Uri.parse("$baseUrl/users/me"),
+      Uri.parse("${AppConstants.baseUrl}/users/me"),
       headers: <String, String>{
         "Content-Type": "application/json",
         'Authorization': 'Bearer $token',

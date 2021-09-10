@@ -3,19 +3,18 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 import 'package:rental/core/models/property.dart';
+import 'package:rental/core/network.dart';
 import 'package:rental/features/admin/failures/admin_failures.dart';
 
 enum APPROVAL { APPROVE, DISAPPROVE }
 
 class AdminRemoteDataProvider {
-  final String baseUrl = "http://192.168.0.196:3000/api/v1/admin";
-
   Future<Either<AdminFaiulre, List<Property>>> fetchPosts({
     required String authToken,
   }) async {
     try {
       final http.Response response = await http.get(
-        Uri.parse("$baseUrl/feed"),
+        Uri.parse("${AppConstants.baseUrl}/admin/feed"),
         headers: <String, String>{
           "Content-Type": "application/json",
           "Authorization": "Bearer $authToken",
@@ -51,20 +50,20 @@ class AdminRemoteDataProvider {
     try {
       final http.Response response = option == APPROVAL.APPROVE
           ? await http.post(
-              Uri.parse("$baseUrl/approve/$postId"),
+              Uri.parse("${AppConstants.baseUrl}/admin/approve/$postId"),
               headers: <String, String>{
                 "Content-Type": "application/json",
                 "Authorization": "Bearer $authToken",
               },
             )
           : await http.delete(
-              Uri.parse("$baseUrl/approve/$postId"),
+              Uri.parse("${AppConstants.baseUrl}/admin/approve/$postId"),
               headers: <String, String>{
                 "Content-Type": "application/json",
                 "Authorization": "Bearer $authToken",
               },
             );
-  
+
       if (response.statusCode == 201) {
         return right(unit);
       } else if (response.statusCode == 400) {

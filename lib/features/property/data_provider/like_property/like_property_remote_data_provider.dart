@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:rental/core/network.dart';
 
 class LikePropertyRemoteDataProvider {
-  final String baseUrl = "http://10.6.200.3:5001/api/v1/property";
-
   /// It will return list of [Property] Objects fetched from remote server / API
   ///
   /// or throws an exceptioin if an error occured
@@ -15,7 +14,7 @@ class LikePropertyRemoteDataProvider {
     required String propertyId,
   }) async {
     final http.Response response = await client.post(
-      Uri.parse("$baseUrl/$propertyId/like"),
+      Uri.parse("${AppConstants.baseUrl}/$propertyId/like"),
       headers: <String, String>{
         "Content-Type": "application/json",
         'Authorization': 'Bearer $token',
@@ -42,7 +41,7 @@ class LikePropertyRemoteDataProvider {
     required String token,
   }) async {
     final http.Response response = await client.delete(
-      Uri.parse("$baseUrl/$propertyId/like"),
+      Uri.parse("${AppConstants.baseUrl}/$propertyId/like"),
       headers: <String, String>{
         "Content-Type": "application/json",
         'Authorization': 'Bearer $token',
