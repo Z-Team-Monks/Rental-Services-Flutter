@@ -7,10 +7,15 @@ import 'package:loader_skeleton/loader_skeleton.dart';
 import 'package:rental/core/helpers/get_image_url.dart';
 import 'package:rental/core/models/property.dart';
 import 'package:rental/core/models/user.dart';
+import 'package:rental/features/auth/screens/auth_screen.dart';
 import 'package:rental/features/property/bloc/update_property/update_property_bloc.dart';
 import 'package:rental/features/property/screens/property_update/property_update_screen.dart';
 import 'package:rental/features/user/bloc/profile_bloc/profile_bloc.dart';
 import 'package:rental/features/user/screens/profile/update_profile_screen.dart';
+import 'package:rental/locator.dart';
+import 'package:rental/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
 class ProfilePage extends StatelessWidget {
   // const ProfilePage({Key? key}) : super(key: key);
@@ -19,6 +24,21 @@ class ProfilePage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout, color: Colors.black),
+            onPressed: () {
+              getIt<SharedPreferences>().setString("token", "");
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (c) => AuthPage(controller: SolidController()),
+                  ),
+                  (route) => false);
+              // Navigator.popAndPushNamed(context, AuthPage.pageRoute);
+            },
+          )
+        ],
         // leading: Icon(Icons.person, color: Colors.black26,),
         backgroundColor: Colors.white,
         title: Text(

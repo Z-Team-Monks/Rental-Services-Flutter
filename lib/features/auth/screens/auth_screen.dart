@@ -63,9 +63,9 @@ class _AuthPageState extends State<AuthPage> {
         child: BlocConsumer<UserAuthBloc, UserAuthState>(
           listener: (context, state) {
             if (state == UserAuthState.LOGGEDIN_ADMIN) {
-              Navigator.of(context).pushReplacementNamed("/");
+              Navigator.popAndPushNamed(context, Home.pageRoute);
             } else if (state == UserAuthState.LOGGEDIN) {
-              Navigator.of(context).pushReplacementNamed("/");
+              Navigator.popAndPushNamed(context, Home.pageRoute);
             }
           },
           builder: (context, state) {
@@ -178,6 +178,7 @@ Widget signInPage(AuthFormBloc authFormBloc, UserAuthBloc userAuthBloc,
                   BlocBuilder<AuthFormBloc, AuthFormState>(
                     builder: (context, state) {
                       return CustomFormField(
+                          obscure: false,
                           errorMessage: state.email.invalid
                               ? "Email format is incorrect"
                               : '',
@@ -193,6 +194,7 @@ Widget signInPage(AuthFormBloc authFormBloc, UserAuthBloc userAuthBloc,
                   BlocBuilder<AuthFormBloc, AuthFormState>(
                     builder: (context, state) {
                       return CustomFormField(
+                          obscure: true,
                           errorMessage: state.password.invalid
                               ? 'password should be at least 6 character long\npassword must contain both letter and number'
                               : '',
@@ -221,16 +223,16 @@ Widget signInPage(AuthFormBloc authFormBloc, UserAuthBloc userAuthBloc,
                   SizedBox(
                     height: 10,
                   ),
-                  TextButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith(
-                            (states) => Colors.transparent)),
-                    onPressed: () {},
-                    child: Text(
-                      "Forgot password",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
+                  // TextButton(
+                  //   style: ButtonStyle(
+                  //       backgroundColor: MaterialStateColor.resolveWith(
+                  //           (states) => Colors.transparent)),
+                  //   onPressed: () {},
+                  //   child: Text(
+                  //     "Forgot password",
+                  //     style: TextStyle(color: Colors.black),
+                  //   ),
+                  // ),
                   Container(
                     width: double.infinity,
                     child: Expanded(
@@ -326,6 +328,7 @@ Widget signUpPage(AuthFormBloc authFormBloc, UserAuthBloc userAuthBloc,
                   BlocBuilder<AuthFormBloc, AuthFormState>(
                     builder: (context, state) {
                       return CustomFormField(
+                          obscure: true,
                           errorMessage: state.email.invalid
                               ? 'Please ensure username is not empty'
                               : '',
@@ -338,6 +341,7 @@ Widget signUpPage(AuthFormBloc authFormBloc, UserAuthBloc userAuthBloc,
                   BlocBuilder<AuthFormBloc, AuthFormState>(
                     builder: (context, state) {
                       return CustomFormField(
+                          obscure: false,
                           errorMessage: state.email.invalid
                               ? 'Please ensure email is not empty'
                               : '',
@@ -353,6 +357,7 @@ Widget signUpPage(AuthFormBloc authFormBloc, UserAuthBloc userAuthBloc,
                   BlocBuilder<AuthFormBloc, AuthFormState>(
                     builder: (context, state) {
                       return CustomFormField(
+                          obscure: true,
                           errorMessage: state.email.invalid
                               ? 'Please ensure password is not empty'
                               : '',
