@@ -26,4 +26,8 @@ class UserRepository {
   Future<User> getCurrentUser(String token) {
     return _userRemoteDataProvider.currentUser(token: "");
   }
+
+  Future<bool> deleteUser() {
+    return _userRemoteDataProvider.deleteUser();
+  }
 }

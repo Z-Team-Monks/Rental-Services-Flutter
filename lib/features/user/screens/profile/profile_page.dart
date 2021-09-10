@@ -7,10 +7,13 @@ import 'package:loader_skeleton/loader_skeleton.dart';
 import 'package:rental/core/helpers/get_image_url.dart';
 import 'package:rental/core/models/property.dart';
 import 'package:rental/core/models/user.dart';
+import 'package:rental/core/presentation/customSnackBar.dart';
 import 'package:rental/features/auth/screens/auth_screen.dart';
 import 'package:rental/features/property/bloc/update_property/update_property_bloc.dart';
 import 'package:rental/features/property/screens/property_update/property_update_screen.dart';
 import 'package:rental/features/user/bloc/profile_bloc/profile_bloc.dart';
+import 'package:rental/features/user/data_providers/user_remote_data_provider.dart';
+import 'package:rental/features/user/repository/user_repository.dart';
 import 'package:rental/features/user/screens/profile/update_profile_screen.dart';
 import 'package:rental/locator.dart';
 import 'package:rental/main.dart';
@@ -36,6 +39,25 @@ class ProfilePage extends StatelessWidget {
                   ),
                   (route) => false);
               // Navigator.popAndPushNamed(context, AuthPage.pageRoute);
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.restore_from_trash, color: Colors.black),
+            onPressed: () async {
+              var isDeleted = await UserRemoteDataProvider().deleteUser();
+              if (isDeleted) {
+                getIt<SharedPreferences>().setString("token", "");
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (c) => AuthPage(controller: SolidController()),
+                    ),
+                    (route) => false);
+              } else {
+                final lunchBar = LunchBars(
+                    lunchBarText: "Couldn't delete your account!",
+                    event: LunchBarEvents.LunchBarError);
+                ScaffoldMessenger.of(context).showSnackBar(lunchBar);
+              }
             },
           )
         ],
@@ -176,9 +198,6 @@ class ProfilePage extends StatelessWidget {
                                     }
                                     return TabBarView(children: <Widget>[
 //Widget
-                                      CardPageSkeleton(
-                                        totalLines: 5,
-                                      ),
                                       CardPageSkeleton(
                                         totalLines: 5,
                                       ),
