@@ -80,7 +80,7 @@ class RecomedationCard extends StatelessWidget {
                         Expanded(
                           flex: 1,
                           child: Text(
-                            name + "Nikos Auditorium",
+                            name,
                             style: TextStyle(
                               fontFamily: "Poppins",
                               fontSize: 15,
@@ -105,7 +105,7 @@ class RecomedationCard extends StatelessWidget {
                                 width: 5,
                               ),
                               Text(
-                                "${this.price} 45,000 ETB",
+                                "${this.price} ETB",
                                 style: TextStyle(
                                   color: Colors.black54,
                                 ),

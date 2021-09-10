@@ -2,19 +2,20 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:rental/core/models/property.dart';
-import 'package:rental/features/property/bloc/Ads/ads_bloc.dart';
+import 'package:rental/core/helpers/get_image_url.dart';
+import 'package:rental/features/property/bloc/add_review/add_review_bloc.dart';
+import 'package:rental/features/property/bloc/add_review/add_review_event.dart';
 import 'package:rental/features/property/bloc/fillter_property/car_fillter_bloc/car_property_bloc.dart';
-import 'package:rental/features/property/bloc/fillter_property/fillter_property_bloc.dart';
 import 'package:rental/features/property/bloc/fillter_property/house_fillter/house_property_bloc.dart';
 import 'package:rental/features/property/bloc/fillter_property/other_fillter_bloc/other_property_bloc.dart';
 import 'package:rental/features/property/bloc/property_bloc.dart';
+import 'package:rental/features/property/bloc/top_rated/top_rated_bloc.dart';
+import 'package:rental/features/property/data_provider/property_remote_data_provider.dart';
 import 'package:rental/features/property/repository/property_repository.dart';
+import 'package:rental/features/property/repository/top_rated/top_rated_repository.dart';
 import 'package:rental/features/property/screens/property_detail/property_detail_screen.dart';
 import 'package:rental/locator.dart';
 import 'package:telephony/telephony.dart';
-// import 'dart:math' as math;
-
 import './components/feed_card.dart';
 import './components/recomeded.dart';
 
@@ -49,9 +50,10 @@ class HomeFeed extends StatelessWidget {
               FillterOtherPropertyBloc(getIt.get<PropertyRepository>()),
         ),
         BlocProvider(
-          create: (context) => AdsBloc(
-            adsRepository: AdsRepository(),
-          )..add(LoadAds()),
+          create: (context) => TopRatedBloc(
+            topRatedRepository:
+                TopRatedRepository(PropertyRemoteDataProvider()),
+          ),
         ),
       ],
       child: Scaffold(
@@ -116,6 +118,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                   ],
                 ),
                 SliverAppBar(
+                  automaticallyImplyLeading: false,
                   backgroundColor: Colors.white,
                   collapsedHeight: 250,
                   expandedHeight: 250,
@@ -274,6 +277,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                   ),
                   child: FeedPropertyCard(
                     goToDetailCallBack: (id) {
+                      context
+                          .read<AddReviewFormBloc>()
+                          .add(PropertyChanged(id));
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -355,6 +361,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                   ),
                   child: FeedPropertyCard(
                     goToDetailCallBack: (id) {
+                      context
+                          .read<AddReviewFormBloc>()
+                          .add(PropertyChanged(id));
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -437,6 +446,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                   ),
                   child: FeedPropertyCard(
                     goToDetailCallBack: (id) {
+                      context
+                          .read<AddReviewFormBloc>()
+                          .add(PropertyChanged(id));
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -517,6 +529,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                   ),
                   child: FeedPropertyCard(
                     goToDetailCallBack: (id) {
+                      context
+                          .read<AddReviewFormBloc>()
+                          .add(PropertyChanged(id));
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -668,8 +683,11 @@ class ProfileView extends StatelessWidget {
   }
 
   Widget fetchAds(BuildContext context) {
-    return BlocBuilder<AdsBloc, AdsState>(builder: (context, state) {
-      if (state is AdOperationLoading) {
+    BlocProvider.of<TopRatedBloc>(context).add(
+      LoadTopRated(),
+    );
+    return BlocBuilder<TopRatedBloc, TopRatedState>(builder: (context, state) {
+      if (state is TopRatedOperationLoading) {
         return ListView.builder(
           // controller: _controller,
           scrollDirection: Axis.horizontal,
@@ -684,7 +702,7 @@ class ProfileView extends StatelessWidget {
             );
           },
         );
-      } else if (state is AdFetchOperationSuccess) {
+      } else if (state is TopRatedOperationSuccess) {
         return ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: state.props.length,
@@ -696,11 +714,19 @@ class ProfileView extends StatelessWidget {
               ),
               child: RecomedationCard(
                 date: "",
-                imgUrl:
-                    "https://images.unsplash.com/photo-1611839699701-5cd5f18c25a4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80",
-                name: "",
-                price: "0",
-                callback: () {},
+                imgUrl: getImageUrl(state.topRated[index].images[0]),
+                // imgUrl:
+                //     "https://images.unsplash.com/photo-1611839699701-5cd5f18c25a4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80",
+                name: state.topRated[index].title,
+                price: state.topRated[index].bill.toString(),
+                callback: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (contetx) =>
+                            PropertyDetail(state.topRated[index].id!),
+                      ));
+                },
               ),
               // child: RecomedationCard(
               //   date: (state.properties.elementAt(index)).createdAt!,
@@ -712,7 +738,7 @@ class ProfileView extends StatelessWidget {
             );
           },
         );
-      } else if (state is PropertyOperationFailure) {
+      } else if (state is TopRatedOperationFailure) {
         return Center(
           child: Text("Network Failure"),
         );

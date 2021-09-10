@@ -32,4 +32,26 @@ class ReviewRepository {
         propertyId: propertyId,
         token: token,
       );
+
+  Future<Review> updateRemoteReview({
+    required Review review,
+    required String propertyId,
+    required String token,
+  }) =>
+      _reviewRemoteDataProvider.updateReview(
+        http.Client(),
+        review: review,
+        propertyId: propertyId,
+        token: token,
+      );
+
+  Future<Review> getRemoteReview({
+    required String propertyId,
+    required String token,
+  }) =>
+      _reviewRemoteDataProvider.getReview(
+        http.Client(),
+        propertyId: propertyId,
+        token: token,
+      );
 }

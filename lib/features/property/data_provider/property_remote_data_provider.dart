@@ -238,4 +238,34 @@ class PropertyRemoteDataProvider {
       throw Exception("Unable to load Property");
     }
   }
+
+  /// It will return list of [Property] Objects fetched from remote server / API
+  ///
+  /// or throws an exceptioin if an error occured
+  ///
+  Future<List<Property>> getTopRatedProperties() async {
+    final http.Response response = await http.get(
+      Uri.parse("${AppConstants.baseUrl}/property/top"),
+      headers: <String, String>{"Content-Type": "application/json"},
+    );
+
+    print("----------------------Top property---------------------");
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      print(data);
+      print("------------Top properties decoded --------");
+      List<Property> properties = [];
+      for (var i = 0; i < data.length; i++) {
+        properties.add(Property.fromJson(data[i]));
+      }
+      print("----------------------Top property Success---------------------");
+      return properties;
+    } else {
+      print("----------------------Top property Failure---------------------");
+
+      throw Exception("Unable to fetch properties [getProperties]");
+    }
+  }
+
+
 }
