@@ -62,10 +62,10 @@ class ReviewRemoteDataProvider {
     required String token,
   }) async {
     final http.Response response = await client.put(
-      Uri.parse("$baseUrl/$propertyId/review"),
+      Uri.parse("${AppConstants.baseUrl}/$propertyId/review"),
       headers: <String, String>{
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer ${AppConstants.token}',
       },
       body: jsonEncode(review),
     );
@@ -84,10 +84,10 @@ class ReviewRemoteDataProvider {
     required String token,
   }) async {
     final http.Response response = await client.get(
-      Uri.parse("$baseUrl/$propertyId/review"),
+      Uri.parse("${AppConstants.baseUrl}/$propertyId/review"),
       headers: <String, String>{
         "Content-Type": "application/json",
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer ${AppConstants.token}',
       },
     );
     if (response.statusCode == 200) {
