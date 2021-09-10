@@ -296,7 +296,7 @@ class PropertyDetail extends StatelessWidget {
                         child: InkWell(
                           onTap: () {},
                           child: Icon(
-                            Icons.favorite,
+                            Icons.favorite_outline,
                             size: 30,
                           ),
                         ),

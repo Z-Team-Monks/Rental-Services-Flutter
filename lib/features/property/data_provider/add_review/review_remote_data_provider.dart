@@ -6,7 +6,7 @@ import 'package:rental/core/models/review.dart';
 import 'package:rental/core/models/user.dart';
 
 class ReviewRemoteDataProvider {
-  final String baseUrl = "http://10.6.193.148:5000/api/v1/property/";
+  final String baseUrl = "http://192.168.0.153:5001/api/v1/property/";
 
   /// It will return list of [Review] Objects fetched from remote server / API
   ///

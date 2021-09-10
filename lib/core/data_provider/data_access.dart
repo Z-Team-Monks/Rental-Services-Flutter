@@ -1,4 +1,4 @@
-import 'package:connectivity/connectivity.dart';
+// import 'package:connectivity/connectivity.dart';
 import 'package:rental/core/models/property.dart';
 
 typedef ApiCall<T> = Future<T> Function();
@@ -43,14 +43,14 @@ Future<T?> performRemoteAndLocalSaveOperation<T>({
 }
 
 Future<bool> hasInternetConnection() async {
-  var connectivityResult = await (Connectivity().checkConnectivity());
-  if (connectivityResult == ConnectivityResult.mobile) {
-    print("------------------------Mobile Connection------------------");
-    return true;
-  } else if (connectivityResult == ConnectivityResult.wifi) {
-    print("------------------------Wifi Connection------------------");
-    return true;
-  }
-  print("------------------------No Connection------------------");
-  return false;
+  // var connectivityResult = await (Connectivity().checkConnectivity());
+  // if (connectivityResult == ConnectivityResult.mobile) {
+  // print("------------------------Mobile Connection------------------");
+  return true;
+  // } else if (connectivityResult == ConnectivityResult.wifi) {
+  // print("------------------------Wifi Connection------------------");
+  // return true;
+  // }
+  // print("------------------------No Connection------------------");
+  // return false;
 }

@@ -6,7 +6,7 @@ import 'package:rental/core/exceptions/auth_exception.dart';
 import 'package:rental/core/models/user.dart';
 
 class UserRemoteDataProvider {
-  final String baseUrl = "http://10.6.193.148:5000/api";
+  final String baseUrl = "http://192.168.0.153:5001/api";
   final User user = new User(
       name: "Kidus Yoseph",
       email: "se.kidus.yoseph@gmail.com",

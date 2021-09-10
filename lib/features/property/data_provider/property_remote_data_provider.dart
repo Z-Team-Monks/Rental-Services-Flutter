@@ -5,7 +5,7 @@ import 'package:rental/core/models/property.dart';
 import 'package:rental/core/models/review.dart';
 
 class PropertyRemoteDataProvider {
-  final String baseUrl = "http://10.6.200.3:5001/api/v1";
+  final String baseUrl = "http://192.168.0.153:5001/api/v1";
 
   /// It will return list of [Property] Objects fetched from remote server / API
   ///
@@ -104,6 +104,7 @@ class PropertyRemoteDataProvider {
   }
 
   Future<Property> getProperty(String id) async {
+    print("------- get property in progress");
     final http.Response response = await http.get(
       Uri.parse("$baseUrl/property/$id"),
       headers: <String, String>{"Content-Type": "application/json"},
@@ -112,12 +113,6 @@ class PropertyRemoteDataProvider {
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       print("get property remote success---------------");
-      // print(data["reviewes"]);
-      // var d =
-      // (data["reviewes"] as List).map((i) => Review.fromJson(i)).toList();
-      // List<dynamic> parsedListJson = data["reviewes"];
-      // List<Item> d = List<Item>.from(parsedListJson.map((i) => Item.fromJson(i)));
-      // print("${d[0].user?.profileImage} -- reviews list from json");
       var s = Property.fromJson(data);
       // print("${s.reviewes?[0].user?.profileImage} -- reviews list from json");
       return s;

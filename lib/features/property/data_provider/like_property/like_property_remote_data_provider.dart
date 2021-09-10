@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class LikePropertyRemoteDataProvider {
-  final String baseUrl = "http://10.6.200.3:5001/api/v1/property";
+  final String baseUrl = "http://192.168.0.153:5001/api/v1/property";
 
   /// It will return list of [Property] Objects fetched from remote server / API
   ///
