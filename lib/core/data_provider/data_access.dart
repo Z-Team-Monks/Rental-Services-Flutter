@@ -1,5 +1,7 @@
+import 'dart:io';
+
 // import 'package:connectivity/connectivity.dart';
-import 'package:rental/core/models/property.dart';
+// import 'package:rental/core/models/property.dart';
 
 typedef ApiCall<T> = Future<T> Function();
 typedef DbCall<T> = Future<T> Function(T);
@@ -43,14 +45,12 @@ Future<T?> performRemoteAndLocalSaveOperation<T>({
 }
 
 Future<bool> hasInternetConnection() async {
-  // var connectivityResult = await (Connectivity().checkConnectivity());
-  // if (connectivityResult == ConnectivityResult.mobile) {
-  // print("------------------------Mobile Connection------------------");
-  // return true;
-  // } else if (connectivityResult == ConnectivityResult.wifi) {
-  // print("------------------------Wifi Connection------------------");
-  return true;
-  // }
-  // print("------------------------No Connection------------------");
-  // return false;
+  try {
+    final response = await InternetAddress.lookup('www.kindacode.com');
+    return true;
+  } on SocketException catch (e) {
+    return false;
+  } catch (e) {
+    return false;
+  }
 }

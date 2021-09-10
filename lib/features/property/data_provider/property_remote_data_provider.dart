@@ -4,13 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:rental/core/models/property.dart';
-import 'package:rental/core/models/review.dart';
+import 'package:rental/core/network.dart';
 
-class PropertyRemoteDataProvider {
-  // final String baseUrl = "http://192.168.43.27:5000/api";
-  // final String baseUrl = "http://192.168.43.27:5001/api/v1";
-  final String baseUrl = "http://192.168.0.164:5000/api/v1";
-
+class PropertyRemoteDataProvider extends AppConstants {
   final tokens =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDViNDQyOGQzZmFjNzY4Y2RmMWNiOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2Mjg3ODE2MzV9._VCHTjWSSC4ImckvDr4bsG2CJrA-PbCoCnIutOMuBB4";
 
@@ -20,7 +16,7 @@ class PropertyRemoteDataProvider {
   ///
   Future<List<Property>> getProperties() async {
     final http.Response response = await http.get(
-      Uri.parse("$baseUrl/property"),
+      Uri.parse("${AppConstants.baseUrl}/property"),
       headers: <String, String>{"Content-Type": "application/json"},
     );
 
@@ -89,7 +85,7 @@ class PropertyRemoteDataProvider {
       }
 
       var response = await Dio().post(
-        '$baseUrl/property',
+        '${AppConstants.baseUrl}/property',
         data: formData,
         options: Options(
           headers: {
@@ -123,7 +119,7 @@ class PropertyRemoteDataProvider {
     // return property;
 
     final http.Response response = await http.put(
-      Uri.parse("$baseUrl/property/61389e84a6a60a468bce7d11"),
+      Uri.parse("${AppConstants.baseUrl}/property/61389e84a6a60a468bce7d11"),
       // Uri.parse(
       //     "http://192.168.43.46:5001/api/v1/property/61389e84a6a60a468bce7d11"),
       headers: <String, String>{
@@ -155,21 +151,14 @@ class PropertyRemoteDataProvider {
 
   Future<Property> getProperty(String id) async {
     final http.Response response = await http.get(
-      Uri.parse("$baseUrl/property/$id"),
+      Uri.parse("${AppConstants.baseUrl}/property/$id"),
       headers: <String, String>{"Content-Type": "application/json"},
     );
     print("-------------get property remote-----------");
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       print("get property remote success---------------");
-      // print(data["reviewes"]);
-      // var d =
-      // (data["reviewes"] as List).map((i) => Review.fromJson(i)).toList();
-      // List<dynamic> parsedListJson = data["reviewes"];
-      // List<Item> d = List<Item>.from(parsedListJson.map((i) => Item.fromJson(i)));
-      // print("${d[0].user?.profileImage} -- reviews list from json");
       var s = Property.fromJson(data);
-      // print("${s.reviewes?[0].user?.profileImage} -- reviews list from json");
       return s;
     } else {
       print(response.statusCode);
@@ -186,7 +175,8 @@ class PropertyRemoteDataProvider {
   ///
   Future<List<Property>> searchProperty(String keyword) async {
     final http.Response response = await http.get(
-      Uri.parse("$baseUrl/property/search?limit=5&keyword=$keyword"),
+      Uri.parse(
+          "${AppConstants.baseUrl}/property/search?limit=5&keyword=$keyword"),
       headers: <String, String>{"Content-Type": "application/json"},
     );
 
@@ -213,7 +203,7 @@ class PropertyRemoteDataProvider {
   ///
   Future<List<Property>> fetchByCategory(String category) async {
     final http.Response response = await http.get(
-      Uri.parse("$baseUrl/property?category=$category"),
+      Uri.parse("${AppConstants.baseUrl}/property?category=$category"),
       headers: <String, String>{"Content-Type": "application/json"},
     );
 
@@ -235,9 +225,7 @@ class PropertyRemoteDataProvider {
 
   Future<Property> loadProperty({required String id}) async {
     final http.Response response = await http.get(
-      Uri.parse("$baseUrl/property/$id"),
-      // Uri.parse(
-      //     "http://192.168.43.46:5001/api/v1/property/61389e84a6a60a468bce7d11"),
+      Uri.parse("${AppConstants.baseUrl}/property/$id"),
       headers: <String, String>{
         "Content-Type": "application/json",
       },

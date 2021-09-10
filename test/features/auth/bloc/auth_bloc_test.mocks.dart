@@ -68,5 +68,9 @@ class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
               returnValue: _FakeEither_1<_i6.AuthFaiulre, String?>())
           as _i3.Either<_i6.AuthFaiulre, String?>);
   @override
+  _i5.Future<bool> checkIsAdmin(String? token) =>
+      (super.noSuchMethod(Invocation.method(#checkIsAdmin, [token]),
+          returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
+  @override
   String toString() => super.toString();
 }

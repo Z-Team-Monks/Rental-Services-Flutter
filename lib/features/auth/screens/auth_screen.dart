@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:rental/features/admin/screens/admin_screen.dart';
 import 'package:rental/features/auth/bloc/auth_form_bloc.dart';
 import 'package:rental/features/auth/bloc/user_auth/user_auth_bloc.dart';
 import 'package:rental/features/auth/screens/widgets/form_field.dart';
 import 'package:rental/features/property/screens/property_feed/feed.dart';
+import 'package:rental/main.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
 class AuthPage extends StatefulWidget {
@@ -60,8 +62,10 @@ class _AuthPageState extends State<AuthPage> {
         top: false,
         child: BlocConsumer<UserAuthBloc, UserAuthState>(
           listener: (context, state) {
-            if (state == UserAuthState.LOGGEDIN) {
-              Navigator.of(context).pushReplacementNamed(HomeFeed.pageRoute);
+            if (state == UserAuthState.LOGGEDIN_ADMIN) {
+              Navigator.of(context).pushReplacementNamed(Home.pageRoute);
+            } else if (state == UserAuthState.LOGGEDIN) {
+              Navigator.of(context).pushReplacementNamed(Home.pageRoute);
             }
           },
           builder: (context, state) {
@@ -112,8 +116,8 @@ class _AuthPageState extends State<AuthPage> {
                         controller: controller,
                         children: <Widget>[
                           signInPage(
-                              authFormBloc, this.emailNode, this.passwordNode),
-                          signUpPage(authFormBloc, this.usernameNode,
+                              authFormBloc,userAuthBloc, this.emailNode, this.passwordNode),
+                          signUpPage(authFormBloc,userAuthBloc, this.usernameNode,
                               this.emailNode, this.passwordNode),
                         ],
                       ),
@@ -125,7 +129,7 @@ class _AuthPageState extends State<AuthPage> {
 }
 
 Widget signInPage(
-    AuthFormBloc authFormBloc, FocusNode emailNode, FocusNode passwordNode) {
+    AuthFormBloc authFormBloc,UserAuthBloc userAuthBloc, FocusNode emailNode, FocusNode passwordNode) {
   return SingleChildScrollView(
     child: Container(
       decoration: BoxDecoration(
@@ -186,7 +190,7 @@ Widget signInPage(
                     builder: (context, state) {
                       return CustomFormField(
                           errorMessage: state.password.invalid
-                              ? 'password should be at least 8 character long\npassword must contain both letter and number'
+                              ? 'password should be at least 6 character long\npassword must contain both letter and number'
                               : '',
                           label: 'Enter your password',
                           onValueChange: (value) {
@@ -239,8 +243,9 @@ Widget signInPage(
                             listener: (ctx, state) {
                               if (state.status ==
                                   FormzStatus.submissionSuccess) {
-                                Navigator.of(ctx)
-                                    .pushReplacementNamed(HomeFeed.pageRoute);
+                                     userAuthBloc.add(UserStatusChecking());
+                                // Navigator.of(ctx)
+                                //     .pushReplacementNamed(HomeFeed.pageRoute);
                               }
                             },
                             builder: (context, state) {
@@ -271,7 +276,7 @@ Widget signInPage(
   );
 }
 
-Widget signUpPage(AuthFormBloc authFormBloc, FocusNode usernameNode,
+Widget signUpPage(AuthFormBloc authFormBloc,UserAuthBloc userAuthBloc, FocusNode usernameNode,
     FocusNode emailNode, FocusNode passwordNode) {
   return SingleChildScrollView(
     child: Container(
@@ -390,8 +395,9 @@ Widget signUpPage(AuthFormBloc authFormBloc, FocusNode usernameNode,
                             listener: (ctx, state) {
                               if (state.status ==
                                   FormzStatus.submissionSuccess) {
-                                Navigator.of(ctx)
-                                    .pushReplacementNamed(HomeFeed.pageRoute);
+                                    userAuthBloc.add(UserStatusChecking());
+                                // Navigator.of(ctx)
+                                //     .pushReplacementNamed(HomeFeed.pageRoute);
                               }
                             },
                             builder: (context, state) {
