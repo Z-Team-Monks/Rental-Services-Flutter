@@ -48,6 +48,7 @@ dependencies:
   telephony: ^0.1.4
   cached_network_image: ^3.1.0
   connectivity: ^3.0.6
+  curved_navigation_bar: ^1.0.1
 
  
 dev_dependencies:

@@ -15,7 +15,7 @@ class RouteGenerator {
     switch (settings.name) {
       case "/":
         return MaterialPageRoute(builder: (context) {
-          return AddProperty(); // ProfilePage();  //
+          return Home(); // ProfilePage();  //
         });
       case SplashScreen.pageRoute:
         return MaterialPageRoute(
@@ -47,10 +47,6 @@ class RouteGenerator {
       case AdminPage.pageRoute:
         return MaterialPageRoute(builder: (context) {
           return AdminPage();
-        });
-      case "/home":
-        return MaterialPageRoute(builder: (context) {
-          return Home();
         });
       default:
         throw Exception("invalid screen render!");

@@ -65,7 +65,7 @@ class _AuthPageState extends State<AuthPage> {
             if (state == UserAuthState.LOGGEDIN_ADMIN) {
               Navigator.of(context).pushReplacementNamed(Home.pageRoute);
             } else if (state == UserAuthState.LOGGEDIN) {
-              Navigator.of(context).pushReplacementNamed(HomeFeed.pageRoute);
+              Navigator.of(context).pushReplacementNamed(Home.pageRoute);
             }
           },
           builder: (context, state) {

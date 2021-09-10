@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental/core/presentation/customTheme/appTheme.dart';
@@ -113,7 +114,7 @@ class MyApp extends StatelessWidget {
 }
 
 class Home extends StatefulWidget {
-  static String pageRoute = "/home";
+  static String pageRoute = "/";
   @override
   State<StatefulWidget> createState() {
     return _HomeState();
@@ -121,14 +122,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
   int _currentIndex = 0;
   final List<Widget> _children = [
     HomeFeed(),
     AddProperty(),
   ];
-  final List<String> _titles = ["Home", "Cases", "Symptoms"];
-
-  // CaseBloc caseBloc = CaseBloc(repo: CaseRepo());
+  int _page = 0;
 
   @override
   void initState() {
@@ -137,34 +137,16 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    List<BottomNavigationBarItem> data = [
-      BottomNavigationBarItem(
-        icon: new Icon(
-          Icons.home,
-        ),
-        title: new Text(
-          '',
-          style: TextStyle(fontSize: 14),
-        ),
+    List<Widget> data = [
+      Icon(
+        Icons.home,
       ),
-      BottomNavigationBarItem(
-        icon: new Icon(
-          Icons.add,
-        ),
-        title: new Text(
-          '',
-          style: TextStyle(fontSize: 14),
-        ),
+      Icon(
+        Icons.add,
       ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.person),
-        title: Text(
-          '',
-          style: TextStyle(fontSize: 14),
-        ),
-      ),
+      Icon(Icons.person),
     ];
-    if (getIt<SharedPreferences>().getBool("isAdmin") ?? false) {
+    if (getIt<SharedPreferences>().getString("isAdmin") == "false") {
       _children
         ..add(
           ProfilePage(),
@@ -176,27 +158,46 @@ class _HomeState extends State<Home> {
         );
     }
     Size size = MediaQuery.of(context).size;
+    // return Scaffold(
+    //   drawerScrimColor: Colors.black.withOpacity(0.2),
+
+    //   // drawerScrimColor: Colors.transparent,
+    //   // drawer: BlurredDrawer(),
+
+    //   body: _children[_currentIndex],
+    //   bottomNavigationBar: SizedBox(
+    //     height: size.height * 0.068,
+    //     child: BottomNavigationBar(
+    //       iconSize: size.height * 0.024,
+    //       onTap: onTabTapped,
+    //       type: BottomNavigationBarType.shifting,
+    //       // this will be set when a new tab is tapped
+    //       unselectedItemColor: Colors.grey,
+    //       selectedItemColor: Colors.redAccent,
+    //       currentIndex: _currentIndex,
+    //       items: data,
+    //     ),
+    //   ),
+    // );
     return Scaffold(
-      drawerScrimColor: Colors.black.withOpacity(0.2),
-
-      // drawerScrimColor: Colors.transparent,
-      // drawer: BlurredDrawer(),
-
-      body: _children[_currentIndex],
-      bottomNavigationBar: SizedBox(
-        height: size.height * 0.068,
-        child: BottomNavigationBar(
-          iconSize: size.height * 0.024,
-          onTap: onTabTapped,
-          type: BottomNavigationBarType.shifting,
-          // this will be set when a new tab is tapped
-          unselectedItemColor: Colors.grey,
-          selectedItemColor: Colors.redAccent,
-          currentIndex: _currentIndex,
-          items: [],
+        bottomNavigationBar: CurvedNavigationBar(
+          key: _bottomNavigationKey,
+          index: 0,
+          height: 60.0,
+          items: data,
+          color: Colors.white,
+          buttonBackgroundColor: Colors.white60,
+          backgroundColor: Colors.white60,
+          animationCurve: Curves.easeInOut,
+          animationDuration: Duration(milliseconds: 600),
+          onTap: (index) {
+            setState(() {
+              _page = index;
+            });
+          },
+          letIndexChange: (index) => true,
         ),
-      ),
-    );
+        body: _children[_page]);
   }
 
   void onTabTapped(int index) {
