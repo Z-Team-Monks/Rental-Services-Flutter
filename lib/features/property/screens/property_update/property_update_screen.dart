@@ -40,11 +40,14 @@ class _PropertyUpdateState extends State<PropertyUpdateScreen>
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
         title: Text(
           "Update property",
           style: TextStyle(
               fontSize: 25.0,
-              fontWeight: FontWeight.bold,
+              color: Colors.black,
+              fontWeight: FontWeight.w300,
               fontFamily: 'Popins',
               letterSpacing: 1),
         ),
@@ -121,10 +124,13 @@ class _PropertyUpdateState extends State<PropertyUpdateScreen>
                             hintStyle: TextStyle(
                                 color: Colors.black54, letterSpacing: 1),
                             filled: true,
-                            fillColor: Colors.grey[300],
+                            border: new OutlineInputBorder(
+                              borderSide: new BorderSide(color: Colors.teal),
+                            ),
+                            fillColor: Colors.white24,
                             enabledBorder: OutlineInputBorder(
                               // borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                              borderSide: BorderSide(color: Colors.transparent),
+                              borderSide: BorderSide(color: Colors.pink),
                             ),
                             focusedBorder: OutlineInputBorder(
                                 // borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -148,8 +154,9 @@ class _PropertyUpdateState extends State<PropertyUpdateScreen>
                               top: width * 0.008,
                             ),
                             decoration: BoxDecoration(
+                              border: Border.all(color: Colors.pink),
                               borderRadius: BorderRadius.circular(3.0),
-                              color: Colors.grey[300],
+                              // color: Colors.grey[300],
                             ),
                             child: Padding(
                               padding: EdgeInsets.symmetric(
@@ -208,10 +215,13 @@ class _PropertyUpdateState extends State<PropertyUpdateScreen>
                             hintStyle: TextStyle(
                                 color: Colors.black54, letterSpacing: 1),
                             filled: true,
-                            fillColor: Colors.grey[300],
+                            border: new OutlineInputBorder(
+                              borderSide: new BorderSide(color: Colors.teal),
+                            ),
+                            fillColor: Colors.white24,
                             enabledBorder: OutlineInputBorder(
                               // borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                              borderSide: BorderSide(color: Colors.transparent),
+                              borderSide: BorderSide(color: Colors.pink),
                             ),
                             focusedBorder: OutlineInputBorder(
                                 // borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -250,11 +260,15 @@ class _PropertyUpdateState extends State<PropertyUpdateScreen>
                                     labelText: 'Price',
                                     hintStyle: TextStyle(color: Colors.black54),
                                     filled: true,
-                                    fillColor: Colors.grey[300],
+                                    border: new OutlineInputBorder(
+                                      borderSide:
+                                          new BorderSide(color: Colors.teal),
+                                    ),
+                                    fillColor: Colors.white24,
                                     enabledBorder: OutlineInputBorder(
                                       // borderRadius: BorderRadius.all(Radius.circular(12.0)),
                                       borderSide:
-                                          BorderSide(color: Colors.transparent),
+                                          BorderSide(color: Colors.pink),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                         // borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -269,8 +283,9 @@ class _PropertyUpdateState extends State<PropertyUpdateScreen>
                             ),
                             Container(
                               decoration: BoxDecoration(
+                                border: Border.all(color: Colors.pink),
                                 borderRadius: BorderRadius.circular(3.0),
-                                color: Colors.grey[300],
+                                color: Colors.white24,
                               ),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
