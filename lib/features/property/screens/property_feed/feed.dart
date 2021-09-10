@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:rental/core/models/property.dart';
 import 'package:rental/features/property/bloc/Ads/ads_bloc.dart';
+import 'package:rental/features/property/bloc/add_review/add_review_bloc.dart';
+import 'package:rental/features/property/bloc/add_review/add_review_event.dart';
 import 'package:rental/features/property/bloc/fillter_property/car_fillter_bloc/car_property_bloc.dart';
 import 'package:rental/features/property/bloc/fillter_property/fillter_property_bloc.dart';
 import 'package:rental/features/property/bloc/fillter_property/house_fillter/house_property_bloc.dart';
@@ -274,6 +276,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                   ),
                   child: FeedPropertyCard(
                     goToDetailCallBack: (id) {
+                      context
+                          .read<AddReviewFormBloc>()
+                          .add(PropertyChanged(id));
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -355,6 +360,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                   ),
                   child: FeedPropertyCard(
                     goToDetailCallBack: (id) {
+                      context
+                          .read<AddReviewFormBloc>()
+                          .add(PropertyChanged(id));
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -437,6 +445,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                   ),
                   child: FeedPropertyCard(
                     goToDetailCallBack: (id) {
+                      context
+                          .read<AddReviewFormBloc>()
+                          .add(PropertyChanged(id));
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -517,6 +528,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                   ),
                   child: FeedPropertyCard(
                     goToDetailCallBack: (id) {
+                      context
+                          .read<AddReviewFormBloc>()
+                          .add(PropertyChanged(id));
                       Navigator.push(
                           context,
                           MaterialPageRoute(

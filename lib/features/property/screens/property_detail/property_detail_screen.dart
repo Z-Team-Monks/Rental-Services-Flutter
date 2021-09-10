@@ -7,6 +7,7 @@ import 'package:rental/features/property/bloc/Reviews/reviews_bloc.dart';
 import 'package:rental/features/property/bloc/Reviews/reviews_event.dart';
 import 'package:rental/features/property/bloc/Reviews/reviews_state.dart';
 import 'package:rental/features/property/bloc/add_review/add_review_bloc.dart';
+import 'package:rental/features/property/bloc/add_review/add_review_event.dart';
 import 'package:rental/features/property/bloc/like_property/like_property_bloc.dart';
 import 'package:rental/features/property/bloc/like_property/like_property_event.dart';
 import 'package:rental/features/property/bloc/like_property/like_property_state.dart';
@@ -56,11 +57,6 @@ class PropertyDetail extends StatelessWidget {
             ),
           );
         }),
-
-        // BlocProvider<AddReviewFormBloc>(
-        //     create: (BuildContext context) => AddReviewFormBloc(
-        //           reviewRepository: ReviewRemoteDataProvider(),
-        //         )),
       ],
       child: SafeArea(
         child: Scaffold(
@@ -162,6 +158,7 @@ class PropertyDetail extends StatelessWidget {
                         context
                             .read<LikePropertyBloc>()
                             .add(LoadLikeStatus(state.props[0]?.likedBy ?? []));
+                        context.read<AddReviewFormBloc>().add(LoadReview());
                       } else {
                         print("---- loading propertty fialed");
                         context.read<ReviewsBloc>().add(ReviewsLoadingFailed());

@@ -68,14 +68,6 @@ class MyApp extends StatelessWidget {
         BlocProvider<UserAuthBloc>(
             create: (BuildContext context) =>
                 UserAuthBloc(authRepository: _authRepository)),
-
-        BlocProvider<ProfileBloc>(
-          create: (BuildContext context) => ProfileBloc(
-            userRepository: UserRepository(
-              UserRemoteDataProvider(),
-            ),
-          ),
-        ),
         // UserLocalDataProvider(),
         BlocProvider<ProfileBloc>(
           create: (BuildContext context) => ProfileBloc(
@@ -98,7 +90,14 @@ class MyApp extends StatelessWidget {
                 UpdatePropertyBloc(propertyRepository)
             // ..add(UpdatePropertyLoadProperty(
             //     productId: "61389e84a6a60a468bce7d11")),
-            )
+            ),
+        BlocProvider<AddReviewFormBloc>(
+          create: (BuildContext context) => AddReviewFormBloc(
+            reviewRepository: ReviewRepository(
+              ReviewRemoteDataProvider(),
+            ),
+          ),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

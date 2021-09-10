@@ -13,15 +13,24 @@ import 'package:formz/formz.dart';
 
 class AddReviewFormBloc extends Bloc<AddReviewFormEvent, AddReviewFormState> {
   final ReviewRepository reviewRepository;
-  final propertyId;
+  var propertyId;
+
   final token;
-  AddReviewFormBloc({required this.reviewRepository, required this.propertyId})
+  AddReviewFormBloc({required this.reviewRepository})
       : token = AppConstants.token,
         super(const AddReviewFormState());
 
   @override
   Stream<AddReviewFormState> mapEventToState(AddReviewFormEvent event) async* {
-    if (event is LoadReview) {
+    if (event is PropertyChanged) {
+      this.propertyId = event.propertyId;
+      yield state.copyWith(
+        message: const Message.pure(),
+        rating: 1,
+        status: FormzStatus.pure,
+        isUpdating: false,
+      );
+    } else if (event is LoadReview) {
       print("-------- review fetching ------------");
       try {
         final review = await reviewRepository.getRemoteReview(

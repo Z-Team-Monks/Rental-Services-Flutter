@@ -84,7 +84,7 @@ class ReviewRemoteDataProvider {
     required String token,
   }) async {
     final http.Response response = await client.get(
-      Uri.parse("${AppConstants.baseUrl}/$propertyId/review"),
+      Uri.parse("${AppConstants.baseUrl}/property/$propertyId/review"),
       headers: <String, String>{
         "Content-Type": "application/json",
         'Authorization': 'Bearer ${AppConstants.token}',
@@ -93,8 +93,10 @@ class ReviewRemoteDataProvider {
     if (response.statusCode == 200) {
       return Review.fromJson(jsonDecode(response.body));
     } else if (response.statusCode == 404) {
+      print(response.statusCode);
       throw Exception("Review not found");
     } else {
+      print(response.statusCode);
       throw Exception("Network Error");
     }
   }
