@@ -103,6 +103,7 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                     style: TextStyle(
                       color: Colors.black,
                       fontFamily: "Poppins",
+                      fontWeight: FontWeight.w300
                     ),
                   ),
                   actions: [
