@@ -27,7 +27,7 @@ void main() {
   }
 
   void setUpMockClientSuccess201() {
-    final review = Review(userId: 'userId');
+    final review = Review(message: '');
     when(
       client.post(any,
           body: jsonEncode(review),
@@ -79,7 +79,7 @@ void main() {
 
       // act
       final result = await dataProvider.createReview(client,
-          review: Review(userId: "userId"), propertyId: "id", token: "");
+          review: Review(message: ""), propertyId: "id", token: "");
 
       // assert
       expect(

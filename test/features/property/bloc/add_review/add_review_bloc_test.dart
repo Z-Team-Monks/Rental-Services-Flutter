@@ -20,8 +20,7 @@ void main() {
   MockReviewRepository mockReviewRepository = MockReviewRepository();
 
   void setUp() {
-    bloc = AddReviewFormBloc(
-        reviewRepository: mockReviewRepository, propertyId: "");
+    bloc = AddReviewFormBloc(reviewRepository: mockReviewRepository);
   }
 
   test('initial state should be empty', () {

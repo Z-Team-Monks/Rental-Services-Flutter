@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
+import 'package:rental/core/presentation/customSnackBar.dart';
 import 'package:rental/core/presentation/customTheme/appTheme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:rental/features/property/bloc/add_review/add_review_bloc.dart';
@@ -52,6 +54,7 @@ class AddReviewPopup extends StatelessWidget {
   final propertyId;
   // final ctx;
   late final FocusNode messageFocusNode;
+  late final TextEditingController messageController;
   AddReviewPopup({
     Key? key,
     required this.propertyId,
@@ -60,125 +63,164 @@ class AddReviewPopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    this.messageController = TextEditingController();
     this.messageFocusNode = FocusNode();
     this.messageFocusNode
       ..addListener(() {
         if (!this.messageFocusNode.hasFocus) {
-          BlocProvider.of<AddReviewFormBloc>(context).add(MessageUnfocused());
-          // ctx.read<AddReviewFormBloc>().add(MessageUnfocused());
+          // BlocProvider.of<AddReviewFormBloc>(context).add(MessageUnfocused());
+          context.read<AddReviewFormBloc>().add(MessageUnfocused());
         }
       });
-    return BlocProvider(
-        create: (ctx) {
-          return AddReviewFormBloc(
-            propertyId: this.propertyId,
-            reviewRepository: ReviewRepository(
-              ReviewRemoteDataProvider(),
-            ),
-          );
-        },
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Hero(
-              tag: _heroAddReview,
-              child: Material(
-                color: CustomTheme.lightTheme.cardColor,
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(28)),
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 18.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Add Review",
-                          style: TextStyle(
-                            fontSize: 19,
-                            fontWeight: FontWeight.bold,
-                          ),
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Hero(
+          tag: _heroAddReview,
+          child: Material(
+            color: CustomTheme.lightTheme.cardColor,
+            elevation: 2,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(32.0, 32.0, 32.0, 18.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Add Review",
+                      style: TextStyle(
+                        fontSize: 19,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    const Text(
+                      "This review must be based on real experience of the product.",
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    BlocBuilder<AddReviewFormBloc, AddReviewFormState>(
+                        builder: (context, state) {
+                      return RatingBar.builder(
+                        initialRating: state.rating,
+                        minRating: 1,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        // itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
                         ),
-                        const SizedBox(height: 24),
-                        const Text(
-                          "This review must be based on real experience of the product.",
-                          style: TextStyle(
-                            fontSize: 14,
+                        onRatingUpdate: (rating) {
+                          context
+                              .read<AddReviewFormBloc>()
+                              .add(RatingChanged(rating: rating));
+                        },
+                      );
+                    }),
+                    const SizedBox(height: 16),
+                    BlocBuilder<AddReviewFormBloc, AddReviewFormState>(
+                      builder: (context, state) {
+                        messageController.value = TextEditingValue(
+                          text: state.message.value,
+                          selection: TextSelection.fromPosition(
+                            TextPosition(
+                                offset:
+                                    messageController.selection.base.offset),
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        BlocBuilder<AddReviewFormBloc, AddReviewFormState>(
-                            builder: (context, state) {
-                          return RatingBar.builder(
-                            initialRating: state.rating,
-                            minRating: 1,
-                            allowHalfRating: true,
-                            itemCount: 5,
-                            // itemPadding: EdgeInsets.symmetric(horizontal: 0.0),
-                            itemBuilder: (context, _) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
+                        );
+                        return TextField(
+                          cursorColor: Colors.black,
+                          maxLines: 6,
+                          textInputAction: TextInputAction.done,
+                          onChanged: (value) {
+                            context
+                                .read<AddReviewFormBloc>()
+                                .add(MessageChanged(message: value));
+                          },
+                          controller: messageController,
+                          focusNode: messageFocusNode,
+                          keyboardType: TextInputType.multiline,
+                          decoration: InputDecoration(
+                            alignLabelWithHint: true,
+                            hintText: 'Write your reviews here',
+                            labelText: 'Review*',
+                            helperText: 'Not empty',
+                            errorText: state.message.invalid
+                                ? 'Please ensure review is not empty'
+                                : null,
+                            errorBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            onRatingUpdate: (rating) {
-                              context
-                                  .read<AddReviewFormBloc>()
-                                  .add(RatingChanged(rating: rating));
-                            },
-                          );
-                        }),
-                        const SizedBox(height: 16),
-                        BlocBuilder<AddReviewFormBloc, AddReviewFormState>(
-                            builder: (context, state) {
-                          return TextFormField(
-                            initialValue: state.message.value,
-                            focusNode: messageFocusNode,
-                            keyboardType: TextInputType.multiline,
-                            decoration: InputDecoration(
-                              alignLabelWithHint: true,
-                              hintText: 'Write your reviews here',
-                              labelText: 'Review*',
-                              helperText: 'Not empty',
-                              errorText: state.message.invalid
-                                  ? 'Please ensure review is not empty'
-                                  : null,
-                              errorBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: Colors.grey),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: Colors.grey),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: Colors.grey),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: Colors.grey),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            // decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    const Text(
+                      "This review must be based on real experience of the product.",
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
 
-                            // ),
-                            cursorColor: Colors.black,
-                            maxLines: 6,
-                            textInputAction: TextInputAction.done,
-                            onChanged: (value) {
-                              context
-                                  .read<AddReviewFormBloc>()
-                                  .add(MessageChanged(message: value));
-                            },
+                    // );
+                    // }),
+                    const SizedBox(height: 14),
+                    BlocConsumer<AddReviewFormBloc, AddReviewFormState>(
+                      listener: (context, state) {
+                        if (state.isUpdating &&
+                            state.status == FormzStatus.submissionSuccess) {
+                          print("success");
+                          final lunchBar = LunchBars(
+                              lunchBarText: "Review Update Success",
+                              event: LunchBarEvents.LunchBarSuccess);
+                          ScaffoldMessenger.of(context).showSnackBar(lunchBar);
+                        } else if (state.status ==
+                            FormzStatus.submissionSuccess) {
+                          print("success");
+                          final lunchBar = LunchBars(
+                              lunchBarText: "Review Created Successfully",
+                              event: LunchBarEvents.LunchBarSuccess);
+                          ScaffoldMessenger.of(context).showSnackBar(lunchBar);
+                        } else if (state.status ==
+                            FormzStatus.submissionFailure) {
+                          print("failure");
+                          final lunchBar = LunchBars(
+                              lunchBarText: "Failed",
+                              event: LunchBarEvents.LunchBarSuccess);
+                          ScaffoldMessenger.of(context).showSnackBar(lunchBar);
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state.status == FormzStatus.submissionInProgress) {
+                          return Center(
+                            child: SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(),
+                            ),
                           );
-                        }),
-                        const SizedBox(height: 14),
-                        SizedBox(
+                        }
+
+                        return SizedBox(
                           width: double.infinity,
                           child: TextButton(
                             onPressed: () {
@@ -191,15 +233,17 @@ class AddReviewPopup extends StatelessWidget {
                               'Submit',
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        );
+                      },
+                    )
+                  ],
                 ),
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
   // ,);
 }
