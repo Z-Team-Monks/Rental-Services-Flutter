@@ -4,12 +4,12 @@ import 'package:rental/core/models/user.dart';
 class Review extends EntityModel {
   final String? userId;
   final User? user;
-  final String? message;
+  final String message;
   final double? rating;
 
   Review({
     this.userId,
-    this.message,
+    required this.message,
     this.rating,
     this.user,
   });

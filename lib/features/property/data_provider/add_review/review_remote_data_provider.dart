@@ -48,10 +48,54 @@ class ReviewRemoteDataProvider {
       body: jsonEncode(review),
     );
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       return Review.fromJson(jsonDecode(response.body));
     } else {
       throw Exception("Unable to create Property");
+    }
+  }
+
+  Future<Review> updateReview(
+    http.Client client, {
+    required Review review,
+    required String propertyId,
+    required String token,
+  }) async {
+    final http.Response response = await client.put(
+      Uri.parse("$baseUrl/$propertyId/review"),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(review),
+    );
+    if (response.statusCode == 200) {
+      return Review.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 404) {
+      throw Exception("Review not found");
+    } else {
+      throw Exception("Unable to update property");
+    }
+  }
+
+  Future<Review> getReview(
+    http.Client client, {
+    required String propertyId,
+    required String token,
+  }) async {
+    final http.Response response = await client.get(
+      Uri.parse("$baseUrl/$propertyId/review"),
+      headers: <String, String>{
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      return Review.fromJson(jsonDecode(response.body));
+    } else if (response.statusCode == 404) {
+      throw Exception("Review not found");
+    } else {
+      throw Exception("Network Error");
     }
   }
 }
