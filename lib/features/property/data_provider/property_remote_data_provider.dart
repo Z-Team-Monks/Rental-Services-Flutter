@@ -9,10 +9,10 @@ import 'package:rental/core/models/review.dart';
 class PropertyRemoteDataProvider {
   // final String baseUrl = "http://192.168.43.27:5000/api";
   // final String baseUrl = "http://192.168.43.27:5001/api/v1";
-  final String baseUrl = "http://10.6.200.3:5001/api/v1";
+  final String baseUrl = "http://192.168.0.164:5000/api/v1";
 
   final tokens =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMzliYjM3NGNkMWMxNGRiOGQ0M2JmOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2MzExNzM1NDV9.DoR9lgtTcYlEYMxnnEV4-n56eargHLp3Ipkxkbrlou0";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDViNDQyOGQzZmFjNzY4Y2RmMWNiOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2Mjg3ODE2MzV9._VCHTjWSSC4ImckvDr4bsG2CJrA-PbCoCnIutOMuBB4";
 
   /// It will return list of [Property] Objects fetched from remote server / API
   ///
@@ -52,100 +52,62 @@ class PropertyRemoteDataProvider {
   }) async {
     token =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMzliYjM3NGNkMWMxNGRiOGQ0M2JmOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2MzExNzM1NDV9.DoR9lgtTcYlEYMxnnEV4-n56eargHLp3Ipkxkbrlou0";
-    var options = BaseOptions(
-      baseUrl: '$baseUrl',
-      connectTimeout: 5000,
-      receiveTimeout: 3000,
-      contentType: "multipart/form-data",
-    );
-
-    Dio dio = Dio(options);
-    dio.options.headers["authorization"] = "Bearer $token";
-
-    final http.Response response = await http.post(
-      Uri.parse("$baseUrl/property"),
-      headers: <String, String>{
-        "Content-Type": "application/json",
-        'Authorization': 'Bearer $token',
-      },
-      body: jsonEncode(
-        {
-          "images": property.images,
-          "title": property.title,
-          "description": property.description,
-          "category": property.category,
-          "cost[bill]": property.bill,
-          "cost[per]": property.bill
-        },
-      ),
-    );
-
     try {
-      // var properties = await dio.get("/property");
-      // print(properties);
-      // return;
+      print("fetching start..");
+      // String filename = images[0].path.split('/').last;
+      var imagesEntry = [];
+      for (var image in images) {
+        print(image.path + " " + image.path.split("/").last);
+        imagesEntry.add(
+          MapEntry(
+            "images",
+            await MultipartFile.fromFile(
+              image.path,
+              filename: image.path.split("/").last,
+            ),
+          ),
+        );
+      }
+      FormData formData = FormData.fromMap({
+        "title": property.title,
+        "description": property.description,
+        "category": property.category,
+        "cost[bill]": property.bill,
+        "cost[per]": property.per,
+      });
 
-      String filename = images[0].path.split('/').last;
-      // print(filename + " " + images[0].path);
-      // // return;
-      // FormData formData = FormData.fromMap({
-      //   "profile": await MultipartFile.fromFile(
-      //     images[0].path,
-      //     filename: filename,
-      //   ),
-      // });
-      var formData = FormData();
-      formData.files.addAll([
-        MapEntry(
-          'profile',
-          MultipartFile.fromFileSync(images[0].path, filename: filename),
-        ),
-      ]);
+      for (var image in images) {
+        formData.files.addAll([
+          MapEntry(
+            "files",
+            await MultipartFile.fromFile(
+              image.path,
+              filename: image.path.split("/").last,
+            ),
+          ),
+        ]);
+      }
 
-      var response = await Dio().put(
-        'http://10.6.200.3:5001/api/v1/users/profile',
+      var response = await Dio().post(
+        '$baseUrl/property',
         data: formData,
         options: Options(
           headers: {
-            'Accept': 'application/json',
-            // For latter use commented
-            "Authorization": "Bearer $token",
+            "accept": "/",
+            "Authorization": "Bearer $tokens",
             "Content-Type": "multipart/form-data"
           },
         ),
       );
-      print("here");
-
-      // FormData formData = FormData.fromMap({
-      //   "images": await MultipartFile.fromFile(
-      //     images[0].path,
-      //     filename: filename,
-      //   ),
-      //   "title": property.title,
-      //   "description": property.description,
-      //   "category": property.category,
-      //   "cost[bill]": property.bill,
-      //   "cost[per]": property.per,
-      // });
-
-      // var response = await Dio().post(
-      //   'http://192.168.0.164:5001/api/v1/property',
-      //   data: formData,
-      //   options: Options(
-      //     headers: {
-      //       "accept": "/",
-      //       // For latter use commented
-      //       "Authorization": "Bearer $token",
-      //       "Content-Type": "multipart/form-data"
-      //     },
-      //   ),
-      // );
-      // print("here");
-
-      // final response = await dio.post('/property', data: formData);
-      print(response);
+      if (response.statusCode == 201) {
+        print("done");
+        // return response;
+      } else {
+        // return "phone number already exist";
+      }
     } catch (e) {
-      print(e.toString());
+      print(e);
+      return null;
     }
   }
 

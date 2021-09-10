@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
         theme: CustomTheme.lightTheme,
         darkTheme: CustomTheme.darkTHeme,
         themeMode: ThemeMode.light,
-        home: Home(),
+        home: AddProperty(),
       ),
     );
   }
