@@ -20,7 +20,6 @@ class Property extends EntityModel {
   final List<dynamic>? reviewes;
   final List<dynamic>? likedBy;
   bool visible = true;
-  
   Property({
     this.id,
     this.ownerid,
@@ -49,7 +48,7 @@ class Property extends EntityModel {
       title: json["title"],
       description: json["description"],
       category: json["category"],
-      bill: 200,
+      bill: json["cost"]["bill"] * 1.0,
       per: json["cost"]["per"],
       ownerid: json["ownerid"],
       createdAt: json["createdAt"],

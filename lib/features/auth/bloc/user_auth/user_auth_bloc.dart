@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental/features/auth/repository/repository.dart';
 import 'package:equatable/equatable.dart';
 
-enum UserAuthState { LOGGEDIN, LOGGEDOUT, CHECKING }
+enum UserAuthState { LOGGEDIN, LOGGEDIN_ADMIN, LOGGEDOUT, CHECKING }
 
 abstract class UserAuthEvent extends Equatable {
   const UserAuthEvent();
@@ -33,8 +33,13 @@ class UserAuthBloc extends Bloc<UserAuthEvent, UserAuthState> {
       final user = authRepository.readToken(key: "token");
       if (user.isLeft()) {
         yield UserAuthState.LOGGEDOUT;
+      }else{
+        bool isAdmin = await authRepository.checkIsAdmin(user.getOrElse(() => ""));
+        if (isAdmin) {
+        yield UserAuthState.LOGGEDIN_ADMIN;
       } else {
         yield UserAuthState.LOGGEDIN;
+      }
       }
     }
   }
