@@ -39,6 +39,7 @@ class UpdateProfile extends StatelessWidget with InputValidationMixin {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         title: Text(
           "Update Profile",
