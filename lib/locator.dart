@@ -36,5 +36,5 @@ Future<void> setUp() async {
   getIt.registerSingleton<SharedPreferences>(
       await SharedPreferences.getInstance());
 
-  getIt.registerSingletonAsync<Telephony>(() async => Telephony.instance);
+  // getIt.registerSingletonAsync<Telephony>(() async => Telephony.instance);
 }

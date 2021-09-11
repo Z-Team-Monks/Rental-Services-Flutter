@@ -222,7 +222,7 @@ class PropertyDetail extends StatelessWidget {
                               children: [
                                 IconButton(
                                     onPressed: () async {
-                                      await getIt<Telephony>().sendSmsByDefaultApp(
+                                      await Telephony.instance.sendSmsByDefaultApp(
                                           to:
                                               "${state.props[0]!.owner!.phoneNumber}",
                                           message:
@@ -231,7 +231,7 @@ class PropertyDetail extends StatelessWidget {
                                     icon: Icon(Icons.chat_bubble_outline)),
                                 TextButton.icon(
                                   onPressed: () async {
-                                    await getIt<Telephony>().openDialer(
+                                    await Telephony.instance.openDialer(
                                         "${state.props[0]!.owner!.phoneNumber}");
                                   },
                                   icon: Icon(Icons.call),

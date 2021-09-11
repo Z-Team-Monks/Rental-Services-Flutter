@@ -12,10 +12,16 @@ import 'package:rental/features/property/bloc/add_review/value_objects/message.d
 import 'package:rental/features/property/data_provider/add_review/review_remote_data_provider.dart';
 import 'package:rental/features/property/repository/add_review/add_review_repository.dart';
 import 'package:rental/locator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'add_review_bloc_test.mocks.dart';
+import 'package:rental/locator.dart' as getIt;
 
 @GenerateMocks([ReviewRepository])
 void main() {
+  getIt.setUp();
+  setupPreferences("token", "tokenknskdnf");
+  // getIt.getIt<SharedPreferences>().get
+
   late AddReviewFormBloc bloc;
   MockReviewRepository mockReviewRepository = MockReviewRepository();
 
@@ -105,4 +111,11 @@ void main() {
       },
     );
   });
+}
+
+Future setupPreferences(String key, String value) async {
+  SharedPreferences.setMockInitialValues(
+      <String, Object>{'flutter.' + key: value});
+  final preferences = await SharedPreferences.getInstance();
+  await preferences.setString(key, value);
 }

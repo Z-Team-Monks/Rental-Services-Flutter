@@ -101,10 +101,9 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                   title: Text(
                     "Rent  ",
                     style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: "Poppins",
-                      fontWeight: FontWeight.w300
-                    ),
+                        color: Colors.black,
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w300),
                   ),
                   actions: [
                     Padding(
@@ -296,11 +295,11 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                     name: state.props[index].title,
                     description: state.props[index].description,
                     phoneCallback: () async {
-                      await getIt<Telephony>().openDialer(
+                      await Telephony.instance.openDialer(
                           "${state.props[index].owner!.phoneNumber}");
                     },
                     messageCallback: () async {
-                      await getIt<Telephony>().sendSmsByDefaultApp(
+                      await Telephony.instance.sendSmsByDefaultApp(
                           to: "${state.props[index].owner!.phoneNumber}",
                           message: "${state.props[index].title}:");
                     },
@@ -380,11 +379,11 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                     name: state.properties[index].title,
                     description: state.properties[index].description,
                     phoneCallback: () async {
-                      await getIt<Telephony>().openDialer(
+                      await Telephony.instance.openDialer(
                           "${state.properties[index].owner!.phoneNumber}");
                     },
                     messageCallback: () async {
-                      await getIt<Telephony>().sendSmsByDefaultApp(
+                      await Telephony.instance.sendSmsByDefaultApp(
                           to: "${state.properties[index].owner!.phoneNumber}",
                           message: "${state.props[index].title}:");
                     },
@@ -465,11 +464,11 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                     name: state.properties[index].title,
                     description: state.properties[index].description,
                     phoneCallback: () async {
-                      await getIt<Telephony>().openDialer(
+                      await Telephony.instance.openDialer(
                           "${state.properties[index].owner!.phoneNumber}");
                     },
                     messageCallback: () async {
-                      await getIt<Telephony>().sendSmsByDefaultApp(
+                      await Telephony.instance.sendSmsByDefaultApp(
                           to: "${state.properties[index].owner!.phoneNumber}",
                           message: "${state.props[index].title}:");
                     },
@@ -548,11 +547,11 @@ class _FeedState extends State<Feed> with TickerProviderStateMixin {
                     name: state.properties[index].title,
                     description: state.properties[index].description,
                     phoneCallback: () async {
-                      await getIt<Telephony>().openDialer(
+                      await Telephony.instance.openDialer(
                           "${state.properties[index].owner!.phoneNumber}");
                     },
                     messageCallback: () async {
-                      await getIt<Telephony>().sendSmsByDefaultApp(
+                      await Telephony.instance.sendSmsByDefaultApp(
                           to: "${state.properties[index].owner!.phoneNumber}",
                           message: "${state.props[index].title}:");
                     },
