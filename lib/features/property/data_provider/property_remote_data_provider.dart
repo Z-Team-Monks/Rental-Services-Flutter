@@ -42,10 +42,10 @@ class PropertyRemoteDataProvider {
   Future<void> createProperty({
     required List<XFile> images,
     required Property property,
-    required String token,
+    required String t,
   }) async {
-    token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMzliYjM3NGNkMWMxNGRiOGQ0M2JmOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2MzExNzM1NDV9.DoR9lgtTcYlEYMxnnEV4-n56eargHLp3Ipkxkbrlou0";
+    // token =
+    //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMzliYjM3NGNkMWMxNGRiOGQ0M2JmOCIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2MzExNzM1NDV9.DoR9lgtTcYlEYMxnnEV4-n56eargHLp3Ipkxkbrlou0";
     try {
       print("fetching start..");
       // String filename = images[0].path.split('/').last;
@@ -95,8 +95,10 @@ class PropertyRemoteDataProvider {
       );
       if (response.statusCode == 201) {
         print("done");
+        print(response.data);
         // return response;
       } else {
+        print(response.data);
         // return "phone number already exist";
       }
     } catch (e) {
@@ -117,9 +119,7 @@ class PropertyRemoteDataProvider {
     // return property;
 
     final http.Response response = await http.put(
-      Uri.parse("${AppConstants.baseUrl}/property/61389e84a6a60a468bce7d11"),
-      // Uri.parse(
-      //     "http://192.168.43.46:5001/api/v1/property/61389e84a6a60a468bce7d11"),
+      Uri.parse("${AppConstants.baseUrl}/property/${property.id}"),
       headers: <String, String>{
         "Content-Type": "application/json",
         'Authorization': 'Bearer ${AppConstants.token}',
@@ -266,6 +266,4 @@ class PropertyRemoteDataProvider {
       throw Exception("Unable to fetch properties [getProperties]");
     }
   }
-
-
 }

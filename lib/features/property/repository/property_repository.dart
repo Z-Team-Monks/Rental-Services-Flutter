@@ -83,7 +83,7 @@ class PropertyRepository {
     // print(property);
 
     final newProduct = await _propertyRemoteDataProvider.createProperty(
-        property: property, token: "", images: images);
+        property: property, t: "", images: images);
 
     // return newProduct;
   }
