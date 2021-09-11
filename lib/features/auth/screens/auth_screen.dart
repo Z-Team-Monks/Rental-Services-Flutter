@@ -63,7 +63,7 @@ class _AuthPageState extends State<AuthPage> {
         child: BlocConsumer<UserAuthBloc, UserAuthState>(
           listener: (context, state) {
             if (state == UserAuthState.LOGGEDIN_ADMIN) {
-              Navigator.popAndPushNamed(context, Home.pageRoute);
+              Navigator.popAndPushNamed(context, AdminPage.pageRoute);
             } else if (state == UserAuthState.LOGGEDIN) {
               Navigator.popAndPushNamed(context, Home.pageRoute);
             }
