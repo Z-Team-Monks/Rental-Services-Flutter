@@ -3,7 +3,7 @@ import 'package:rental/locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppConstants {
-  static String baseUrl = "http://192.168.0.164:5000/api/v1";
+  static String baseUrl = "http://192.168.1.17:5000/api/v1";
 
   static String staticUrl = "http://192.168.0.164:5000";
 

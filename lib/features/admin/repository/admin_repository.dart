@@ -36,8 +36,7 @@ class AdminRepository {
     //   }
     // }
 
-    final res = await fetchCachedProperties(
-        authToken);
+    final res = await fetchCachedProperties(authToken);
     if (res == null) {
       return left(AdminFaiulre.invalidValue());
     } else if (res.isRight()) {
@@ -57,10 +56,7 @@ class AdminRepository {
       return left(AdminFaiulre.unAuthorized());
     }
     final res = await _adminRemoteDataProvider.approveOrDeclinePost(
-        authToken:
-            authToken,
-        postId: id,
-        option: APPROVAL.APPROVE);
+        postId: id, option: APPROVAL.APPROVE);
 
     return res;
   }
@@ -71,7 +67,7 @@ class AdminRepository {
       return left(AdminFaiulre.unAuthorized());
     }
     final res = await _adminRemoteDataProvider.approveOrDeclinePost(
-        authToken: authToken, postId: id, option: APPROVAL.DISAPPROVE);
+        postId: id, option: APPROVAL.DISAPPROVE);
 
     return res;
   }
@@ -93,11 +89,13 @@ class AdminRepository {
       String token) async {
     final res = await performRemoteOrLocalFetchOperation<
         Either<AdminFaiulre, List<Property>>>(apiCall: () async {
-      print("===============+++=====API Call=====================================");
+      print(
+          "===============+++=====API Call=====================================");
 
-      return await _adminRemoteDataProvider.fetchPosts(authToken: token);
+      return await _adminRemoteDataProvider.fetchPosts();
     }, dbCall: () async {
-      print("===============+++=====DB Call=====================================");
+      print(
+          "===============+++=====DB Call=====================================");
       return await _adminLocalDataProvider.getProperties();
     });
 

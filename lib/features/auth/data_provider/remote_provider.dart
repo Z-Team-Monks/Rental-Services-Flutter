@@ -97,7 +97,7 @@ class AuthRemoteDataProvider {
     }
   }
 
-  Future<Either<AuthFaiulre, bool>> checkIsAdmin(token) async {
+  Future<Either<AuthFaiulre, bool>> checkIsAdmin() async {
     try {
       final http.Response response = await http.get(
         Uri.parse("${AppConstants.baseUrl}/auth/isAdmin"),
@@ -115,7 +115,7 @@ class AuthRemoteDataProvider {
         print(
             "check isAdmin request failed! StatusCode: ${response.statusCode}");
         print("checkIsAdmin Error: ${response.body.toString()}");
-        return left(AuthFaiulre.invalidEmailOrPasssword());
+        return left(AuthFaiulre.serverAuthError());
       }
     } on SocketException catch (e) {
       print("check isAdmin request Network error!");
@@ -141,15 +141,13 @@ class AuthRemoteDataProvider {
   ///
   /// [User] object or throw an exception if an error occured
   ///
-  Future<Either<AuthFaiulre, User>> currentUser({
-    required String token,
-  }) async {
+  Future<Either<AuthFaiulre, User>> currentUser() async {
     try {
       final http.Response response = await http.get(
         Uri.parse("${AppConstants.baseUrl}/users/me"),
         headers: <String, String>{
           "Content-Type": "application/json",
-          'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer ${AppConstants.token}',
         },
       );
 

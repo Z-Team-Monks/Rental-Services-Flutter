@@ -68,13 +68,14 @@ class MockAuthRepository extends _i1.Mock implements _i4.AuthRepository {
               returnValue: _FakeEither_1<_i6.AuthFaiulre, String?>())
           as _i3.Either<_i6.AuthFaiulre, String?>);
   @override
-  _i5.Future<bool> checkIsAdmin(String? token) =>
-      (super.noSuchMethod(Invocation.method(#checkIsAdmin, [token]),
-          returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
+  _i5.Future<_i3.Either<_i6.AuthFaiulre, bool>> checkIsAdmin() =>
+      (super.noSuchMethod(Invocation.method(#checkIsAdmin, []),
+              returnValue: Future<_i3.Either<_i6.AuthFaiulre, bool>>.value(
+                  _FakeEither_1<_i6.AuthFaiulre, bool>()))
+          as _i5.Future<_i3.Either<_i6.AuthFaiulre, bool>>);
   @override
-  _i5.Future<_i3.Either<_i6.AuthFaiulre, _i7.User>> getCurrentUser(
-          String? token) =>
-      (super.noSuchMethod(Invocation.method(#getCurrentUser, [token]),
+  _i5.Future<_i3.Either<_i6.AuthFaiulre, _i7.User>> getCurrentUser() =>
+      (super.noSuchMethod(Invocation.method(#getCurrentUser, []),
               returnValue: Future<_i3.Either<_i6.AuthFaiulre, _i7.User>>.value(
                   _FakeEither_1<_i6.AuthFaiulre, _i7.User>()))
           as _i5.Future<_i3.Either<_i6.AuthFaiulre, _i7.User>>);
