@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:rental/core/network.dart';
 import 'package:rental/features/auth/failures/auth_failure.dart';
 import 'package:rental/features/auth/repository/repository.dart';
 import 'package:rental/features/auth/models/exports.dart';
@@ -95,8 +96,9 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
         } else {
           print("working logged in");
           final token = failureOrSuccess.getOrElse(() => "");
+          AppConstants.token = token;
           final failureOrSuccessCurrentUser =
-              await authRepository.getCurrentUser(token);
+              await authRepository.getCurrentUser();
 
           if (failureOrSuccessCurrentUser.isLeft()) {
             print("not working on getting current user");
@@ -119,8 +121,14 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
                 value: failureOrSuccessCurrentUser.fold(
                     (l) => "", (r) => jsonEncode(r)));
 
+            await storeCredentialsToPref(authRepository,
+                key: "isAdmin",
+                value: failureOrSuccessCurrentUser.fold(
+                    (l) => "", (r) => r.isAdmin.toString()));
+
             final resToken = await storeCredentialsToPref(authRepository,
                 key: "token", value: token);
+            AppConstants.token = token;
 
             if (resUser.isLeft() || resToken.isLeft()) {
               yield state.copyWith(
@@ -213,9 +221,15 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
                 value:
                     failureOrSuccessUser.fold((l) => "", (r) => jsonEncode(r)));
 
+            await storeCredentialsToPref(authRepository,
+                key: "isAdmin",
+                value: failureOrSuccessUser.fold(
+                    (l) => "", (r) => r.isAdmin.toString()));
+
             final resToken = await storeCredentialsToPref(authRepository,
                 key: "token",
                 value: failureOrSuccess.fold((l) => "", (r) => r));
+            AppConstants.token = failureOrSuccess.fold((l) => "", (r) => r);
 
             if (resUser.isLeft() || resToken.isLeft()) {
               yield state.copyWith(

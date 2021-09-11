@@ -134,7 +134,7 @@ void main() {
       when(mocksAuthRepository.signInUser(any))
           .thenAnswer((_) async => Future.value(right("userToken")));
 
-      when(mocksAuthRepository.getCurrentUser(any)).thenAnswer(
+      when(mocksAuthRepository.getCurrentUser()).thenAnswer(
           (_) async => Future.value(right(User(name: "name", email: "email"))));
 
       when(mocksAuthRepository.storeToken(
