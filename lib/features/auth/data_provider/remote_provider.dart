@@ -36,13 +36,21 @@ class AuthRemoteDataProvider {
           },
         ),
       );
-
+      print("User signup sent!");
       if (response.statusCode == 201) {
+        print("User signup success!");
         return right(User.fromJson(jsonDecode(response.body)));
       } else {
+        print(
+            "User signup denied by server! statusCode: ${response.statusCode}");
+        print("Failure: ${response.body.toString()}");
         return left(AuthFaiulre.serverAuthError());
       }
     } on SocketException catch (e) {
+      print("User signup network failed!");
+      return left(AuthFaiulre.networkError());
+    } catch (e) {
+      print("createUser Unexpected Error: $e");
       return left(AuthFaiulre.networkError());
     }
   }
@@ -70,17 +78,26 @@ class AuthRemoteDataProvider {
         ),
       );
 
+      print("User attemptLogin sent!");
       if (response.statusCode == 200) {
+        print("User attemptLogin success!");
         return right(response.body);
       } else {
+        print(
+            "User attemptLogin denied by server! statusCode: ${response.statusCode}");
+        print("Failure: ${response.body.toString()}");
         return left(AuthFaiulre.invalidEmailOrPasssword());
       }
     } on SocketException catch (e) {
+      print("User attemptLogin network failed!");
+      return left(AuthFaiulre.networkError());
+    } catch (e) {
+      print("attemptLogin Unexpected Error: $e");
       return left(AuthFaiulre.networkError());
     }
   }
 
-  Future<Either<AuthFaiulre, bool>> checkIsAdmin(token) async {
+  Future<Either<AuthFaiulre, bool>> checkIsAdmin() async {
     try {
       final http.Response response = await http.get(
         Uri.parse("${AppConstants.baseUrl}/auth/isAdmin"),
@@ -89,20 +106,22 @@ class AuthRemoteDataProvider {
           "Authorization": "Bearer ${AppConstants.token}",
         },
       );
-      // print("21738888999999999333333333Workssssssssssssssssss");
-      // print(response.body);
-      print(response.statusCode);
+
+      print("check isAdmin request sent!");
       if (response.statusCode == 200) {
+        print("check isAdmin request success!");
         return right(jsonDecode(response.body)["isAdmin"]);
       } else {
-        print("serverrrr eeeeeeeeeeerrror");
-        return left(AuthFaiulre.invalidEmailOrPasssword());
+        print(
+            "check isAdmin request failed! StatusCode: ${response.statusCode}");
+        print("checkIsAdmin Error: ${response.body.toString()}");
+        return left(AuthFaiulre.serverAuthError());
       }
     } on SocketException catch (e) {
-      print("newtwork eeeeeeeeeeerrror $e");
+      print("check isAdmin request Network error!");
       return left(AuthFaiulre.networkError());
     } catch (e) {
-      print(e);
+      print("CheckIsAdmin Unexpected Error: $e");
       return left(AuthFaiulre.networkError());
     }
   }
@@ -122,22 +141,32 @@ class AuthRemoteDataProvider {
   ///
   /// [User] object or throw an exception if an error occured
   ///
-  Future<Either<AuthFaiulre, User>> currentUser({
-    required String token,
-  }) async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    final http.Response response = await http.get(
-      Uri.parse("${AppConstants.baseUrl}/users/me"),
-      headers: <String, String>{
-        "Content-Type": "application/json",
-        'Authorization': 'Bearer ${AppConstants.token}',
-      },
-    );
+  Future<Either<AuthFaiulre, User>> currentUser() async {
+    try {
+      final http.Response response = await http.get(
+        Uri.parse("${AppConstants.baseUrl}/users/me"),
+        headers: <String, String>{
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ${AppConstants.token}',
+        },
+      );
 
-    if (response.statusCode == 200) {
-      return right(User.fromJson(jsonDecode(response.body)));
-    } else {
-      return left(AuthFaiulre.emailAlreadyInUse());
+      print("getCurrentUser request sent!");
+      if (response.statusCode == 200) {
+        print("getCurrentUser request Success!");
+        return right(User.fromJson(jsonDecode(response.body)));
+      } else {
+        print(
+            "getCurrentUser request Failed! StatusCode: ${response.statusCode}");
+        print("getCurrentUser error: ${response.body.toString()}");
+        return left(AuthFaiulre.serverAuthError());
+      }
+    } on SocketException catch (e) {
+      print("Newtwork Error in [currentUser] method: $e");
+      return left(AuthFaiulre.networkError());
+    } catch (e) {
+      print("Unkown Error in [currentUser] method: $e");
+      return left(AuthFaiulre.networkError());
     }
   }
 

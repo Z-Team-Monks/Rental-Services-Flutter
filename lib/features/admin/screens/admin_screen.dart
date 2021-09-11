@@ -4,6 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rental/core/models/property.dart';
 import 'package:rental/core/presentation/customSnackBar.dart';
 import 'package:rental/features/admin/cubit/admin_cubit.dart';
+import 'package:rental/features/auth/screens/auth_screen.dart';
+import 'package:rental/locator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
 class AdminPage extends StatefulWidget {
   static const pageRoute = "/admin";
@@ -30,6 +34,17 @@ class _AdminPageState extends State<AdminPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.logout, color: Colors.black),
+              onPressed: () {
+                getIt<SharedPreferences>().setString("token", "");
+                Navigator.of(context).pushReplacementNamed(AuthPage.pageRoute);
+                // Navigator.popAndPushNamed(context, AuthPage.pageRoute);
+              },
+            )
+          ],
           backgroundColor: Colors.white,
           title: Text(
             "Admin Page",

@@ -280,13 +280,13 @@ class _$PropertyEntityDao extends PropertyEntityDao {
 
   @override
   Future<void> deleteProperty(String id) async {
-    await _queryAdapter.queryNoReturn('DELETE * FROM properties WHERE id = ?1',
-        arguments: [id]);
+    await _queryAdapter
+        .queryNoReturn('DELETE FROM properties WHERE id = ?1', arguments: [id]);
   }
 
   @override
   Future<void> deleteAllProperty() async {
-    await _queryAdapter.queryNoReturn('DELETE * FROM properties');
+    await _queryAdapter.queryNoReturn('DELETE FROM properties');
   }
 
   @override
