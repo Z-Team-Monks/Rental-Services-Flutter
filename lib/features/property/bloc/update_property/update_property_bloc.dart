@@ -27,6 +27,7 @@ class UpdatePropertyBloc
       try {
         final property =
             await _propertyRepository.getDetailedProduct(event.productId);
+        print("property to loaded ${property.id}");
         yield UpdatePropertyLoadedProperty(
             property: property, isLoading: false, isLoaded: true);
         print(property);
@@ -39,6 +40,7 @@ class UpdatePropertyBloc
       yield UpdatePropertyLoadedProperty(
           property: event.property, isLoading: true, isLoaded: false);
       try {
+        print("property to update ${event.property.id}");
         final updatedProperty =
             await _propertyRepository.updateProdcut(event.property);
         yield UpdatePropertyLoadedProperty(

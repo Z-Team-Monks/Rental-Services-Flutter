@@ -65,7 +65,7 @@ class _PropertyUpdateState extends State<PropertyUpdateScreen>
               if (state is UpdatePropertyLoadedProperty) {
                 if (state.isUpdated == false) {
                   final lunchBar = LunchBars(
-                      lunchBarText: "Trouble connecting to the internet",
+                      lunchBarText: "Couldn't update property",
                       event: LunchBarEvents.LunchBarSuccess);
                   ScaffoldMessenger.of(context).showSnackBar(lunchBar);
                 }
@@ -337,6 +337,7 @@ class _PropertyUpdateState extends State<PropertyUpdateScreen>
                                 widget.shouldChange = 0;
                                 propertyUpdateBloc.add(UpdatePropertyUpdate(
                                     property: new Property(
+                                        id: state.property.id,
                                         title: titleTextController.text,
                                         description:
                                             descriptionTextController.text,

@@ -117,7 +117,7 @@ class PropertyRemoteDataProvider {
   }) async {
     // await Future.delayed(Duration(seconds: 3));
     // return property;
-
+    print("to update id ${property.id}");
     final http.Response response = await http.put(
       Uri.parse("${AppConstants.baseUrl}/property/${property.id}"),
       headers: <String, String>{

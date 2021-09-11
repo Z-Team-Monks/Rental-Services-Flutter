@@ -51,7 +51,7 @@ class Property extends EntityModel {
       title: json["title"],
       description: json["description"],
       category: json["category"],
-      bill: json["cost"]["bill"] * 1.0,
+      bill: json["cost"]["bill"] * 1.0, //double.tryParse(jjson["cost"]["bill"])
       per: json["cost"]["per"],
       ownerid: json["ownerid"],
       createdAt: json["createdAt"],
