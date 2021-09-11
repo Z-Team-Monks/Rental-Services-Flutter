@@ -51,5 +51,20 @@ class MockReviewRepository extends _i1.Mock implements _i4.ReviewRepository {
               returnValue: Future<_i3.Review>.value(_FakeReview_1()))
           as _i5.Future<_i3.Review>);
   @override
+  _i5.Future<_i3.Review> updateRemoteReview(
+          {_i3.Review? review, String? propertyId, String? token}) =>
+      (super.noSuchMethod(
+              Invocation.method(#updateRemoteReview, [],
+                  {#review: review, #propertyId: propertyId, #token: token}),
+              returnValue: Future<_i3.Review>.value(_FakeReview_1()))
+          as _i5.Future<_i3.Review>);
+  @override
+  _i5.Future<_i3.Review> getRemoteReview({String? propertyId, String? token}) =>
+      (super.noSuchMethod(
+              Invocation.method(#getRemoteReview, [],
+                  {#propertyId: propertyId, #token: token}),
+              returnValue: Future<_i3.Review>.value(_FakeReview_1()))
+          as _i5.Future<_i3.Review>);
+  @override
   String toString() => super.toString();
 }

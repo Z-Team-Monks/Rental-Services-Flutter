@@ -42,9 +42,14 @@ class _AddPropertyState extends State<AddProperty> with InputValidationMixin {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         // leading: Icon(Icons.person, color: Colors.black26,),
         backgroundColor: Colors.white,
-        title: Text('Add property', style: GoogleFonts.poppins (color: Colors.black),),
+        title: Text(
+          'Add property',
+          style: GoogleFonts.poppins(
+              color: Colors.black, fontWeight: FontWeight.w300),
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -99,13 +104,18 @@ class _AddPropertyState extends State<AddProperty> with InputValidationMixin {
                           decoration: InputDecoration(
                             hintText: 'House',
                             labelText: 'Title',
+                            border: new OutlineInputBorder(
+                                borderSide: new BorderSide(color: Colors.teal)),
                             hintStyle: TextStyle(
                                 color: Colors.black54, letterSpacing: 1),
                             filled: true,
-                            fillColor: Colors.grey[300],
+                            // border: new OutlineInputBorder(
+                            // borderSide: new BorderSide(color: Colors.pink),
+                            // ),
+                            fillColor: Colors.white,
                             enabledBorder: OutlineInputBorder(
                               // borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                              borderSide: BorderSide(color: Colors.transparent),
+                              borderSide: BorderSide(color: Colors.pinkAccent),
                             ),
                             focusedBorder: OutlineInputBorder(
                                 // borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -129,8 +139,9 @@ class _AddPropertyState extends State<AddProperty> with InputValidationMixin {
                               top: width * 0.008,
                             ),
                             decoration: BoxDecoration(
+                              border: Border.all(color: Colors.pink),
                               borderRadius: BorderRadius.circular(3.0),
-                              color: Colors.grey[300],
+                              // color: Colors.grey[300],
                             ),
                             child: Padding(
                               padding: EdgeInsets.symmetric(
@@ -199,10 +210,13 @@ class _AddPropertyState extends State<AddProperty> with InputValidationMixin {
                             hintStyle: TextStyle(
                                 color: Colors.black54, letterSpacing: 1),
                             filled: true,
-                            fillColor: Colors.grey[300],
+                            border: new OutlineInputBorder(
+                              borderSide: new BorderSide(color: Colors.teal),
+                            ),
+                            fillColor: Colors.white24,
                             enabledBorder: OutlineInputBorder(
                               // borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                              borderSide: BorderSide(color: Colors.transparent),
+                              borderSide: BorderSide(color: Colors.pink),
                             ),
                             focusedBorder: OutlineInputBorder(
                                 // borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -241,11 +255,14 @@ class _AddPropertyState extends State<AddProperty> with InputValidationMixin {
                                     labelText: 'Price',
                                     hintStyle: TextStyle(color: Colors.black54),
                                     filled: true,
-                                    fillColor: Colors.grey[300],
+                                    border: new OutlineInputBorder(
+                                        borderSide:
+                                            new BorderSide(color: Colors.teal)),
+                                    fillColor: Colors.white24,
                                     enabledBorder: OutlineInputBorder(
                                       // borderRadius: BorderRadius.all(Radius.circular(12.0)),
                                       borderSide:
-                                          BorderSide(color: Colors.transparent),
+                                          BorderSide(color: Colors.pink),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                         // borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -260,8 +277,11 @@ class _AddPropertyState extends State<AddProperty> with InputValidationMixin {
                             ),
                             Container(
                               decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.pink,
+                                ),
                                 borderRadius: BorderRadius.circular(3.0),
-                                color: Colors.grey[300],
+                                // color: Colors.grey[300],
                               ),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(

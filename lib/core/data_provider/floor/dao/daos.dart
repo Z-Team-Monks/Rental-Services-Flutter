@@ -33,10 +33,10 @@ abstract class PropertyEntityDao {
   @insert
   Future<void> insertManyProperty(List<PropertyEntity> propertyEntities);
 
-  @Query('DELETE * FROM properties WHERE id = :id')
+  @Query('DELETE FROM properties WHERE id = :id')
   Future<void> deleteProperty(String id);
 
-  @Query('DELETE * FROM properties')
+  @Query('DELETE FROM properties')
   Future<void> deleteAllProperty();
 }
 
