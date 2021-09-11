@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
+import 'package:rental/core/presentation/customSnackBar.dart';
 import 'package:rental/core/presentation/customTheme/appTheme.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:rental/features/property/bloc/add_review/add_review_bloc.dart';
 import 'package:rental/features/property/bloc/add_review/add_review_event.dart';
 import 'package:rental/features/property/bloc/add_review/add_review_state.dart';
+import 'package:rental/features/property/data_provider/add_review/review_remote_data_provider.dart';
+import 'package:rental/features/property/repository/add_review/add_review_repository.dart';
 import './animation/hero_dialogue_route.dart';
 
 // This is a sample button for add review popup route
 class AddReviewButton extends StatelessWidget {
+  final propertyId;
+  AddReviewButton({required this.propertyId});
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(32.0),
+      padding: const EdgeInsets.all(10.0),
       child: GestureDetector(
         onTap: () {
           Navigator.of(context).push(
             HeroDialogRoute(builder: (context) {
-              return AddReviewPopup();
+              return AddReviewPopup(
+                propertyId: propertyId,
+              );
             }),
           );
         },
@@ -43,16 +51,24 @@ const String _heroAddReview = 'add-review-hero';
 
 class AddReviewPopup extends StatelessWidget {
   static const pageRoute = "/add_review";
+  final propertyId;
+  // final ctx;
   late final FocusNode messageFocusNode;
-  AddReviewPopup({Key? key}) : super(key: key);
+  late final TextEditingController messageController;
+  AddReviewPopup({
+    Key? key,
+    required this.propertyId,
+    // required this.ctx,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final addReviewFormBloc = BlocProvider.of<AddReviewFormBloc>(context);
+    this.messageController = TextEditingController();
     this.messageFocusNode = FocusNode();
     this.messageFocusNode
       ..addListener(() {
         if (!this.messageFocusNode.hasFocus) {
+          // BlocProvider.of<AddReviewFormBloc>(context).add(MessageUnfocused());
           context.read<AddReviewFormBloc>().add(MessageUnfocused());
         }
       });
@@ -109,68 +125,117 @@ class AddReviewPopup extends StatelessWidget {
                     }),
                     const SizedBox(height: 16),
                     BlocBuilder<AddReviewFormBloc, AddReviewFormState>(
-                        builder: (context, state) {
-                      return TextFormField(
-                        initialValue: state.message.value,
-                        focusNode: messageFocusNode,
-                        keyboardType: TextInputType.multiline,
-                        decoration: InputDecoration(
-                          alignLabelWithHint: true,
-                          hintText: 'Write your reviews here',
-                          labelText: 'Review*',
-                          helperText: 'Not empty',
-                          errorText: state.message.invalid
-                              ? 'Please ensure review is not empty'
-                              : null,
-                          errorBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 1, color: Colors.grey),
-                            borderRadius: BorderRadius.circular(12),
+                      builder: (context, state) {
+                        messageController.value = TextEditingValue(
+                          text: state.message.value,
+                          selection: TextSelection.fromPosition(
+                            TextPosition(
+                                offset:
+                                    messageController.selection.base.offset),
                           ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 1, color: Colors.grey),
-                            borderRadius: BorderRadius.circular(12),
+                        );
+                        return TextField(
+                          cursorColor: Colors.black,
+                          maxLines: 6,
+                          textInputAction: TextInputAction.done,
+                          onChanged: (value) {
+                            context
+                                .read<AddReviewFormBloc>()
+                                .add(MessageChanged(message: value));
+                          },
+                          controller: messageController,
+                          focusNode: messageFocusNode,
+                          keyboardType: TextInputType.multiline,
+                          decoration: InputDecoration(
+                            alignLabelWithHint: true,
+                            hintText: 'Write your reviews here',
+                            labelText: 'Review*',
+                            helperText: 'Not empty',
+                            errorText: state.message.invalid
+                                ? 'Please ensure review is not empty'
+                                : null,
+                            errorBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 1, color: Colors.grey),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 1, color: Colors.grey),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        // decoration: InputDecoration(
-
-                        // ),
-                        cursorColor: Colors.black,
-                        maxLines: 6,
-                        textInputAction: TextInputAction.done,
-                        onChanged: (value) {
-                          context
-                              .read<AddReviewFormBloc>()
-                              .add(MessageChanged(message: value));
-                        },
-                      );
-                    }),
-                    const SizedBox(height: 14),
-                    SizedBox(
-                      width: double.infinity,
-                      child: TextButton(
-                        onPressed: () {
-                          messageFocusNode.unfocus();
-                          context
-                              .read<AddReviewFormBloc>()
-                              .add(FormSubmitted());
-                        },
-                        child: const Text(
-                          'Submit',
-                        ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    const Text(
+                      "This review must be based on real experience of the product.",
+                      style: TextStyle(
+                        fontSize: 14,
                       ),
                     ),
+
+                    // );
+                    // }),
+                    const SizedBox(height: 14),
+                    BlocConsumer<AddReviewFormBloc, AddReviewFormState>(
+                      listener: (context, state) {
+                        if (state.isUpdating &&
+                            state.status == FormzStatus.submissionSuccess) {
+                          print("success");
+                          final lunchBar = LunchBars(
+                              lunchBarText: "Review Update Success",
+                              event: LunchBarEvents.LunchBarSuccess);
+                          ScaffoldMessenger.of(context).showSnackBar(lunchBar);
+                        } else if (state.status ==
+                            FormzStatus.submissionSuccess) {
+                          print("success");
+                          final lunchBar = LunchBars(
+                              lunchBarText: "Review Created Successfully",
+                              event: LunchBarEvents.LunchBarSuccess);
+                          ScaffoldMessenger.of(context).showSnackBar(lunchBar);
+                        } else if (state.status ==
+                            FormzStatus.submissionFailure) {
+                          print("failure");
+                          final lunchBar = LunchBars(
+                              lunchBarText: "Failed",
+                              event: LunchBarEvents.LunchBarSuccess);
+                          ScaffoldMessenger.of(context).showSnackBar(lunchBar);
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state.status == FormzStatus.submissionInProgress) {
+                          return Center(
+                            child: SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        }
+
+                        return SizedBox(
+                          width: double.infinity,
+                          child: TextButton(
+                            onPressed: () {
+                              messageFocusNode.unfocus();
+                              context
+                                  .read<AddReviewFormBloc>()
+                                  .add(FormSubmitted());
+                            },
+                            child: const Text(
+                              'Submit',
+                            ),
+                          ),
+                        );
+                      },
+                    )
                   ],
                 ),
               ),
@@ -180,4 +245,5 @@ class AddReviewPopup extends StatelessWidget {
       ),
     );
   }
+  // ,);
 }

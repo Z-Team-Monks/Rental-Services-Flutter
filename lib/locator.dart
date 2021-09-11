@@ -1,6 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:rental/core/data_provider/db.dart';
 import 'package:rental/core/data_provider/floor/appdatabase.dart';
+import 'package:rental/features/admin/data_provider/local_data_provider.dart';
+import 'package:rental/features/admin/data_provider/remote_data_provider.dart';
+import 'package:rental/features/admin/repository/admin_repository.dart';
 import 'package:rental/features/auth/repository/repository.dart';
 import 'package:rental/features/auth/data_provider/local_provider.dart';
 import 'package:rental/features/auth/data_provider/remote_provider.dart';
@@ -22,11 +25,16 @@ Future<void> setUp() async {
         AuthRemoteDataProvider(),
       ));
 
+  getIt.registerLazySingleton<AdminRepository>(() => AdminRepository(
+        AdminLocalDataProvider(),
+        AdminRemoteDataProvider(),
+      ));
+
   getIt.registerLazySingleton<Future<AppDatabase>>(
       () async => await $FloorAppDatabase.databaseBuilder("app.db").build());
 
   getIt.registerSingleton<SharedPreferences>(
       await SharedPreferences.getInstance());
 
-  getIt.registerSingletonAsync<Telephony>(() async => Telephony.instance);
+  // getIt.registerSingletonAsync<Telephony>(() async => Telephony.instance);
 }

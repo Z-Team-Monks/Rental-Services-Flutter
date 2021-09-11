@@ -1,4 +1,4 @@
-import 'package:connectivity/connectivity.dart';
+import 'dart:io';
 import 'package:rental/core/models/property.dart';
 
 typedef ApiCall<T> = Future<T> Function();
@@ -43,14 +43,12 @@ Future<T?> performRemoteAndLocalSaveOperation<T>({
 }
 
 Future<bool> hasInternetConnection() async {
-  var connectivityResult = await (Connectivity().checkConnectivity());
-  if (connectivityResult == ConnectivityResult.mobile) {
-    print("------------------------Mobile Connection------------------");
+  try {
+    final response = await InternetAddress.lookup('www.kindacode.com');
     return true;
-  } else if (connectivityResult == ConnectivityResult.wifi) {
-    print("------------------------Wifi Connection------------------");
-    return true;
+  } on SocketException catch (e) {
+    return false;
+  } catch (e) {
+    return false;
   }
-  print("------------------------No Connection------------------");
-  return false;
 }

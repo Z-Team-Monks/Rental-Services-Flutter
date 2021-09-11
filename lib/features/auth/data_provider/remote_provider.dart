@@ -4,11 +4,11 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:rental/core/models/user.dart';
+import 'package:rental/core/network.dart';
 import 'package:rental/features/auth/failures/auth_failure.dart';
 import 'package:rental/features/auth/models/params/auth_signin_param.dart';
 
 class AuthRemoteDataProvider {
-  final String baseUrl = "http://10.6.250.117:5000/api/v1";
   final User user = new User(
       name: "Kidus Yoseph",
       email: "se.kidus.yoseph@gmail.com",
@@ -26,7 +26,7 @@ class AuthRemoteDataProvider {
   }) async {
     try {
       final http.Response response = await http.post(
-        Uri.parse("$baseUrl/users"),
+        Uri.parse("${AppConstants.baseUrl}/users"),
         headers: <String, String>{"Content-Type": "application/json"},
         body: jsonEncode(
           {
@@ -36,13 +36,21 @@ class AuthRemoteDataProvider {
           },
         ),
       );
-
+      print("User signup sent!");
       if (response.statusCode == 201) {
+        print("User signup success!");
         return right(User.fromJson(jsonDecode(response.body)));
       } else {
+        print(
+            "User signup denied by server! statusCode: ${response.statusCode}");
+        print("Failure: ${response.body.toString()}");
         return left(AuthFaiulre.serverAuthError());
       }
     } on SocketException catch (e) {
+      print("User signup network failed!");
+      return left(AuthFaiulre.networkError());
+    } catch (e) {
+      print("createUser Unexpected Error: $e");
       return left(AuthFaiulre.networkError());
     }
   }
@@ -58,7 +66,7 @@ class AuthRemoteDataProvider {
   }) async {
     try {
       final http.Response response = await http.post(
-        Uri.parse("$baseUrl/auth"),
+        Uri.parse("${AppConstants.baseUrl}/auth"),
         headers: <String, String>{
           "Content-Type": "application/json",
         },
@@ -70,12 +78,50 @@ class AuthRemoteDataProvider {
         ),
       );
 
+      print("User attemptLogin sent!");
       if (response.statusCode == 200) {
+        print("User attemptLogin success!");
         return right(response.body);
       } else {
+        print(
+            "User attemptLogin denied by server! statusCode: ${response.statusCode}");
+        print("Failure: ${response.body.toString()}");
         return left(AuthFaiulre.invalidEmailOrPasssword());
       }
     } on SocketException catch (e) {
+      print("User attemptLogin network failed!");
+      return left(AuthFaiulre.networkError());
+    } catch (e) {
+      print("attemptLogin Unexpected Error: $e");
+      return left(AuthFaiulre.networkError());
+    }
+  }
+
+  Future<Either<AuthFaiulre, bool>> checkIsAdmin() async {
+    try {
+      final http.Response response = await http.get(
+        Uri.parse("${AppConstants.baseUrl}/auth/isAdmin"),
+        headers: <String, String>{
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${AppConstants.token}",
+        },
+      );
+
+      print("check isAdmin request sent!");
+      if (response.statusCode == 200) {
+        print("check isAdmin request success!");
+        return right(jsonDecode(response.body)["isAdmin"]);
+      } else {
+        print(
+            "check isAdmin request failed! StatusCode: ${response.statusCode}");
+        print("checkIsAdmin Error: ${response.body.toString()}");
+        return left(AuthFaiulre.serverAuthError());
+      }
+    } on SocketException catch (e) {
+      print("check isAdmin request Network error!");
+      return left(AuthFaiulre.networkError());
+    } catch (e) {
+      print("CheckIsAdmin Unexpected Error: $e");
       return left(AuthFaiulre.networkError());
     }
   }
@@ -95,22 +141,32 @@ class AuthRemoteDataProvider {
   ///
   /// [User] object or throw an exception if an error occured
   ///
-  Future<Either<AuthFaiulre, User>> currentUser({
-    required String token,
-  }) async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    final http.Response response = await http.get(
-      Uri.parse("$baseUrl/users/me"),
-      headers: <String, String>{
-        "Content-Type": "application/json",
-        'Authorization': 'Bearer $token',
-      },
-    );
+  Future<Either<AuthFaiulre, User>> currentUser() async {
+    try {
+      final http.Response response = await http.get(
+        Uri.parse("${AppConstants.baseUrl}/users/me"),
+        headers: <String, String>{
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ${AppConstants.token}',
+        },
+      );
 
-    if (response.statusCode == 200) {
-      return right(User.fromJson(jsonDecode(response.body)));
-    } else {
-      return left(AuthFaiulre.emailAlreadyInUse());
+      print("getCurrentUser request sent!");
+      if (response.statusCode == 200) {
+        print("getCurrentUser request Success!");
+        return right(User.fromJson(jsonDecode(response.body)));
+      } else {
+        print(
+            "getCurrentUser request Failed! StatusCode: ${response.statusCode}");
+        print("getCurrentUser error: ${response.body.toString()}");
+        return left(AuthFaiulre.serverAuthError());
+      }
+    } on SocketException catch (e) {
+      print("Newtwork Error in [currentUser] method: $e");
+      return left(AuthFaiulre.networkError());
+    } catch (e) {
+      print("Unkown Error in [currentUser] method: $e");
+      return left(AuthFaiulre.networkError());
     }
   }
 

@@ -12,10 +12,16 @@ import 'package:rental/features/property/bloc/add_review/value_objects/message.d
 import 'package:rental/features/property/data_provider/add_review/review_remote_data_provider.dart';
 import 'package:rental/features/property/repository/add_review/add_review_repository.dart';
 import 'package:rental/locator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'add_review_bloc_test.mocks.dart';
+import 'package:rental/locator.dart' as getIt;
 
 @GenerateMocks([ReviewRepository])
 void main() {
+  getIt.setUp();
+  setupPreferences("token", "tokenknskdnf");
+  // getIt.getIt<SharedPreferences>().get
+
   late AddReviewFormBloc bloc;
   MockReviewRepository mockReviewRepository = MockReviewRepository();
 
@@ -29,7 +35,7 @@ void main() {
   });
 
   group('AddReviewFormBloc', () {
-    final review = Review(userId: "userId", message: "messsge");
+    final review = Review(message: "messsge", rating: 2.0);
     blocTest(
       'emits [AddReviewFormState (valid)] when a valid message is entered',
       build: () {
@@ -70,7 +76,6 @@ void main() {
     blocTest(
       'emits [AddReviewFormState (Valid), AddReviewFormState (InProgress), AddReviewFormState (Success)] when is FormSubmitted Succesfully',
       build: () {
-        setUp();
         when(
           mockReviewRepository.createRemoteReview(
             review: anyNamed("review"),
@@ -78,15 +83,18 @@ void main() {
             token: anyNamed("token"),
           ),
         ).thenAnswer((_) => Future.value(review));
+        setUp();
         return bloc;
       },
       act: (AddReviewFormBloc bloc) {
+        bloc.add(PropertyChanged("propertyId"));
         bloc.add(MessageChanged(message: "message"));
         bloc.add(FormSubmitted());
       },
       expect: () {
         final message = Message.dirty("message");
         return [
+          AddReviewFormState(),
           AddReviewFormState(
             message: message,
             status: Formz.validate([message]),
@@ -103,4 +111,11 @@ void main() {
       },
     );
   });
+}
+
+Future setupPreferences(String key, String value) async {
+  SharedPreferences.setMockInitialValues(
+      <String, Object>{'flutter.' + key: value});
+  final preferences = await SharedPreferences.getInstance();
+  await preferences.setString(key, value);
 }

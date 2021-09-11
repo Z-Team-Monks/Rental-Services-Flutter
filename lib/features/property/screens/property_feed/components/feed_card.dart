@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rental/core/helpers/get_image_url.dart';
 import 'package:shimmer/shimmer.dart';
 import './contact_icon_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -10,10 +11,19 @@ class FeedPropertyCard extends StatefulWidget {
   final String imgUrl;
 
   /// FeedCard rating count [String]
-  final double ratingCount;
+  final int ratingCount;
+
+  /// FeedCard rating count [String]
+  final double rating;
+
+  /// FeedCard rating id [String]
+  final String id;
 
   /// FeedCard name of the Property [String]
   final String name;
+
+  /// FeedCard description of the Property [String]
+  final String description;
 
   /// FeedCard call Button onTap handler [Function]
   final Function phoneCallback;
@@ -21,13 +31,20 @@ class FeedPropertyCard extends StatefulWidget {
   /// FeedCard message Button onTap handler [Function]
   final Function messageCallback;
 
+  /// FeedCard message Button onTap handler [Function]
+  final Function(String) goToDetailCallBack;
+
   const FeedPropertyCard({
     Key? key,
     required this.imgUrl,
     required this.ratingCount,
+    required this.rating,
     required this.name,
+    required this.description,
     required this.phoneCallback,
     required this.messageCallback,
+    required this.goToDetailCallBack,
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -45,10 +62,13 @@ class _FeedPropertyCardState extends State<FeedPropertyCard> {
             children: [
               Container(
                 decoration: BoxDecoration(
+                    color: Colors.redAccent,
                     borderRadius: BorderRadius.circular(22),
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(widget.imgUrl),
+                      image: CachedNetworkImageProvider(
+                        getImageUrl(widget.imgUrl),
+                      ),
                     )),
                 width: double.infinity,
                 height: 200,
@@ -63,16 +83,7 @@ class _FeedPropertyCardState extends State<FeedPropertyCard> {
                     width: double.infinity,
                   ),
                   onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            content: Container(
-                                height: 50,
-                                child:
-                                    Center(child: CircularProgressIndicator())),
-                          );
-                        });
+                    widget.goToDetailCallBack(widget.id);
                   },
                 ),
               ),
@@ -90,7 +101,7 @@ class _FeedPropertyCardState extends State<FeedPropertyCard> {
                 color: Colors.pinkAccent,
               ),
               Text(
-                "${widget.ratingCount} 4.68(38)",
+                "${widget.rating} (${widget.ratingCount})",
                 style: TextStyle(
                     fontWeight: FontWeight.w300, fontFamily: "Poppins"),
               ),
@@ -103,21 +114,22 @@ class _FeedPropertyCardState extends State<FeedPropertyCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Entire Cabin Norway",
+                    "${widget.name}",
                     style: TextStyle(
                       fontFamily: "Poppins",
-                      fontSize: 20,
+                      fontSize: 16,
                       color: Colors.black87,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
                   Text(
-                    "Candyblast by Agnes",
+                    "${widget.description}",
                     style: TextStyle(
                       fontFamily: "Poppins",
-                      fontSize: 20,
+                      fontSize: 16,
                       color: Colors.black54,
                       fontWeight: FontWeight.normal,
                     ),

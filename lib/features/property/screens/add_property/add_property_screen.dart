@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rental/core/models/property.dart';
 import 'package:rental/core/presentation/customSnackBar.dart';
@@ -9,15 +10,27 @@ import 'package:rental/core/validators/InputFormValidators.dart';
 import 'package:rental/features/property/bloc/property_add/property_add_bloc.dart';
 import 'package:rental/features/user/bloc/profile_bloc/profile_bloc.dart';
 
-class AddProperty extends StatelessWidget with InputValidationMixin {
+class AddProperty extends StatefulWidget with InputValidationMixin {
   static const pageRoute = "/add_property";
+
+  @override
+  State<AddProperty> createState() => _AddPropertyState();
+}
+
+class _AddPropertyState extends State<AddProperty> with InputValidationMixin {
   final _formKey = GlobalKey<FormState>();
+
   final ImagePicker _picker = ImagePicker();
+
   List<XFile>? images;
 
+  String? categoryValue = "House";
+
   final titleTextController = new TextEditingController(text: "House");
+
   final descriptionTextController =
       new TextEditingController(text: "A big house");
+
   final priceTextController = new TextEditingController(text: "400");
 
   @override
@@ -29,13 +42,13 @@ class AddProperty extends StatelessWidget with InputValidationMixin {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        // leading: Icon(Icons.person, color: Colors.black26,),
+        backgroundColor: Colors.white,
         title: Text(
-          "Add property",
-          style: TextStyle(
-              fontSize: 25.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Popins',
-              letterSpacing: 1),
+          'Add property',
+          style: GoogleFonts.poppins(
+              color: Colors.black, fontWeight: FontWeight.w300),
         ),
       ),
       body: SafeArea(
@@ -43,27 +56,28 @@ class AddProperty extends StatelessWidget with InputValidationMixin {
           child: Container(
             padding: EdgeInsets.only(
                 // top: height * 0.06,
-                left: width * 0.01,
-                right: width * 0.01,
+                left: width * 0.04,
+                right: width * 0.04,
                 bottom: height * 0.01),
             child: BlocConsumer<PropertyAddBloc, PropertyAddState>(
               listener: (context, state) {
                 if (state.propertyState.submitSuccess) {
                   final lunchBar = LunchBars(
-                      lunchBarText: "Product Added Succesfully",
+                      lunchBarText: "Product is being reviewed by our team!",
                       event: LunchBarEvents.LunchBarSuccess);
                   ScaffoldMessenger.of(context).showSnackBar(lunchBar);
                 }
                 if (state.propertyState.submitFailure) {
                   final lunchBar = LunchBars(
-                      lunchBarText: "Couldn't add your property try later!",
+                      lunchBarText:
+                          "Couldn't register your property try later!",
                       event: LunchBarEvents.LunchBarError);
                   ScaffoldMessenger.of(context).showSnackBar(lunchBar);
                 }
               },
               builder: (context, state) {
-                print("Rebuilding");
-                print(state.propertyState.category);
+                // print("Rebuilding");
+                // print(state.propertyState.category);
                 return Form(
                   key: _formKey,
                   child: Column(
@@ -90,13 +104,18 @@ class AddProperty extends StatelessWidget with InputValidationMixin {
                           decoration: InputDecoration(
                             hintText: 'House',
                             labelText: 'Title',
+                            border: new OutlineInputBorder(
+                                borderSide: new BorderSide(color: Colors.teal)),
                             hintStyle: TextStyle(
                                 color: Colors.black54, letterSpacing: 1),
                             filled: true,
-                            fillColor: Colors.grey[300],
+                            // border: new OutlineInputBorder(
+                            // borderSide: new BorderSide(color: Colors.pink),
+                            // ),
+                            fillColor: Colors.white,
                             enabledBorder: OutlineInputBorder(
                               // borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                              borderSide: BorderSide(color: Colors.transparent),
+                              borderSide: BorderSide(color: Colors.pinkAccent),
                             ),
                             focusedBorder: OutlineInputBorder(
                                 // borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -120,8 +139,9 @@ class AddProperty extends StatelessWidget with InputValidationMixin {
                               top: width * 0.008,
                             ),
                             decoration: BoxDecoration(
+                              border: Border.all(color: Colors.pink),
                               borderRadius: BorderRadius.circular(3.0),
-                              color: Colors.grey[300],
+                              // color: Colors.grey[300],
                             ),
                             child: Padding(
                               padding: EdgeInsets.symmetric(
@@ -129,23 +149,26 @@ class AddProperty extends StatelessWidget with InputValidationMixin {
                                 vertical: height * 0.008,
                               ),
                               child: DropdownButton<String>(
-                                value: state.propertyState
-                                    .category, //"state.dropdownValue",
+                                value: categoryValue, //"state.dropdownValue",
                                 icon: const Icon(Icons.arrow_drop_down),
                                 iconSize: 24,
                                 elevation: 16,
                                 style: const TextStyle(color: Colors.black54),
                                 onChanged: (String? newValue) {
-                                  print(newValue);
-                                  propertyAddBloc
-                                      .add(PropertyAddChangePerDropDown(
-                                    properyEventValue:
-                                        new AddPropertyFormEventValue(
-                                            dropdownValue: state
-                                                .propertyState.dropdownValue,
-                                            images: state.propertyState.images,
-                                            category: newValue!),
-                                  ));
+                                  // print("New value");
+                                  // print(newValue);
+                                  setState(() {
+                                    categoryValue = newValue;
+                                  });
+                                  // propertyAddBloc
+                                  //     .add(PropertyAddChangeCategoryDropDown(
+                                  //   properyEventValue:
+                                  //       new AddPropertyFormEventValue(
+                                  //           dropdownValue: state
+                                  //               .propertyState.dropdownValue,
+                                  //           images: state.propertyState.images,
+                                  //           category: "Random shit"),
+                                  // ));
                                 },
                                 items: <String>[
                                   'House',
@@ -187,10 +210,13 @@ class AddProperty extends StatelessWidget with InputValidationMixin {
                             hintStyle: TextStyle(
                                 color: Colors.black54, letterSpacing: 1),
                             filled: true,
-                            fillColor: Colors.grey[300],
+                            border: new OutlineInputBorder(
+                              borderSide: new BorderSide(color: Colors.teal),
+                            ),
+                            fillColor: Colors.white24,
                             enabledBorder: OutlineInputBorder(
                               // borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                              borderSide: BorderSide(color: Colors.transparent),
+                              borderSide: BorderSide(color: Colors.pink),
                             ),
                             focusedBorder: OutlineInputBorder(
                                 // borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -229,11 +255,14 @@ class AddProperty extends StatelessWidget with InputValidationMixin {
                                     labelText: 'Price',
                                     hintStyle: TextStyle(color: Colors.black54),
                                     filled: true,
-                                    fillColor: Colors.grey[300],
+                                    border: new OutlineInputBorder(
+                                        borderSide:
+                                            new BorderSide(color: Colors.teal)),
+                                    fillColor: Colors.white24,
                                     enabledBorder: OutlineInputBorder(
                                       // borderRadius: BorderRadius.all(Radius.circular(12.0)),
                                       borderSide:
-                                          BorderSide(color: Colors.transparent),
+                                          BorderSide(color: Colors.pink),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                         // borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -248,8 +277,11 @@ class AddProperty extends StatelessWidget with InputValidationMixin {
                             ),
                             Container(
                               decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.pink,
+                                ),
                                 borderRadius: BorderRadius.circular(3.0),
-                                color: Colors.grey[300],
+                                // color: Colors.grey[300],
                               ),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
@@ -276,11 +308,11 @@ class AddProperty extends StatelessWidget with InputValidationMixin {
                                     ));
                                   },
                                   items: <String>[
-                                    'PER MONTH',
-                                    'PER MINUTE',
-                                    'PER HOUR',
-                                    'PER DAY',
-                                    'PER YEAR'
+                                    'Month',
+                                    'Minute',
+                                    'Hour',
+                                    'Day',
+                                    'Year'
                                   ].map<DropdownMenuItem<String>>(
                                       (String value) {
                                     return DropdownMenuItem<String>(
@@ -402,8 +434,7 @@ class AddProperty extends StatelessWidget with InputValidationMixin {
                                                     .dropdownValue,
                                                 images:
                                                     state.propertyState.images,
-                                                category: state
-                                                    .propertyState.category),
+                                                category: categoryValue!),
                                         property: property,
                                       ));
                                     }

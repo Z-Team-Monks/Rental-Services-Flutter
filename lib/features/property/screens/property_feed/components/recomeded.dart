@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:rental/core/helpers/get_image_url.dart';
 import 'package:shimmer/shimmer.dart';
 
 // class RecomedationCard extends StatefulWidget {
@@ -63,7 +64,7 @@ class RecomedationCard extends StatelessWidget {
                           topRight: Radius.circular(20)),
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(imgUrl),
+                        image: CachedNetworkImageProvider(getImageUrl(imgUrl)),
                       ),
                     ),
                   ),
@@ -79,7 +80,7 @@ class RecomedationCard extends StatelessWidget {
                         Expanded(
                           flex: 1,
                           child: Text(
-                            name + "Nikos Auditorium",
+                            name,
                             style: TextStyle(
                               fontFamily: "Poppins",
                               fontSize: 15,
@@ -104,7 +105,7 @@ class RecomedationCard extends StatelessWidget {
                                 width: 5,
                               ),
                               Text(
-                                "${this.price} 45,000 ETB",
+                                "${this.price} ETB",
                                 style: TextStyle(
                                   color: Colors.black54,
                                 ),

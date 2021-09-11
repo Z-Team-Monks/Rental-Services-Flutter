@@ -31,7 +31,7 @@ class AuthRepository {
   Future<Either<AuthFaiulre, Unit>> storeToken(
       {required String key, required String value}) async {
     final res = await _authLocalDataProvider.storeOnSharedPref(key, value);
-    print("saved token");
+    print("saved token: $value");
     return res;
   }
 
@@ -46,5 +46,30 @@ class AuthRepository {
       }
       return res;
     }
+  }
+
+  Future<Either<AuthFaiulre, bool>> checkIsAdmin() async {
+    final res = await _authRemoteDataProvider.checkIsAdmin();
+    if (res.isLeft()) {
+      final isAdmin = readToken(key: "isAdmin");
+      if (isAdmin.isLeft()) return left(AuthFaiulre.invalidValue());
+
+      final value = isAdmin.getOrElse(() => "");
+      if (!(["true", "false"].contains(value.toString())))
+        return left(AuthFaiulre.invalidValue());
+
+      print("Admin request failed but local value is $isAdmin");
+      return isAdmin.toString() == "true" ? right(true) : right(false);
+    } else {
+      final isAdmin = res.getOrElse(() => false);
+      print("isAdmin check success: user isAdmin = $isAdmin");
+      await storeToken(key: "isAdmin", value: isAdmin.toString());
+      return isAdmin.toString() == "true" ? right(true) : right(false);
+    }
+  }
+
+  Future<Either<AuthFaiulre, User>> getCurrentUser() async {
+    final failureOrSuccess = await _authRemoteDataProvider.currentUser();
+    return failureOrSuccess;
   }
 }

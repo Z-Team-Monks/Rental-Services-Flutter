@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:rental/features/auth/screens/auth_screen.dart';
 import 'package:rental/features/property/screens/property_detail/property_detail_screen.dart';
 import 'package:rental/locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
 class SplashScreen extends StatefulWidget {
   static const pageRoute = "/splash_screen";
@@ -18,7 +20,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void _onIntroEnd(context) async {
     await _storeOnboardInfo();
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => PropertyDetail()),
+      MaterialPageRoute(
+        builder: (_) => AuthPage(controller: SolidController()),
+      ),
     );
   }
 

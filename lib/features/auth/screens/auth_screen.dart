@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:rental/features/admin/screens/admin_screen.dart';
 import 'package:rental/features/auth/bloc/auth_form_bloc.dart';
 import 'package:rental/features/auth/bloc/user_auth/user_auth_bloc.dart';
 import 'package:rental/features/auth/screens/widgets/form_field.dart';
 import 'package:rental/features/property/screens/property_feed/feed.dart';
+import 'package:rental/main.dart';
 import 'package:solid_bottom_sheet/solid_bottom_sheet.dart';
 
 class AuthPage extends StatefulWidget {
@@ -60,8 +62,10 @@ class _AuthPageState extends State<AuthPage> {
         top: false,
         child: BlocConsumer<UserAuthBloc, UserAuthState>(
           listener: (context, state) {
-            if (state == UserAuthState.LOGGEDIN) {
-              Navigator.of(context).pushReplacementNamed(HomeFeed.pageRoute);
+            if (state == UserAuthState.LOGGEDIN_ADMIN) {
+              Navigator.popAndPushNamed(context, AdminPage.pageRoute);
+            } else if (state == UserAuthState.LOGGEDIN) {
+              Navigator.popAndPushNamed(context, Home.pageRoute);
             }
           },
           builder: (context, state) {
@@ -111,10 +115,14 @@ class _AuthPageState extends State<AuthPage> {
                         scrollDirection: Axis.horizontal,
                         controller: controller,
                         children: <Widget>[
-                          signInPage(
-                              authFormBloc, this.emailNode, this.passwordNode),
-                          signUpPage(authFormBloc, this.usernameNode,
-                              this.emailNode, this.passwordNode),
+                          signInPage(authFormBloc, userAuthBloc, this.emailNode,
+                              this.passwordNode),
+                          signUpPage(
+                              authFormBloc,
+                              userAuthBloc,
+                              this.usernameNode,
+                              this.emailNode,
+                              this.passwordNode),
                         ],
                       ),
                     ),
@@ -124,8 +132,8 @@ class _AuthPageState extends State<AuthPage> {
   }
 }
 
-Widget signInPage(
-    AuthFormBloc authFormBloc, FocusNode emailNode, FocusNode passwordNode) {
+Widget signInPage(AuthFormBloc authFormBloc, UserAuthBloc userAuthBloc,
+    FocusNode emailNode, FocusNode passwordNode) {
   return SingleChildScrollView(
     child: Container(
       decoration: BoxDecoration(
@@ -170,10 +178,11 @@ Widget signInPage(
                   BlocBuilder<AuthFormBloc, AuthFormState>(
                     builder: (context, state) {
                       return CustomFormField(
+                          obscure: false,
                           errorMessage: state.email.invalid
                               ? "Email format is incorrect"
                               : '',
-                          label: 'example@niko.com',
+                          label: 'example@rent.com',
                           onValueChange: (value) {
                             authFormBloc.add(EmailChanged(email: value));
                           });
@@ -185,8 +194,9 @@ Widget signInPage(
                   BlocBuilder<AuthFormBloc, AuthFormState>(
                     builder: (context, state) {
                       return CustomFormField(
+                          obscure: true,
                           errorMessage: state.password.invalid
-                              ? 'password should be at least 8 character long\npassword must contain both letter and number'
+                              ? 'password should be at least 6 character long\npassword must contain both letter and number'
                               : '',
                           label: 'Enter your password',
                           onValueChange: (value) {
@@ -196,7 +206,7 @@ Widget signInPage(
                   ),
                   BlocBuilder<AuthFormBloc, AuthFormState>(
                     builder: (context, state) {
-                      return state.message != null
+                      return (state.message != "" && state.message != null)
                           ? Column(
                               children: [
                                 SizedBox(
@@ -213,16 +223,16 @@ Widget signInPage(
                   SizedBox(
                     height: 10,
                   ),
-                  TextButton(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith(
-                            (states) => Colors.transparent)),
-                    onPressed: () {},
-                    child: Text(
-                      "Forgot password",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
+                  // TextButton(
+                  //   style: ButtonStyle(
+                  //       backgroundColor: MaterialStateColor.resolveWith(
+                  //           (states) => Colors.transparent)),
+                  //   onPressed: () {},
+                  //   child: Text(
+                  //     "Forgot password",
+                  //     style: TextStyle(color: Colors.black),
+                  //   ),
+                  // ),
                   Container(
                     width: double.infinity,
                     child: Expanded(
@@ -239,8 +249,9 @@ Widget signInPage(
                             listener: (ctx, state) {
                               if (state.status ==
                                   FormzStatus.submissionSuccess) {
-                                Navigator.of(ctx)
-                                    .pushReplacementNamed(HomeFeed.pageRoute);
+                                userAuthBloc.add(UserStatusChecking());
+                                // Navigator.of(ctx)
+                                //     .pushReplacementNamed(HomeFeed.pageRoute);
                               }
                             },
                             builder: (context, state) {
@@ -271,8 +282,8 @@ Widget signInPage(
   );
 }
 
-Widget signUpPage(AuthFormBloc authFormBloc, FocusNode usernameNode,
-    FocusNode emailNode, FocusNode passwordNode) {
+Widget signUpPage(AuthFormBloc authFormBloc, UserAuthBloc userAuthBloc,
+    FocusNode usernameNode, FocusNode emailNode, FocusNode passwordNode) {
   return SingleChildScrollView(
     child: Container(
       decoration: BoxDecoration(
@@ -317,6 +328,7 @@ Widget signUpPage(AuthFormBloc authFormBloc, FocusNode usernameNode,
                   BlocBuilder<AuthFormBloc, AuthFormState>(
                     builder: (context, state) {
                       return CustomFormField(
+                          obscure: false,
                           errorMessage: state.email.invalid
                               ? 'Please ensure username is not empty'
                               : '',
@@ -329,10 +341,11 @@ Widget signUpPage(AuthFormBloc authFormBloc, FocusNode usernameNode,
                   BlocBuilder<AuthFormBloc, AuthFormState>(
                     builder: (context, state) {
                       return CustomFormField(
+                          obscure: false,
                           errorMessage: state.email.invalid
-                              ? 'Please ensure email is not empty'
+                              ? "Email format is incorrect"
                               : '',
-                          label: 'Enter your email',
+                          label: 'example@rent.com',
                           onValueChange: (value) {
                             authFormBloc.add(EmailChanged(email: value));
                           });
@@ -344,8 +357,9 @@ Widget signUpPage(AuthFormBloc authFormBloc, FocusNode usernameNode,
                   BlocBuilder<AuthFormBloc, AuthFormState>(
                     builder: (context, state) {
                       return CustomFormField(
+                          obscure: true,
                           errorMessage: state.email.invalid
-                              ? 'Please ensure password is not empty'
+                              ? 'password should be at least 6 character long\npassword must contain both letter and number'
                               : '',
                           label: 'Enter your password',
                           onValueChange: (value) {
@@ -355,7 +369,7 @@ Widget signUpPage(AuthFormBloc authFormBloc, FocusNode usernameNode,
                   ),
                   BlocBuilder<AuthFormBloc, AuthFormState>(
                     builder: (context, state) {
-                      return state.message != null
+                      return (state.message != "" && state.message != null)
                           ? Column(
                               children: [
                                 SizedBox(
@@ -390,8 +404,9 @@ Widget signUpPage(AuthFormBloc authFormBloc, FocusNode usernameNode,
                             listener: (ctx, state) {
                               if (state.status ==
                                   FormzStatus.submissionSuccess) {
-                                Navigator.of(ctx)
-                                    .pushReplacementNamed(HomeFeed.pageRoute);
+                                userAuthBloc.add(UserStatusChecking());
+                                // Navigator.of(ctx)
+                                //     .pushReplacementNamed(HomeFeed.pageRoute);
                               }
                             },
                             builder: (context, state) {
