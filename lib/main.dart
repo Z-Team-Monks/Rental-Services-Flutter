@@ -30,10 +30,12 @@ import 'features/property/data_provider/add_review/review_remote_data_provider.d
 import 'features/property/repository/add_review/add_review_repository.dart';
 
 bool? isViewed;
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setUp();
   await _retriveOnboardInfo();
+  FlutterError.onError =
+      (details) => print('ignoring warnings for testing purposes');
   runApp(MyApp());
 }
 

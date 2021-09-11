@@ -12,13 +12,13 @@ class LoadLikeStatus extends LikePropertyEvent {
   LoadLikeStatus(List<dynamic> likedBy) {
     var loggedInUser;
     try {
-      loggedInUser = User.fromJson(
-              jsonDecode(getIt<SharedPreferences>().getString("user") ?? ""))
-          .id;
+      loggedInUser =
+          json.decode(getIt<SharedPreferences>().getString("user") ?? "").id;
+      this.isLiked = likedBy.contains(loggedInUser);
     } catch (e) {
-      loggedInUser = "6139bb374cd1c14db8d43bf8";
+      isLiked = false;
+      // loggedInUser = "6139bb374cd1c14db8d43bf8";
     }
-    this.isLiked = likedBy.contains(loggedInUser);
     print("load like status ---- $isLiked");
   }
   @override

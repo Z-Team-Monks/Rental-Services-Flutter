@@ -3,9 +3,9 @@ import 'package:rental/locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppConstants {
-  static String baseUrl = "http://192.168.1.7:5001/api/v1";
+  static String baseUrl = "http://192.168.0.153:5001/api/v1";
 
-  static String staticUrl = "http://192.168.1.7:5001";
+  static String staticUrl = "http://192.168.0.153:5001";
 
   static String token = getIt<SharedPreferences>().getString("token") ?? "null";
   // static String token =
