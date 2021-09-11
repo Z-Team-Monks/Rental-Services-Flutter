@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:rental/core/helpers/get_image_url.dart';
@@ -37,7 +38,15 @@ class UpdateProfile extends StatelessWidget with InputValidationMixin {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        title: Text(
+          "Update Profile",
+          style: GoogleFonts.poppins(
+              color: Colors.black, fontWeight: FontWeight.w300),
+        ),
+      ),
       body: SafeArea(
         child: LoaderOverlay(
           overlayOpacity: 0.8,
