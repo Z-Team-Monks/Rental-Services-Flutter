@@ -171,26 +171,27 @@ class ProfilePage extends StatelessWidget {
                                   },
                                   builder: (context, state) {
                                     if (state is ProfileLoaded) {
+                                      final minePosts = state.user.posts ?? [];
+                                      final favPosts =
+                                          state.user.likedProperties ?? [];
                                       return TabBarView(children: <Widget>[
                                         GridView.count(
                                             crossAxisCount: 2,
                                             children: List.generate(
-                                                state.user.posts!.length,
-                                                (index) {
+                                                minePosts.length, (index) {
                                               return MyPropertyCard(
                                                   size,
-                                                  state.user.posts![index],
+                                                  minePosts[index],
                                                   context,
                                                   true);
                                             })),
                                         GridView.count(
                                             crossAxisCount: 2,
                                             children: List.generate(
-                                                state.user.likedProperties!
-                                                    .length, (index) {
+                                                favPosts.length, (index) {
                                               return MyPropertyCard(
                                                   size,
-                                                  state.user.posts![index],
+                                                  favPosts[index],
                                                   context,
                                                   false);
                                             })),
