@@ -21,42 +21,42 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
     if (event is UsernameChanged) {
       final username = Username.dirty(event.username);
       yield state.copyWith(
-        message: null,
+        message: "",
         username: username.valid ? username : Username.pure(event.username),
         status: Formz.validate([username]),
       );
     } else if (event is EmailChanged) {
       final email = Email.dirty(event.email);
       yield state.copyWith(
-        message: null,
+        message: "",
         email: email.valid ? email : Email.pure(event.email),
         status: Formz.validate([email]),
       );
     } else if (event is PasswordChanged) {
       final password = Password.dirty(event.password);
       yield state.copyWith(
-        message: null,
+        message: "",
         password: password.valid ? password : Password.pure(event.password),
         status: Formz.validate([password]),
       );
     } else if (event is UsernameUnfocused) {
       final username = Username.dirty(state.username.value);
       yield state.copyWith(
-        message: null,
+        message: "",
         username: username,
         status: Formz.validate([username]),
       );
     } else if (event is EmailUnfocused) {
       final email = Email.dirty(state.email.value);
       yield state.copyWith(
-        message: null,
+        message: "",
         email: email,
         status: Formz.validate([email]),
       );
     } else if (event is PasswordUnfocused) {
       final password = Password.dirty(state.password.value);
       yield state.copyWith(
-        message: null,
+        message: "",
         password: password,
         status: Formz.validate([password]),
       );
@@ -67,7 +67,7 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
       yield state.copyWith(
         email: email,
         password: password,
-        message: null,
+        message: "",
         status: Formz.validate([email, password]),
       );
 
@@ -150,7 +150,7 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
                   status: FormzStatus.submissionFailure);
             } else {
               yield state.copyWith(
-                message: null,
+                message: "",
                 status: FormzStatus.submissionSuccess,
               );
             }
@@ -159,7 +159,7 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
       } else {
         print("invalid form");
         yield state.copyWith(
-          message: null,
+          message: "",
           status: FormzStatus.invalid,
         );
       }
@@ -251,7 +251,7 @@ class AuthFormBloc extends Bloc<AuthFormEvent, AuthFormState> {
                   status: FormzStatus.submissionFailure);
             } else {
               yield state.copyWith(
-                message: null,
+                message: "",
                 status: FormzStatus.submissionSuccess,
               );
             }

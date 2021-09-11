@@ -167,7 +167,7 @@ void main() {
           status: FormzStatus.submissionInProgress,
         ),
         AuthFormState(
-          message: null,
+          message: "",
           email: email,
           password: password,
           status: FormzStatus.submissionSuccess,
@@ -227,7 +227,7 @@ void main() {
           status: FormzStatus.submissionInProgress,
         ),
         AuthFormState(
-          message: null,
+          message: "",
           username: username,
           email: email,
           password: password,

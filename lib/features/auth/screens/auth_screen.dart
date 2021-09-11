@@ -182,7 +182,7 @@ Widget signInPage(AuthFormBloc authFormBloc, UserAuthBloc userAuthBloc,
                           errorMessage: state.email.invalid
                               ? "Email format is incorrect"
                               : '',
-                          label: 'example@niko.com',
+                          label: 'example@rent.com',
                           onValueChange: (value) {
                             authFormBloc.add(EmailChanged(email: value));
                           });
@@ -206,7 +206,7 @@ Widget signInPage(AuthFormBloc authFormBloc, UserAuthBloc userAuthBloc,
                   ),
                   BlocBuilder<AuthFormBloc, AuthFormState>(
                     builder: (context, state) {
-                      return state.message != null
+                      return (state.message != "" && state.message != null)
                           ? Column(
                               children: [
                                 SizedBox(
@@ -343,9 +343,9 @@ Widget signUpPage(AuthFormBloc authFormBloc, UserAuthBloc userAuthBloc,
                       return CustomFormField(
                           obscure: false,
                           errorMessage: state.email.invalid
-                              ? 'Please ensure email is not empty'
+                              ? "Email format is incorrect"
                               : '',
-                          label: 'Enter your email',
+                          label: 'example@rent.com',
                           onValueChange: (value) {
                             authFormBloc.add(EmailChanged(email: value));
                           });
@@ -359,7 +359,7 @@ Widget signUpPage(AuthFormBloc authFormBloc, UserAuthBloc userAuthBloc,
                       return CustomFormField(
                           obscure: true,
                           errorMessage: state.email.invalid
-                              ? 'Please ensure password is not empty'
+                              ? 'password should be at least 6 character long\npassword must contain both letter and number'
                               : '',
                           label: 'Enter your password',
                           onValueChange: (value) {
@@ -369,7 +369,7 @@ Widget signUpPage(AuthFormBloc authFormBloc, UserAuthBloc userAuthBloc,
                   ),
                   BlocBuilder<AuthFormBloc, AuthFormState>(
                     builder: (context, state) {
-                      return state.message != null
+                      return (state.message != "" && state.message != null)
                           ? Column(
                               children: [
                                 SizedBox(

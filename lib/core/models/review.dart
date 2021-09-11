@@ -19,7 +19,7 @@ class Review extends EntityModel {
       // userId: json["id"],
       message: json["message"],
       rating: json["rating"] * 1.0,
-      user: User.fromJson(json["user"]),
+      // user: User.fromJson(json["user"]),
     );
   }
 
