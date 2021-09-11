@@ -75,7 +75,12 @@ class ProfilePage extends StatelessWidget {
               children: <Widget>[
                 SizedBox(height: 20.0),
                 BlocConsumer<ProfileBloc, ProfileState>(
-                  listener: (_, state) {},
+                  listener: (_, state) {
+                    if (state is ProfileLoaded) {
+                      getIt<SharedPreferences>()
+                          .setString("userId", state.user.id ?? "");
+                    }
+                  },
                   builder: (_, state) {
                     if (state is ProfileLoaded) {
                       return Row(

@@ -16,7 +16,12 @@ class LoadLikeStatus extends LikePropertyEvent {
           json.decode(getIt<SharedPreferences>().getString("user") ?? "").id;
       this.isLiked = likedBy.contains(loggedInUser);
     } catch (e) {
-      isLiked = false;
+      loggedInUser = getIt<SharedPreferences>().getString("userId") ?? "";
+      if (loggedInUser == "") {
+        this.isLiked = false;
+      } else {
+        this.isLiked = likedBy.contains(loggedInUser);
+      }
       // loggedInUser = "6139bb374cd1c14db8d43bf8";
     }
     print("load like status ---- $isLiked");
